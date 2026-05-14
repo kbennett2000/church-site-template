@@ -205,7 +205,7 @@ collections:
                 label: "Services"
                 widget: list
                 hint: "Add one entry per regular gathering — Sunday morning, Wednesday evening, Saturday vigil, Spanish service, etc. Mark exactly one as the 'primary' service (shown in the homepage hero and footer)."
-                summary: "{{day}}s at {{time}}{{#if name}} — {{name}}{{/if}}"
+                summary: "{{day}}s at {{time}} — {{name}}"
                 fields:
                   - { name: name, label: "Service Name", widget: string, required: false, default: "", hint: "Optional. Use when distinguishing services. e.g. 'Traditional', 'Contemporary', 'Spanish Service'. Leave blank if you only have one service or names aren't needed." }
                   - { name: day, label: "Day", widget: string, default: "Sunday", hint: "e.g. 'Sunday', 'Wednesday', 'Saturday'." }

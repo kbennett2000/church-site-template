@@ -18,6 +18,21 @@ import {
 import { Button } from "@/components/ui/button";
 import { churchInfo } from "@/lib/church-info";
 import { VisitForm } from "@/components/sections/visit-form";
+import type { Service } from "@/lib/church-info";
+
+function formatServiceTimes(services: readonly Service[]): string {
+  const map = new Map<string, string[]>();
+  for (const s of services) {
+    if (!s.day || !s.time) continue;
+    const existing = map.get(s.day);
+    if (existing) existing.push(s.time);
+    else map.set(s.day, [s.time]);
+  }
+  if (map.size === 0) return "Sundays";
+  return Array.from(map.entries())
+    .map(([day, times]) => `${day}s at ${times.join(" & ")}`)
+    .join(", ");
+}
 
 export const metadata: Metadata = {
   title: "Plan a Visit",
@@ -93,10 +108,7 @@ export default function VisitPage() {
             Walking into a new church can feel like a lot. Here&apos;s everything you need to know.
           </h1>
           <p className="mt-6 max-w-2xl text-lg text-background/85 animate-fade-up">
-            {churchInfo.primaryService
-              ? `${churchInfo.primaryService.day}s at ${churchInfo.primaryService.time}`
-              : "Sundays"}{" "}
-            · {churchInfo.address.full}. We&apos;ll save you a seat.
+            {formatServiceTimes(churchInfo.services)} · {churchInfo.address.full}. We&apos;ll save you a seat.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row animate-fade-up">
             <Button asChild size="lg" variant="accent">
@@ -280,11 +292,9 @@ export default function VisitPage() {
               <div className="flex items-start gap-3">
                 <Clock className="mt-0.5 h-5 w-5 text-accent" />
                 <div>
-                  <dt className="font-medium text-foreground">Service time</dt>
+                  <dt className="font-medium text-foreground">Service times</dt>
                   <dd className="text-muted-foreground">
-                    {churchInfo.primaryService
-                      ? `${churchInfo.primaryService.day}s at ${churchInfo.primaryService.time}.`
-                      : "Sundays."}
+                    {formatServiceTimes(churchInfo.services)}.
                     {churchInfo.primaryService?.note
                       ? ` ${churchInfo.primaryService.note}.`
                       : ""}

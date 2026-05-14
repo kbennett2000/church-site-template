@@ -116,8 +116,6 @@ For developers customizing the template, contributing back, or maintaining a chu
 
 Churches that have adopted this template:
 
-- **[Majestic View Church](https://mvckiowa.com/)** — Kiowa, Colorado. The original prototype; see the [full case study](docs/case-studies/majestic-view-church.md) for before/after screenshots and lessons learned.
-
 > **Your church here?** After you deploy your site, send a pull request adding it to this list and your own [case study](docs/case-studies/). We'd love to feature you. See [the case-studies folder](docs/case-studies/) for submission instructions.
 
 ---

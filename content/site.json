@@ -19,11 +19,25 @@
     "email": "hello@example.church",
     "services": [
       {
-        "name": "",
+        "name": "MAIN SERVICE",
         "day": "Sunday",
         "time": "10:00 AM",
         "note": "Coffee & fellowship before and after the service",
         "primary": true
+      },
+      {
+        "name": "2nd sunday service",
+        "day": "Sunday",
+        "note": "second service on sunday",
+        "primary": false,
+        "time": "5:00 pm"
+      },
+      {
+        "name": "Wednesday Night Jesus-Fest!",
+        "day": "Wednesday",
+        "note": "Come hang out with Jesus in the middle of the night.",
+        "primary": false,
+        "time": "2:00 AM"
       }
     ]
   },

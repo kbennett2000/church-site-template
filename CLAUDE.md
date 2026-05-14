@@ -124,6 +124,7 @@ There's a final grep sweep documented in [`docs/PRE_LAUNCH_REVIEW.md`](docs/PRE_
 │   ├── page.tsx                homepage composition
 │   ├── globals.css             CSS variables for the theme (HSL triplets)
 │   ├── about|beliefs|calendar|connect|give|ministries|visit|watch/
+│   └── pages/[slug]/page.tsx  dynamic route for CMS-managed custom pages
 │
 ├── components/
 │   ├── site-header.tsx         dynamic-text or image-logo, hidden md:inline name
@@ -133,7 +134,7 @@ There's a final grep sweep documented in [`docs/PRE_LAUNCH_REVIEW.md`](docs/PRE_
 │   └── ui/                     button/card/input primitives
 │
 ├── lib/                        types + helpers (NOT data)
-│   ├── church-info.ts          loads content/site.json + derives mapsUrl/phoneHref/etc.
+│   ├── church-info.ts          loads content/site.json + navigation.json; exports NavItem type
 │   ├── calendar-data.ts        types + month-expansion math
 │   ├── sermons.ts / staff.ts / elders.ts / ministries.ts / beliefs.ts / events.ts /
 │       announcements.ts        TYPES ONLY — data lives in /content/
@@ -150,6 +151,10 @@ There's a final grep sweep documented in [`docs/PRE_LAUNCH_REVIEW.md`](docs/PRE_
 │   ├── story.md                about-page prose
 │   ├── ministries/             .md per ministry (kids/youth/young-adults/women/men/recovery/missions)
 │   ├── ministries.ts           loader + SLUG_ORDER array (controls display order)
+│   ├── navigation.json         site nav structure (edited via Decap CMS)
+│   ├── pages.ts                loader for custom pages (getPages / getPage)
+│   ├── pages/                  .md per custom page (CMS-managed, rendered at /pages/[slug])
+│   │   └── sample-page.md      seed example page for editors
 │   ├── staff/                  .md per staff member
 │   ├── elders/                 .md per elder
 │   ├── sermons/                .md per sermon (date-prefixed filenames)
@@ -221,9 +226,15 @@ In `components/site-header.tsx` and `components/site-footer.tsx` there's a comme
 
 `scripts/welcome.js` runs on `npm install` via `postinstall`. It writes a marker file `.template-welcomed` (gitignored) so subsequent installs are silent. The script detects CI and non-TTY environments and degrades gracefully. To re-run manually: `npm run welcome` (uses `--force` flag).
 
+### Navigation is data-driven — don't re-hardcode it
+
+The site nav lives in `content/navigation.json` and is CMS-editable. `lib/church-info.ts` exports `nav: NavItem[]` loaded from that file; `components/site-header.tsx` and `components/mobile-nav.tsx` consume it. **Do not replace `nav` with a hardcoded array** in any component — that breaks CMS nav editing. One level of dropdown nesting (`children`) is supported; deeper nesting is not.
+
+Custom pages created in the CMS are rendered at `/pages/[slug]`. The `generateStaticParams` in `app/pages/[slug]/page.tsx` reads `content/pages/*.md` at build time; Vercel rebuilds automatically when Decap CMS publishes via the GitHub webhook.
+
 ### Ministry slug ordering
 
-`content/ministries.ts` has a `SLUG_ORDER` array that controls homepage and nav order. The nav itself is in `lib/church-info.ts`. **Both must be kept in sync** when adding or removing a ministry — there's a walkthrough in `docs/for-tech-volunteers/10-customize-deeper.md`.
+`content/ministries.ts` has a `SLUG_ORDER` array that controls homepage and nav order. The nav itself lives in `content/navigation.json` and is loaded by `lib/church-info.ts`. **Both must be kept in sync** when adding or removing a ministry — there's a walkthrough in `docs/for-tech-volunteers/10-customize-deeper.md`.
 
 The default ministry slug for recovery is `"recovery"` (not `"overcomers"`). An older version of the prototype used `"overcomers"` but the template renames to `"recovery"` for broader applicability.
 

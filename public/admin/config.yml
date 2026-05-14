@@ -316,10 +316,10 @@ collections:
       - { name: body, label: "Message", widget: text, hint: "1-2 sentences. Keep it short — link out for longer details." }
 
   # =====================================================================
-  # 9. PAGE — The "Our Story" prose on /about.
+  # 9. ABOUT CONTENT — The "Our Story" prose on /about.
   # =====================================================================
-  - name: pages
-    label: "Pages"
+  - name: about-content
+    label: "About Content"
     delete: false
     files:
       - name: story
@@ -329,3 +329,52 @@ collections:
         fields:
           - { name: title, label: "Page Title", widget: string, default: "Our Story" }
           - { name: body, label: "Story", widget: markdown, hint: "Tell visitors the story of the church. Use the formatting toolbar — no need to write code." }
+
+  # =====================================================================
+  # 10. CUSTOM PAGES — Editor-created pages at /pages/[slug].
+  # =====================================================================
+  - name: custom-pages
+    label: "Custom Pages"
+    label_singular: "Page"
+    folder: content/pages
+    create: true
+    delete: true
+    format: frontmatter
+    extension: md
+    slug: "{{slug}}"
+    summary: "{{title}} — /pages/{{slug}}"
+    fields:
+      - { name: title, label: "Page Title", widget: string, hint: "Shown as the page heading and in the browser tab." }
+      - { name: description, label: "Description", widget: string, required: false, hint: "Optional. Shown in search results and social previews. 1-2 sentences." }
+      - { name: body, label: "Page Content", widget: markdown, hint: "Use the toolbar to format text, add headings, lists, links, and images. The page lives at /pages/[slug] once published." }
+
+  # =====================================================================
+  # 11. NAVIGATION — Site-wide header/footer nav, editable by editors.
+  # =====================================================================
+  - name: navigation
+    label: "Navigation"
+    delete: false
+    editor: { preview: false }
+    files:
+      - name: navigation
+        label: "Site Navigation"
+        file: content/navigation.json
+        format: json
+        fields:
+          - name: items
+            label: "Navigation Items"
+            widget: list
+            hint: "Top-level links shown in the site header and mobile menu. Drag to reorder. Each item can optionally have a dropdown with sub-links (one level deep)."
+            summary: "{{label}} → {{href}}"
+            fields:
+              - { name: label, label: "Label", widget: string, hint: "The text that appears in the nav. Keep it short — 1-2 words." }
+              - { name: href, label: "Link", widget: string, hint: "Where clicking takes the visitor. Use a path like /calendar or /pages/my-page for internal links, or a full URL for external ones." }
+              - name: children
+                label: "Dropdown Items"
+                widget: list
+                required: false
+                hint: "Optional. Add sub-links that appear in a dropdown under this item. Max one level deep."
+                summary: "{{label}} → {{href}}"
+                fields:
+                  - { name: label, label: "Label", widget: string }
+                  - { name: href, label: "Link", widget: string }

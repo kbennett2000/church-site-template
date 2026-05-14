@@ -1,4 +1,5 @@
 import { churchData } from "@/content/site";
+import navData from "@/content/navigation.json";
 
 // Church identity data lives in /content/site.json (editable via Decap CMS).
 // This file adds derived fields (full address, mapsUrl, tel/mailto hrefs,
@@ -52,42 +53,10 @@ export const churchInfo = {
   social: churchData.social,
 } as const;
 
-export const nav = [
-  { label: "Visit", href: "/visit" },
-  { label: "Watch", href: "/watch" },
-  {
-    label: "About",
-    href: "/about",
-    children: [
-      { label: "Our Story", href: "/about" },
-      { label: "What We Believe", href: "/beliefs" },
-      { label: "Staff & Elders", href: "/about#staff" },
-    ],
-  },
-  {
-    label: "Connect",
-    href: "/connect",
-    children: [
-      { label: "Small Groups", href: "/connect/groups" },
-      { label: "Prayer Requests", href: "/connect/prayer" },
-      { label: "Serve", href: "/connect/serve" },
-      { label: "Contact", href: "/connect/contact" },
-    ],
-  },
-  {
-    label: "Ministries",
-    href: "/ministries",
-    children: [
-      { label: "Kids", href: "/ministries/kids" },
-      { label: "Youth", href: "/ministries/youth" },
-      { label: "Young Adults", href: "/ministries/young-adults" },
-      { label: "Women", href: "/ministries/women" },
-      { label: "Men", href: "/ministries/men" },
-      { label: "Recovery", href: "/ministries/recovery" },
-      { label: "Missions", href: "/ministries/missions" },
-    ],
-  },
-  { label: "Calendar", href: "/calendar" },
-  { label: "Announcements", href: "/announcements" },
-  { label: "Give", href: "/give" },
-] as const;
+export type NavItem = {
+  label: string;
+  href: string;
+  children?: { label: string; href: string }[];
+};
+
+export const nav: NavItem[] = navData.items;

@@ -5,28 +5,70 @@ import { Check, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { HelpIcon } from "@/components/ui/help-icon";
-import { churchInfo } from "@/lib/church-info";
+import { churchInfo, type Service } from "@/lib/church-info";
 
-function nextSundays(count: number, from: Date = new Date()) {
-  const out: Date[] = [];
-  const d = new Date(from);
-  while (out.length < count) {
-    d.setDate(d.getDate() + 1);
-    if (d.getDay() === 0) out.push(new Date(d));
+const DAY_NAME_TO_DOW: Record<string, number> = {
+  sunday: 0, monday: 1, tuesday: 2, wednesday: 3,
+  thursday: 4, friday: 5, saturday: 6,
+};
+
+function nextServiceOptions(
+  services: readonly Service[],
+  count: number,
+  from: Date = new Date()
+): { value: string; label: string }[] {
+  const active = services.filter(
+    (s) => s.day && s.time && DAY_NAME_TO_DOW[s.day.toLowerCase()] !== undefined
+  );
+  // Fall back to next Sundays if no services are configured.
+  if (active.length === 0) {
+    const out: { value: string; label: string }[] = [];
+    const d = new Date(from);
+    while (out.length < count) {
+      d.setDate(d.getDate() + 1);
+      if (d.getDay() === 0)
+        out.push({
+          value: d.toISOString().slice(0, 10),
+          label: d.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" }),
+        });
+    }
+    return out;
   }
-  return out;
-}
 
-function formatSunday(d: Date) {
-  return d.toLocaleDateString("en-US", {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
+  const multipleServices = active.length > 1;
+  const instances: { date: Date; service: Service }[] = [];
+  const d = new Date(from);
+  // Scan 10 weeks ahead — enough to collect `count` instances for any schedule.
+  for (let i = 0; i < 70 && instances.length < count * active.length; i++) {
+    d.setDate(d.getDate() + 1);
+    for (const s of active) {
+      if (d.getDay() === DAY_NAME_TO_DOW[s.day.toLowerCase()])
+        instances.push({ date: new Date(d), service: s });
+    }
+  }
+  // Sort chronologically, then by service time within the same day.
+  instances.sort((a, b) =>
+    a.date.getTime() !== b.date.getTime()
+      ? a.date.getTime() - b.date.getTime()
+      : a.service.time.localeCompare(b.service.time)
+  );
+
+  return instances.slice(0, count).map(({ date, service }) => {
+    const dateLabel = date.toLocaleDateString("en-US", {
+      weekday: "long", month: "long", day: "numeric",
+    });
+    const label = multipleServices
+      ? `${dateLabel} · ${service.name || service.time}`
+      : dateLabel;
+    return {
+      value: `${date.toISOString().slice(0, 10)}|${service.time}`,
+      label,
+    };
   });
 }
 
 export function VisitForm() {
-  const sundays = useMemo(() => nextSundays(5), []);
+  const serviceOptions = useMemo(() => nextServiceOptions(churchInfo.services, 8), []);
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState({
     name: "",
@@ -34,7 +76,7 @@ export function VisitForm() {
     adults: "1",
     kids: "0",
     kidsAges: "",
-    sunday: sundays[0]?.toISOString().slice(0, 10) ?? "",
+    visit: serviceOptions[0]?.value ?? "",
     notes: "",
   });
 
@@ -147,17 +189,14 @@ export function VisitForm() {
         ) : null}
 
         <Field
-          label="Which Sunday?"
+          label="Which service?"
           className="sm:col-span-2"
-          help="Pick the Sunday you're planning to visit. If you're not sure yet, that's fine — pick 'Not sure yet' below."
+          help="Pick the service you're planning to attend. Not sure yet? No problem — just pick one and we'll follow up."
         >
           <Select
-            value={form.sunday}
-            onChange={(v) => update("sunday", v)}
-            options={sundays.map((d) => ({
-              value: d.toISOString().slice(0, 10),
-              label: formatSunday(d),
-            }))}
+            value={form.visit}
+            onChange={(v) => update("visit", v)}
+            options={serviceOptions}
             extraOption={{ value: "unsure", label: "Not sure yet" }}
           />
         </Field>

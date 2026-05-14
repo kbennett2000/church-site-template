@@ -1,14 +1,11 @@
 {
   "church": {
-    "shortName": "GCC",
-    "logo": "",
     "name": "Grace Community Church",
-    "social": {
-      "facebook": "",
-      "youtube": ""
-    },
-    "phone": "(555) 123-4567",
+    "shortName": "GCC",
     "tagline": "A welcoming church in [Your Town]",
+    "logo": "",
+    "phone": "(555) 123-4567",
+    "email": "kbennett2000@hotmail.com",
     "officeHours": "Mon–Thu, 9:00 AM – 4:00 PM",
     "address": {
       "street": "123 Main Street",
@@ -16,7 +13,6 @@
       "state": "ST",
       "zip": "12345"
     },
-    "email": "hello@example.church",
     "services": [
       {
         "name": "MAIN SERVICE",
@@ -28,18 +24,22 @@
       {
         "name": "2nd sunday service",
         "day": "Sunday",
+        "time": "5:00 pm",
         "note": "second service on sunday",
-        "primary": false,
-        "time": "5:00 pm"
+        "primary": false
       },
       {
         "name": "Wednesday Night Jesus-Fest!",
         "day": "Wednesday",
+        "time": "2:00 AM",
         "note": "Come hang out with Jesus in the middle of the night.",
-        "primary": false,
-        "time": "2:00 AM"
+        "primary": false
       }
-    ]
+    ],
+    "social": {
+      "facebook": "",
+      "youtube": ""
+    }
   },
   "home": {
     "hero": {

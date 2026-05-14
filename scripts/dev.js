@@ -16,6 +16,9 @@ const c = {
 console.log(`
 ${c.bold}${c.cyan}Starting your site...${c.reset}
 
+${c.bold}Note:${c.reset} If you want the CMS editor at ${c.bold}/admin${c.reset}, use ${c.bold}npm run cms${c.reset} instead.
+${c.dim}Running both npm run start and npm run cms at the same time will conflict on port 3000.${c.reset}
+
 When you see ${c.bold}"Ready in ..."${c.reset} below, your site is running:
 
   • Open ${c.bold}${c.cyan}http://localhost:3000${c.reset} in your browser

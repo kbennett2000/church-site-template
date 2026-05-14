@@ -22,7 +22,7 @@ export async function POST(request: Request) {
     ].filter(Boolean);
 
     const resend = getResend();
-    await resend.emails.send({
+    const { error } = await resend.emails.send({
       from: FROM_EMAIL,
       to: CHURCH_EMAIL,
       replyTo: email,
@@ -33,6 +33,11 @@ export async function POST(request: Request) {
         ...lines,
       ].join("\n"),
     });
+
+    if (error) {
+      console.error("[visit submit]", error);
+      return NextResponse.json({ error: "Failed to send. Please try again." }, { status: 500 });
+    }
 
     return NextResponse.json({ success: true });
   } catch (err) {

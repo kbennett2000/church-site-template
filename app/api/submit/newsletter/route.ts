@@ -11,7 +11,7 @@ export async function POST(request: Request) {
     }
 
     const resend = getResend();
-    await resend.emails.send({
+    const { error } = await resend.emails.send({
       from: FROM_EMAIL,
       to: CHURCH_EMAIL,
       subject: `Newsletter signup: ${email}`,
@@ -23,6 +23,11 @@ export async function POST(request: Request) {
         `Add this address to your mailing list or email platform.`,
       ].join("\n"),
     });
+
+    if (error) {
+      console.error("[newsletter submit]", error);
+      return NextResponse.json({ error: "Failed to send. Please try again." }, { status: 500 });
+    }
 
     return NextResponse.json({ success: true });
   } catch (err) {

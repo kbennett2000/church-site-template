@@ -120,7 +120,7 @@ If someone has left their role at the church:
 - Are all **Staff** and **Elders** still in their roles?
 - Is the **Our Story** prose up to date?
 
-Have an editor update what's stale. You approve the resulting pull requests.
+Have an editor update what's stale. Changes go live automatically when they click Save.
 
 ### Domain renewal
 
@@ -164,27 +164,14 @@ This downloads everything — code, content, photos — as a ZIP file. Save it s
 
 ### Restoring a deleted entry
 
-If an editor deletes a sermon (or any other content) by mistake:
-
-#### Option 1: Recover from the open pull request
-
-If the deletion hasn't been merged yet:
-
-1. **Open** the pull request on GitHub.
-2. **Click** **Close pull request without merging**.
-
-The deletion is discarded. The original is still there.
-
-#### Option 2: Revert from history
-
-If the deletion is already live:
+If an editor deletes a sermon (or any other content) by mistake, TinaCMS commits the deletion immediately — there's no open PR to cancel. Use the git history to restore it:
 
 1. **Open** the repo on GitHub.
 2. **Click** the **Commits** link.
-3. **Find** the commit that deleted the entry (the message will say "Remove sermons 'xyz'").
+3. **Find** the commit that deleted the entry (the message will say something like "Delete sermon 'xyz'").
 4. **Click** **Revert** at the top of the commit page.
 
-This creates a new commit that undoes the deletion. You approve and merge it, and the entry comes back.
+This creates a new commit that undoes the deletion. Merge it and the entry comes back within 2-3 minutes.
 
 ---
 

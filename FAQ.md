@@ -99,12 +99,12 @@ We aim to keep the template alive and well, but the goal is that your church's s
 A few good practices, none unusual:
 
 - **Keep dependencies updated.** Run `npm audit` periodically; merge GitHub's Dependabot PRs when they appear. The [maintenance guide](docs/for-tech-volunteers/09-maintenance.md) walks through this.
-- **Use strong passwords and 2FA on GitHub.** This is the only place an attacker would actually target — there's no admin login on the church site itself; editors authenticate through GitHub.
-- **Limit who has editor access.** Every collaborator on the GitHub repo can edit the site. Add people thoughtfully; remove them when they leave the church.
+- **Use strong passwords and 2FA on GitHub.** This is the only place a developer-level attacker would target — there's no admin login on the church site itself; editors authenticate through TinaCloud (using a Google account or email address — no GitHub account required).
+- **Limit who has editor access.** The tech volunteer invites editors through TinaCloud. Add people thoughtfully; remove them when they leave the church.
 - **Don't commit secrets.** No API keys, no passwords, no private data in the repo. The `.gitignore` already excludes `.env.local` and similar.
 - **Vercel and GitHub handle the rest.** TLS certificates, DDoS protection, server patching — all automatic.
 
-The template has no database, no user-facing login, no forms that store data server-side by default — which removes the most common attack surfaces. (The only place users submit data is the visit form, prayer form, and newsletter signup, all of which can be wired to external services like Formspree or Mailchimp.)
+The template has no database, no user-facing login — which removes the most common attack surfaces. Form submissions (visit, prayer, contact, newsletter, serve) are sent via Resend to the church's email inbox and are not stored server-side.
 
 ---
 
@@ -118,20 +118,15 @@ In the CMS: click **Sermons** → **New Sermon**, fill in the form, click **Publ
 
 You can add one in the CMS. Click **Ministries** → **New Ministry** and fill in the form. The new ministry gets its own page automatically. You can also reorder, edit, or delete ministries the same way. (Reordering currently requires a tech-volunteer's help — see [the ministries note](SEED_DATA.md#4-ministries--7-slots-all-generic).)
 
-### What happens when I click "Publish"?
+### What happens when I click "Save"?
 
-Your edit doesn't go live immediately. Instead, it becomes a "change ticket" (technically: a pull request) that a tech volunteer reviews. They click **Merge** and the change goes live within 2–3 minutes. This safety step keeps typos out of the service time.
+Your edit goes live automatically — TinaCMS saves it as a commit directly to the main branch. Vercel picks it up and the change appears on the site within about 2 minutes. There is no review step.
 
 Detailed flow: [Publishing changes](docs/for-editors/08-publishing-changes.md).
 
 ### How fast does my change appear on the live site?
 
-Two parts:
-
-- **Time until a volunteer can review:** depends on the volunteer. Usually within a few hours; longer on weekends.
-- **Time from approval to live:** ~2 minutes (the site rebuilds itself automatically).
-
-If you need something urgent (a Sunday service time correction), text the volunteer directly.
+About 2 minutes from clicking **Save**. Vercel rebuilds the site automatically whenever TinaCMS commits a change. If your change still isn't showing after 3 minutes, press Ctrl+Shift+R (Windows) or Cmd+Shift+R (Mac) to force a fresh load.
 
 ### Who can edit the site?
 
@@ -148,10 +143,10 @@ Yes. Two ways:
 
 ### What if I break something?
 
-Take a breath — the safety net catches most things:
+Take a breath — mistakes are easy to fix:
 
-- Editor mistakes: the volunteer review step catches typos and broken images before they go live.
-- Bigger mistakes: every change has a complete history. A developer can roll back to any prior version.
+- Editor mistakes: just edit and save again. Changes go live in 2 minutes, and fixes do too.
+- Bigger mistakes: every change has a complete history. A developer can roll back to any prior version with one command.
 
 In practice, the worst-case scenario is "the change goes live with a typo and we fix it 10 minutes later."
 
@@ -177,13 +172,11 @@ If you want a paranoid-level backup, a developer can run `git clone` to download
 
 ### Can people contact us through the site? What about email?
 
-The **Contact** page has a form for visitors to send messages. In the prototype, the form just logs to the browser console — no email is sent yet. To wire it up to send real emails, a developer can connect it to a service like Resend, SendGrid, or Formspree.
-
-For now, the form is UI-only. Visitors needing to reach you should use the phone number and email shown at the top of the Contact page — both of which come from your CMS Site Settings.
+Yes — the **Contact**, **Visit**, **Prayer**, and **Serve** pages all have forms that send email directly to the church's inbox via Resend. A tech volunteer sets three environment variables in Vercel (`RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `CHURCH_EMAIL`) and form submissions start arriving immediately. See [the deploy guide](docs/for-tech-volunteers/06-deploy-to-vercel.md) for setup steps.
 
 ### How do I add a newsletter signup?
 
-The homepage already has a newsletter signup section. Currently it logs submissions to the browser console (UI-only). To send real welcome emails and store subscribers, a developer can connect it to Mailchimp, Brevo, Buttondown, or similar.
+The homepage already has a newsletter signup section, and it's wired to Resend — submissions send an email notification to the church inbox. To additionally add the subscriber to a mailing list platform like Mailchimp or Brevo, a developer can extend the newsletter API route (`app/api/submit/newsletter/route.ts`).
 
 ### What if our church changes its name? Service time? Address?
 
@@ -191,7 +184,7 @@ Editors update these in the **Site Settings** collection in the CMS. The new val
 
 ### Can multiple people edit at the same time?
 
-Yes. Each editor's draft lives on its own branch. The CMS handles the coordination. Conflicts are rare for small churches because people usually edit different things.
+Yes. Conflicts are rare for small churches because people usually edit different things. If two editors save changes to the same entry at the same time, the second save wins — coordinate with other editors for frequently-updated entries like Site Settings.
 
 ### The prayer request wall shows real requests — that's a privacy issue, right?
 

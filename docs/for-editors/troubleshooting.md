@@ -69,14 +69,13 @@ time: as needed
 
 ---
 
-## "I clicked Publish but my change isn't live"
+## "I clicked Save but my change isn't live"
 
 This is by far the most common question. See the dedicated section in [Publishing changes](./08-publishing-changes.md) — it walks through every possible cause. The short version:
 
-1. **The tech volunteer hasn't approved it yet.** Check the **Workflow** tab. Text them if urgent.
-2. **The site is still rebuilding.** Wait 2-3 minutes.
-3. **Your browser is showing a cached version.** Press Ctrl+Shift+R (Windows) or Cmd+Shift+R (Mac) to force a fresh load.
-4. **You clicked Save but not Publish.** Change the status to **Ready for Review** and publish.
+1. **The site is still rebuilding.** Wait 2-3 minutes — Vercel rebuilds automatically after every save.
+2. **Your browser is showing a cached version.** Press Ctrl+Shift+R (Windows) or Cmd+Shift+R (Mac) to force a fresh load.
+3. **You didn't click Save.** There's no separate Publish step — just click **Save** at the top of the entry.
 
 ---
 
@@ -84,16 +83,11 @@ This is by far the most common question. See the dedicated section in [Publishin
 
 ### Symptom: I clicked Delete on a sermon (or staff member, etc.) and it's gone
 
-**Don't panic.** Nothing is ever truly gone in this system. Two paths back:
+**Don't panic.** Nothing is ever truly gone in this system.
 
-**If you hadn't yet published the deletion:**
-1. **Click** **Workflow** at the top right.
-2. **Find** the deletion entry under In Review.
-3. **Click** it and either edit it back or discard it.
+In TinaCMS, deletions commit immediately — there's no separate approval step. But your tech volunteer can restore any deleted entry from GitHub history with one command. Give them the name and approximate date of what was deleted and they can have it back in minutes.
 
-**If the deletion is already live:**
-1. **Re-create** the entry by clicking **New Sermon** (or whatever it was) and filling in the original fields.
-2. **Or**, ask your tech volunteer to restore it from history (they can do this with one command).
+As a last resort, you can also re-create the entry manually: click **New Sermon** (or whatever collection it was in) and fill in the original fields.
 
 > **Tip:** If you remember the date and title of what you deleted, your tech volunteer can pull the exact original back from GitHub in seconds.
 
@@ -113,27 +107,20 @@ If that doesn't work, your access may have been removed. Email the tech voluntee
 
 ---
 
-## "I don't see a Publish button"
+## "The Save button doesn't seem to do anything"
 
-### Symptom: I edited an entry but the Publish button is greyed out or missing
+### Symptom: I clicked Save but there's no confirmation or the change doesn't appear
 
-**Cause:** You have unsaved changes, or the editor is still saving.
+**Cause:** Most likely a required field is empty, or the network request timed out.
 
 **Fix:**
-1. **Click** the **Save** button first.
-2. **Wait** a few seconds for it to finish saving.
-3. **Change** the status to **Ready for Review**.
-4. **Publish** button should now be active.
+1. **Scroll** through the form and look for a red highlight or error message under any field.
+2. **Fill in** any required field (Title is required on most entries).
+3. **Click** Save again.
+
+If there's no field error and it's still not saving, try refreshing the page and making the edit again.
 
 ---
-
-## "Save button doesn't do anything"
-
-### Symptom: Click Save, nothing happens, no confirmation
-
-**Cause:** Most likely a required field is empty.
-
-**Fix:** Scroll through the form looking for a red highlight or a small error message under any field. Fill in the required field, then save.
 
 ---
 
@@ -141,9 +128,9 @@ If that doesn't work, your access may have been removed. Email the tech voluntee
 
 ### Symptom: I added a sermon yesterday, but it's not in the Sermons list
 
-**Cause:** Most likely it's still a draft and hasn't been published.
+**Cause:** Most likely you didn't click Save after filling out the form, so the entry was never committed.
 
-**Fix:** **Click** **Workflow** at the top right. Drafts and pending changes live there, not in the main collection list.
+**Fix:** Check the Sermons list — TinaCMS shows all entries directly in the collection list. If it's not there, the entry wasn't saved. Create it again and make sure to click **Save** at the top before navigating away.
 
 ---
 
@@ -153,10 +140,9 @@ If that doesn't work, your access may have been removed. Email the tech voluntee
 
 **Causes (in order of likelihood):**
 
-1. **The change hasn't been merged yet.** Check the **Workflow** tab.
-2. **The site is still rebuilding.** Wait 2-3 minutes.
-3. **Your browser is showing the cached version.** Press Ctrl+Shift+R (Windows) or Cmd+Shift+R (Mac).
-4. **You edited the wrong field.** Some pages have headlines that mention the time as part of a sentence — those are edited separately. Double-check the **Sunday Service** section in Site Settings.
+1. **The site is still rebuilding.** Wait 2-3 minutes after saving.
+2. **Your browser is showing the cached version.** Press Ctrl+Shift+R (Windows) or Cmd+Shift+R (Mac).
+3. **You edited the wrong field.** Some pages have headlines that mention the time as part of a sentence — those are edited separately. Double-check the **Sunday Service** section in Site Settings.
 
 ---
 

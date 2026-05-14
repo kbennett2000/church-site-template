@@ -41,7 +41,7 @@ Use **Next.js 16 with the App Router**, defaulting every page to static export.
 
 ## ADR-002: Decap CMS (over Strapi, Sanity, Contentful, others)
 
-**Status:** Accepted
+**Status:** Superseded by ADR-010
 
 **Context:**
 We need a CMS that:
@@ -175,7 +175,7 @@ Use **`gray-matter`** — small, battle-tested, widely used.
 
 ## ADR-007: Editorial workflow (PR-based publishing, not auto-merge)
 
-**Status:** Accepted
+**Status:** Superseded by ADR-010
 
 **Context:**
 Editors are non-technical. They may publish typos or wrong dates by accident. We want a sanity-check step before live.
@@ -221,6 +221,44 @@ Use **Vercel** as the default host.
 - Pro: PR previews automatically deployed — tech volunteer can see exactly what an editor's PR looks like before merging.
 - Con: Vercel is a venture-backed company; pricing/limits could change. Mitigation: the site is plain Next.js + static export, portable to any host.
 - Con: Editors changing OAuth proxy choice (since Netlify Identity is dying) means tech volunteers have to set up their own — added friction in [grant-editor-access.md](../for-tech-volunteers/08-grant-editor-access.md).
+
+---
+
+## ADR-010: TinaCMS + TinaCloud (replacing Decap CMS)
+
+**Status:** Accepted
+
+**Context:**
+ADR-002 chose Decap CMS based on its editorial workflow and zero-server model. Over time, two problems emerged:
+- Netlify Identity (the simplest OAuth proxy for Decap) was deprecated, leaving tech volunteers to self-host an OAuth backend — a significant friction point for non-developers.
+- The PR-based editorial workflow (ADR-007) added latency (changes waited for volunteer review) and created a recurring volunteer maintenance task. For small churches, the typo-prevention benefit rarely justified the delay.
+
+Meanwhile, TinaCMS matured: TinaCloud provides managed auth (Google/email sign-in, no self-hosted proxy) and a clean schema-as-TypeScript model.
+
+**Decision:**
+Migrate from **Decap CMS** to **TinaCMS + TinaCloud**.
+
+Key changes:
+- Schema moved from `public/admin/config.yml` (YAML) to `tina/config.ts` (TypeScript, type-checked at build time).
+- `public/admin/` is now generated at dev/build time and gitignored.
+- Auth is handled by TinaCloud (Google or email — editors do not need GitHub accounts).
+- Every Save in the editor commits directly to `main`; there is no PR or review step. Vercel rebuilds automatically.
+- `npm run cms` = `tinacms dev -c "next dev"` (single command for local dev with CMS).
+- `npm run build` = `tinacms build && next build` (requires TinaCloud credentials; use `npx next build` for local testing without credentials).
+
+**Alternatives considered:**
+- **Keep Decap with a different OAuth proxy (Netlify's deprecated proxy replaced by a self-hosted one)** — viable but adds operational burden for the tech volunteer. Rejected: the setup overhead of running an OAuth proxy is worse than TinaCloud's managed auth.
+- **Sanity / Contentful** — vendor-locked cloud CMSes. Content no longer lives in the repo as plain files. Rejected: repo-based content is a core architectural value (portability, history, no per-seat fees).
+- **No CMS (Markdown editing via GitHub.com web UI)** — works but hostile for non-technical editors. Rejected.
+
+**Consequences:**
+- Pro: Editors sign in with Google or email — no GitHub account required.
+- Pro: No self-hosted OAuth proxy. TinaCloud handles auth at zero cost up to reasonable usage.
+- Pro: Schema is TypeScript — type errors caught at build time rather than runtime.
+- Pro: No volunteer review step — editors have direct publish. Mistakes are fixed by saving again (full history preserved in git).
+- Con: TinaCloud is a third-party dependency. If TinaCloud changes pricing, churches can self-host Tina's backend or migrate CMS.
+- Con: No built-in editorial review step. Churches that want a review step can configure GitHub branch protection rules as a separate layer.
+- Con: `npm run build` requires `NEXT_PUBLIC_TINA_CLIENT_ID` and `TINA_TOKEN`. Local Next.js testing uses `npx next build` instead.
 
 ---
 

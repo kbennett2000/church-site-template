@@ -68,25 +68,11 @@ Same pattern for any field on the form:
 - **Address** — street, city, state (two letters), ZIP code.
 - **Social Media** — paste the full URL (for example, `https://facebook.com/yourchurch`).
 
-### 6. Save as a draft
+### 6. Save
 
 **Click** the **Save** button at the top.
 
-You should now see the "Draft" badge.
-
-### 7. Mark Ready for Review
-
-**Click** **Status: Draft**.
-
-**Choose** **Ready for Review**.
-
-### 8. Publish
-
-**Click** the **Publish** button.
-
-**Choose** **Publish now**.
-
-Within 5 minutes (after the tech volunteer approves), every page that shows that information will update.
+TinaCMS commits the change directly to the site. Within 2-3 minutes, every page that shows that information will update automatically.
 
 ## What about the homepage headline?
 
@@ -98,7 +84,7 @@ The **About Page Copy** section has a separate headline for the About page.
 
 - **Service time looks weird on the published page (`9:00am` instead of `9:00 AM`).** Use the format `9:00 AM` — include the space before AM/PM, and capitalize the letters.
 - **Phone number doesn't work as a click-to-call link on phones.** Use straight hyphens (`555-123-4567`), not parentheses or periods.
-- **You changed the time but the homepage still says the old time.** Either the change hasn't been reviewed yet (check **Workflow**), or your browser cached the old version. Refresh the page with Ctrl+Shift+R (Windows) or Cmd+Shift+R (Mac).
+- **You changed the time but the homepage still says the old time.** The site may still be rebuilding — wait 2-3 minutes. Or your browser cached the old version. Refresh with Ctrl+Shift+R (Windows) or Cmd+Shift+R (Mac).
 
 ## What's next?
 

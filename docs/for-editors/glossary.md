@@ -30,15 +30,9 @@ One blank to fill in inside an entry. The **Sermon Title** is a field. The **Dat
 
 ---
 
-### Draft
+### Save
 
-Your work-in-progress on an entry — saved, but not visible to the public yet. Drafts are private to you. You can come back tomorrow and pick up where you left off. They never appear on the live site until you publish.
-
----
-
-### Publish
-
-The button you click when an entry is ready to go to the public site. Clicking **Publish → Publish now** sends your change to a tech volunteer for a quick review. Once they approve, it goes live within a few minutes.
+The button you click when an entry is ready to go live. In TinaCMS, clicking **Save** commits your change directly to the site — there is no separate Publish step and no review queue. Vercel picks up the change and the site rebuilds within 2-3 minutes.
 
 ---
 
@@ -58,15 +52,7 @@ A **snapshot of one change** to the repository. When you click Publish, the edit
 
 ### Pull request (or "PR")
 
-A **change ticket**. When you publish an edit, the editor doesn't just slam the change into the live site — it opens a pull request that says "here's a proposed change, please review." A tech volunteer looks at the change, then clicks **Merge** to approve it.
-
-Why "pull request"? It's a GitHub word. Don't worry about it. Just think "change ticket."
-
----
-
-### Merge
-
-When the tech volunteer approves your pull request, they **merge** it — meaning the change officially joins the main version of the site. This triggers the site to rebuild and go live.
+A **developer concept** — a proposed code change that gets reviewed before being merged. As an editor, you don't create pull requests. When you click Save in TinaCMS, the change goes directly to the site without any review step. Pull requests are only relevant if a developer is making changes to the site's code.
 
 ---
 
@@ -76,11 +62,6 @@ To **publish a new version of the website to the internet** so everyone can see 
 
 ---
 
-### Workflow
-
-The link at the top right of the editor that shows all your in-progress and pending changes. **Drafts** (still being worked on) and **In Review** entries (waiting for the tech volunteer to approve) both show up here.
-
----
 
 ### Markdown
 
@@ -90,7 +71,7 @@ A simple way to write formatted text using symbols instead of buttons — for ex
 
 ### GitHub
 
-The free online service that hosts the church's website files (in a repository). You log into the CMS with your GitHub account so the church doesn't have to manage a separate password for you.
+The free online service that hosts the church's website files (in a repository). **Editors do not need a GitHub account.** You sign in to the CMS through TinaCloud using your Google account or email address. GitHub is where the site's files are stored behind the scenes — you never interact with it directly.
 
 ---
 

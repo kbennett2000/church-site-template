@@ -90,15 +90,11 @@ You should now see the photo highlighted in the picker.
 
 The picker closes and you should now see a preview of the photo next to the field.
 
-### 5. Save and publish
+### 5. Save
 
 **Click** **Save** at the top.
 
-**Change** Status to **Ready for Review**.
-
-**Click** **Save**.
-
-Within 2-3 minutes (after the site rebuilds automatically), the photo will appear on the site.
+TinaCMS commits the change directly to the site. Within 2-3 minutes, the photo will appear on the site.
 
 ## Where the files go
 

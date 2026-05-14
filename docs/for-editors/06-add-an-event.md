@@ -141,23 +141,11 @@ This adds an RSVP button to the event's calendar entry.
 
 If RSVPs aren't needed (like for regular Sunday service), **leave** the toggle off.
 
-### 13. Save as a draft
+### 13. Save
 
 **Click** the **Save** button at the top of the page.
 
-### 14. Mark Ready for Review
-
-**Click** **Status: Draft**.
-
-**Choose** **Ready for Review**.
-
-### 15. Publish
-
-**Click** the **Publish** button.
-
-**Choose** **Publish now**.
-
-Within 5 minutes (after the tech volunteer approves), the new event will appear on the calendar for every future occurrence.
+TinaCMS commits the change directly to the site. Within 2-3 minutes, the new event will appear on the calendar for every future occurrence.
 
 ## Examples
 

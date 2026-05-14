@@ -162,7 +162,7 @@ You should now see your live website — same one you previewed at `http://local
 
 From now on, every time something changes on the `main` branch of your GitHub repository, Vercel rebuilds and redeploys the site automatically. This happens when:
 
-- An editor publishes a change in the CMS (after you merge their pull request).
+- An editor saves a change in the CMS (TinaCMS commits directly to `main` — no PR or merge step needed).
 - You push code edits to GitHub.
 - You merge any pull request.
 

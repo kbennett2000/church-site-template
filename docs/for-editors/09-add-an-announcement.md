@@ -98,19 +98,15 @@ Examples:
 - *"Family meal at 5:15 PM in the Fellowship Hall — free for everyone. Awana starts at 6:10."*
 - *"We'll take the Lord's Supper together as part of our regular 9:00 AM service."*
 
-### 9. Save and publish
+### 9. Save
 
 **Click** **Save** at the top.
 
-**Click** **Status: Draft** → **Ready for Review**.
-
-**Click** **Publish** → **Publish now**.
-
-That's it. Once a tech volunteer approves, the announcement appears in the **Announcements** section on the homepage. It disappears automatically on the auto-hide date you picked.
+That's it. TinaCMS commits the change directly to the site. Within 2-3 minutes, the announcement appears in the **Announcements** section on the homepage. It disappears automatically on the auto-hide date you picked.
 
 ## Common Mistakes
 
-- **The announcement isn't showing up.** Check the **Auto-hide** date — it may already be in the past. Also check **Workflow** in case it's still waiting for review.
+- **The announcement isn't showing up.** Check the **Auto-hide** date — it may already be in the past. Also confirm you clicked **Save** after filling in the form — the site takes 2-3 minutes to rebuild.
 - **Everything is pinned.** Pinning everything defeats the purpose. Pin at most one announcement at a time.
 - **The link goes to a 404.** Internal paths must start with `/` (e.g. `/calendar`, `/visit`, `/ministries/kids`). External URLs need `https://` at the start.
 - **The message is a paragraph long.** That's fine for a newsletter but too long here. Break it up — short version on the homepage, longer version on a linked page.

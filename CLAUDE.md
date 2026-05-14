@@ -250,9 +250,9 @@ Three `/lib/` files have static placeholder data that should ideally live in `/c
 
 This is a known gap, documented in CHANGELOG.md "Known limitations" and in the developer architecture doc. Migrating these to CMS-managed `/content/` collections is on the v0.2 roadmap.
 
-### Forms are UI-only
+### Forms are wired to Resend
 
-The visit-form, prayer-form, newsletter, and contact form are UI scaffolding. They log to the browser console; they do not send email. Wiring to Resend/Formspree/Mailchimp is the adopter's developer work.
+All 5 form surfaces (visit, prayer, contact, newsletter, serve) POST to Route Handlers at `app/api/submit/<name>/route.ts`. Each handler calls `getResend()` from `lib/resend.ts` and checks `{ data, error }` from `resend.emails.send()` — the SDK v4 returns an error object rather than throwing. Required env vars: `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `CHURCH_EMAIL`. Forms are non-functional locally without `.env.local` set.
 
 ### TypeScript strict mode
 

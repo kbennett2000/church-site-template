@@ -96,25 +96,11 @@ What would a first-time visitor want to know if they shook this person's hand on
 
 Example: *"John has served as Senior Pastor since 2018. He and his wife Sarah have three kids and a beagle named Wendell. Before pastoring, John taught high school history for twelve years."*
 
-### 9. Save as a draft
+### 9. Save
 
 **Click** the **Save** button at the top.
 
-You should now see the "Draft" badge near the title.
-
-### 10. Mark Ready for Review
-
-**Click** **Status: Draft**.
-
-**Choose** **Ready for Review**.
-
-### 11. Publish
-
-**Click** the **Publish** button.
-
-**Choose** **Publish now**.
-
-Within 5 minutes (after the tech volunteer approves), the new staff member will appear on the About page and the Contact page in the order you set.
+TinaCMS commits your change directly to the site. Within 2-3 minutes, the new staff member will appear on the About page and the Contact page in the order you set.
 
 ## How to remove a staff member
 
@@ -126,7 +112,7 @@ If someone leaves the staff:
 
 **Confirm** the deletion.
 
-This creates a change ticket that the tech volunteer will review and approve, same as adding someone.
+The deletion commits directly to the site and takes effect within 2-3 minutes. If you delete by mistake, ask your tech volunteer — they can restore the entry from GitHub history.
 
 ## How to update an existing staff member
 
@@ -136,7 +122,7 @@ To change a photo, bio, or role:
 
 **Edit** the fields you want to change.
 
-**Click** **Save** → **Status: Ready for Review** → **Publish**.
+**Click** **Save**. The change goes live in 2-3 minutes.
 
 ## Common Mistakes
 

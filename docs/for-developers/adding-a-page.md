@@ -90,7 +90,7 @@ For a dropdown entry (a parent with children), match the pattern of `Connect` in
   label: "Connect",
   href: "/connect",
   children: [
-    { label: "Prayer", href: "/connect/prayer" },
+    { label: "Prayer", href: "/connect/pray" },
     // ...
   ],
 }

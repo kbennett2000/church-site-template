@@ -242,7 +242,7 @@ The default ministry slug for recovery is `"recovery"` (not `"overcomers"`). An 
 
 Three `/lib/` files have static placeholder data that should ideally live in `/content/`:
 - `lib/groups.ts` — used by `/connect/groups`
-- `lib/prayer-wall.ts` — used by `/connect/prayer`
+- `lib/prayer-wall.ts` — used by `/connect/pray`
 - `lib/serve-roles.ts` — used by `/connect/serve`
 
 This is a known gap, documented in CHANGELOG.md "Known limitations" and in the developer architecture doc. Migrating these to CMS-managed `/content/` collections is on the v0.2 roadmap.

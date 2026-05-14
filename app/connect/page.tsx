@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 const cards = [
   {
-    href: "/connect/prayer",
+    href: "/connect/pray",
     icon: HandHeart,
     title: "Prayer Requests",
     description:

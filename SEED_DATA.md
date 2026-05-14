@@ -152,7 +152,7 @@ These three sections are **not yet in the CMS** — they live as TypeScript arra
 - `/lib/prayer-wall.ts` — 5 example prayer requests (already generic — no church-specific content).
 - `/lib/serve-roles.ts` — 8 example volunteer roles (greeter, kids check-in, worship team, etc.).
 
-Edit these files directly until they're migrated to the CMS. The `[]` arrays are wired to `/connect/groups`, `/connect/prayer`, and `/connect/serve`.
+Edit these files directly until they're migrated to the CMS. The `[]` arrays are wired to `/connect/groups`, `/connect/pray`, and `/connect/serve`.
 
 ---
 

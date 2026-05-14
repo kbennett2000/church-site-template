@@ -1,3 +1,4 @@
+import { churchInfo } from "@/lib/church-info";
 import { recurringEvents } from "@/content/events";
 
 export type RecurrenceRule =
@@ -76,11 +77,36 @@ function isoDate(year: number, month: number, day: number): string {
   return `${year}-${m}-${d}`;
 }
 
+const DAY_NAME_TO_DOW: Record<string, number> = {
+  sunday: 0, monday: 1, tuesday: 2, wednesday: 3,
+  thursday: 4, friday: 5, saturday: 6,
+};
+
+function serviceEvents(): RecurringEvent[] {
+  return churchInfo.services
+    .filter((s) => s.day && s.time)
+    .flatMap((s, i) => {
+      const dow = DAY_NAME_TO_DOW[s.day.toLowerCase()];
+      if (dow === undefined) return [];
+      const title = s.name ? s.name : `${s.day} Service`;
+      return [{
+        id: `service-${i}`,
+        title,
+        time: s.time,
+        durationMinutes: 75,
+        location: "",
+        description: s.note ?? "",
+        rule: { kind: "weekly" as const, dayOfWeek: dow },
+      }];
+    });
+}
+
 export function eventsForMonth(year: number, month: number): EventInstance[] {
   const out: EventInstance[] = [];
   const lastDay = new Date(year, month + 1, 0).getDate();
+  const allRecurring = [...serviceEvents(), ...recurringEvents];
 
-  for (const r of recurringEvents) {
+  for (const r of allRecurring) {
     if (r.rule.kind === "weekly") {
       for (let day = 1; day <= lastDay; day++) {
         if (new Date(year, month, day).getDay() === r.rule.dayOfWeek) {

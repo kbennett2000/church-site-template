@@ -24,13 +24,6 @@
         "time": "10:00 AM",
         "note": "Coffee & fellowship before and after the service",
         "primary": true
-      },
-      {
-        "name": "Second Sunday Service (SSS)",
-        "day": "Sunday",
-        "note": "The second Sunday service!",
-        "primary": false,
-        "time": "2:00 PM"
       }
     ]
   },

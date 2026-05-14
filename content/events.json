@@ -1,15 +1,6 @@
 {
   "events": [
     {
-      "id": "sunday-service",
-      "title": "Sunday Service",
-      "time": "10:00 AM",
-      "durationMinutes": 75,
-      "location": "Main Auditorium",
-      "description": "Our weekly worship service — singing, teaching, prayer, and communion. Coffee and fellowship before and after.",
-      "rule": { "kind": "weekly", "dayOfWeek": 0 }
-    },
-    {
       "id": "wednesday-bible-study",
       "title": "Wednesday Bible Study",
       "time": "7:00 PM",

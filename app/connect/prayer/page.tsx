@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Phone, Mail, HandHeart, Lock, Users } from "lucide-react";
 import { PrayerForm } from "@/components/sections/prayer-form";
-import { prayerWall } from "@/lib/prayer-wall";
+import { getPrayerRequests } from "@/content/prayer-requests";
 import { churchInfo } from "@/lib/church-info";
 
 export const metadata: Metadata = {
@@ -91,7 +91,7 @@ export default function PrayerPage() {
           </div>
 
           <ul className="mx-auto mt-12 grid max-w-4xl gap-5 sm:grid-cols-2">
-            {prayerWall.map((req) => (
+            {getPrayerRequests().map((req) => (
               <li
                 key={req.id}
                 className="rounded-xl border border-border bg-card p-6"

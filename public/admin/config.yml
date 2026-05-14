@@ -349,6 +349,70 @@ collections:
       - { name: body, label: "Page Content", widget: markdown, hint: "Use the toolbar to format text, add headings, lists, links, and images. The page lives at /pages/[slug] once published." }
 
   # =====================================================================
+  # 12. SMALL GROUPS — Groups shown on /connect/groups.
+  # =====================================================================
+  - name: small-groups
+    label: "Small Groups"
+    label_singular: "Small Group"
+    folder: content/groups
+    create: true
+    delete: true
+    format: frontmatter
+    extension: md
+    slug: "{{slug}}"
+    summary: "{{name}} — {{day}}s at {{time}}"
+    fields:
+      - { name: name, label: "Group Name", widget: string, hint: "e.g. 'Young Adults Group' or 'Couples Group'." }
+      - { name: day, label: "Day", widget: select, options: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"] }
+      - { name: time, label: "Time", widget: string, hint: "e.g. '6:30 PM'" }
+      - { name: neighborhood, label: "Neighborhood / Location", widget: string, hint: "Where the group meets. e.g. 'Downtown' or 'Church · Fellowship Hall'." }
+      - { name: lifeStage, label: "Life Stage", widget: select, options: ["Young Adults", "Couples", "Men", "Women", "Moms", "Mixed", "Empty Nesters"] }
+      - { name: leader, label: "Leader Name", widget: string, hint: "How the leader's name appears on the card." }
+      - { name: leaderPhoto, label: "Leader Photo", widget: image, required: false, default: "", hint: "Optional. Square or portrait works best — displayed as a circle. Leave blank to show initials." }
+      - { name: description, label: "Description", widget: text, hint: "1-2 sentences shown on the group card." }
+
+  # =====================================================================
+  # 13. SERVE ROLES — Volunteer roles shown on /connect/serve.
+  # =====================================================================
+  - name: serve-roles
+    label: "Serve Roles"
+    label_singular: "Serve Role"
+    folder: content/serve-roles
+    create: true
+    delete: true
+    format: frontmatter
+    extension: md
+    slug: "{{slug}}"
+    summary: "{{title}} — {{team}}"
+    fields:
+      - { name: title, label: "Role Title", widget: string, hint: "e.g. 'Greeter' or 'Tech Booth'." }
+      - { name: team, label: "Team", widget: string, hint: "e.g. 'Welcome Team', 'Kids Ministry', 'Production'." }
+      - { name: commitment, label: "Time Commitment", widget: string, hint: "e.g. '1 Sunday a month · arrive 8:30 AM'." }
+      - { name: training, label: "Training", widget: string, hint: "What onboarding looks like for this role." }
+      - { name: description, label: "Description", widget: text, hint: "2-3 sentences shown on the role card." }
+      - { name: icon, label: "Icon", widget: select, options: ["HandHeart", "Baby", "BookOpenCheck", "Music", "Coffee", "Sliders", "UtensilsCrossed", "HandHelping"], hint: "Icon displayed on the role card." }
+      - { name: order, label: "Display Order", widget: number, value_type: int, min: 1, hint: "Controls the order roles appear on the page. 1 = first." }
+
+  # =====================================================================
+  # 14. PRAYER REQUESTS — Anonymized requests shown on /connect/pray.
+  # =====================================================================
+  - name: prayer-requests
+    label: "Prayer Requests"
+    label_singular: "Prayer Request"
+    folder: content/prayer-requests
+    create: true
+    delete: true
+    format: frontmatter
+    extension: md
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    summary: "{{initials}} — {{date | date('YYYY-MM-DD')}}"
+    sortable_fields: [date, initials]
+    fields:
+      - { name: initials, label: "Initials", widget: string, hint: "How to identify the person. e.g. 'K. M.' or 'Anonymous'." }
+      - { name: date, label: "Date Posted", widget: datetime, date_format: "YYYY-MM-DD", time_format: false, picker_utc: false, hint: "When the request was received. Used to compute 'posted X days ago'." }
+      - { name: body, label: "Prayer Request", widget: text, hint: "The request as it will appear on the prayer wall. Keep it anonymized — no last names or identifying details." }
+
+  # =====================================================================
   # 11. NAVIGATION — Site-wide header/footer nav, editable by editors.
   # =====================================================================
   - name: navigation

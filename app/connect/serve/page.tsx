@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Sparkles, GraduationCap, Clock, Users } from "lucide-react";
-import { serveRoles } from "@/lib/serve-roles";
+import { getServeRoles } from "@/content/serve-roles";
 import { ServeInterestButton } from "@/components/sections/serve-interest-button";
 import { churchInfo } from "@/lib/church-info";
 
@@ -54,7 +54,7 @@ export default function ServePage() {
           </div>
 
           <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {serveRoles.map((role) => {
+            {getServeRoles().map((role) => {
               const Icon = role.icon;
               return (
                 <li

@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import { Calendar, Clock, MapPin, Users, X, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import type { Group } from "@/lib/groups";
+import type { Group } from "@/content/groups";
 import { churchInfo } from "@/lib/church-info";
 
 function initials(name: string): string {

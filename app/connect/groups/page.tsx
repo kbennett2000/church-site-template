@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Users, Coffee, BookOpen, Heart } from "lucide-react";
-import { groups } from "@/lib/groups";
+import { getGroups } from "@/content/groups";
 import { GroupsFinder } from "@/components/sections/groups-finder";
 import { churchInfo } from "@/lib/church-info";
 
@@ -83,7 +83,7 @@ export default function GroupsPage() {
           </div>
 
           <div className="mt-10">
-            <GroupsFinder groups={groups} />
+            <GroupsFinder groups={getGroups()} />
           </div>
         </div>
       </section>

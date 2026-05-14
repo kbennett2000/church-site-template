@@ -1,7 +1,11 @@
+import fs from "node:fs";
+import path from "node:path";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Mail, BookOpen, ArrowRight } from "lucide-react";
+import { marked } from "marked";
+import matter from "gray-matter";
 import { Button } from "@/components/ui/button";
 import { beliefs } from "@/content/beliefs";
 import { getStaff } from "@/content/staff";
@@ -14,9 +18,15 @@ export const metadata: Metadata = {
   description: `Our story, what we believe, and the people who lead ${churchInfo.name}.`,
 };
 
-export default function AboutPage() {
+export default async function AboutPage() {
   const staff = getStaff();
   const elders = getElders();
+  const storyRaw = fs.readFileSync(
+    path.join(process.cwd(), "content/story.md"),
+    "utf-8"
+  );
+  const { content: storyBody } = matter(storyRaw);
+  const storyHtml = await marked.parse(storyBody.trim());
   return (
     <>
       <section className="relative overflow-hidden">
@@ -54,22 +64,10 @@ export default function AboutPage() {
           </div>
 
           <div className="space-y-5 text-foreground/85 lg:col-span-8">
-            <p>
-              {churchInfo.name} is a community of people learning to follow
-              Jesus together. We gather every Sunday to sing, hear the Bible
-              taught, pray, and care for one another — and we spend the rest
-              of the week trying to live what we hear.
-            </p>
-            <p>
-              We&apos;re a small church on purpose. That means you&apos;ll be
-              known by name, your kids will be known by name, and there&apos;s
-              always a place to serve, ask questions, and grow.
-            </p>
-            <p>
-              Whether you&apos;ve followed Jesus for fifty years or you&apos;re
-              not sure what you believe yet, you are genuinely welcome here.
-              Come as you are — we&apos;ll save you a seat.
-            </p>
+            <div
+              className="prose prose-stone max-w-none"
+              dangerouslySetInnerHTML={{ __html: storyHtml }}
+            />
             <p>
               We meet at {churchInfo.address.full}
               {churchInfo.primaryService
@@ -86,10 +84,6 @@ export default function AboutPage() {
                     .join(" and ")}. `
                 : ""}
               We&apos;d love to see you.
-            </p>
-            <p className="text-xs italic text-muted-foreground">
-              [Replace this story with the history, values, and vision of your
-              church. The same copy lives in /content/story.md.]
             </p>
           </div>
         </div>

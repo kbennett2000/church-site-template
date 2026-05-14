@@ -42,7 +42,7 @@ export function Announcements() {
                 </span>
               ) : null}
             </div>
-            <p className="mt-3 text-sm text-foreground/85">{a.body}</p>
+            <p className="mt-3 whitespace-pre-wrap text-sm text-foreground/85">{a.body}</p>
             <div className="mt-4 flex items-center justify-between gap-3 border-t border-border pt-4">
               <span className="text-xs text-muted-foreground">
                 Posted {formatPostedDate(a.date)}
@@ -50,6 +50,8 @@ export function Announcements() {
               {a.link ? (
                 <Link
                   href={a.link}
+                  target="_blank"
+                  rel="noreferrer"
                   className="inline-flex items-center gap-1 text-xs font-medium text-accent hover:underline"
                 >
                   {a.linkLabel || "Learn more"}

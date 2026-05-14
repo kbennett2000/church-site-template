@@ -1,0 +1,49 @@
+{
+  "events": [
+    {
+      "id": "sunday-service",
+      "title": "Sunday Service",
+      "time": "10:00 AM",
+      "durationMinutes": 75,
+      "location": "Main Auditorium",
+      "description": "Our weekly worship service — singing, teaching, prayer, and communion. Coffee and fellowship before and after.",
+      "rule": { "kind": "weekly", "dayOfWeek": 0 }
+    },
+    {
+      "id": "wednesday-bible-study",
+      "title": "Wednesday Bible Study",
+      "time": "7:00 PM",
+      "durationMinutes": 60,
+      "location": "Fellowship Hall",
+      "description": "A midweek study working verse-by-verse through a book of the Bible. Open to all — first-timers welcome.",
+      "rule": { "kind": "weekly", "dayOfWeek": 3 }
+    },
+    {
+      "id": "youth-night",
+      "title": "Youth Night",
+      "time": "6:30 PM",
+      "durationMinutes": 90,
+      "location": "Youth Room",
+      "description": "Weekly gathering for middle and high schoolers — games, snacks, a short message, and small-group discussion.",
+      "rule": { "kind": "weekly", "dayOfWeek": 3 }
+    },
+    {
+      "id": "womens-group",
+      "title": "Women's Group",
+      "time": "9:30 AM",
+      "durationMinutes": 90,
+      "location": "Fellowship Hall",
+      "description": "Weekly Bible study and conversation for women of every age. Childcare provided.",
+      "rule": { "kind": "weekly", "dayOfWeek": 2 }
+    },
+    {
+      "id": "mens-breakfast",
+      "title": "Men's Breakfast",
+      "time": "8:00 AM",
+      "durationMinutes": 90,
+      "location": "Fellowship Hall",
+      "description": "Free monthly breakfast and short message for the men of the church and community. First Saturday of the month.",
+      "rule": { "kind": "nth-of-month", "n": 1, "dayOfWeek": 6 }
+    }
+  ]
+}

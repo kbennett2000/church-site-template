@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1125" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Missions placeholder">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3a6e4a"/>
+      <stop offset="100%" stop-color="#1d3826"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="1125" fill="url(#g)"/>
+  <g fill="#ffffff" fill-opacity="0.08">
+    <circle cx="150" cy="200" r="80"/>
+    <circle cx="780" cy="900" r="120"/>
+  </g>
+  <g font-family="Georgia, 'Times New Roman', serif" text-anchor="middle" fill="#ffffff">
+    <text x="450" y="540" font-size="56" font-weight="700">Missions</text>
+    <text x="450" y="600" font-size="22" fill-opacity="0.7">Replace with a real ministry photo</text>
+  </g>
+</svg>

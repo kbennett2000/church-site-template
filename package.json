@@ -1,0 +1,69 @@
+{
+  "name": "church-site-template",
+  "version": "0.1.0",
+  "private": false,
+  "description": "A free, mobile-first website template for small churches. Editors update content in their browser — no developer required.",
+  "keywords": [
+    "church",
+    "church-website",
+    "website",
+    "template",
+    "starter",
+    "open-source",
+    "nextjs",
+    "next-js",
+    "react",
+    "tailwind",
+    "tailwindcss",
+    "cms",
+    "decap-cms",
+    "netlify-cms",
+    "nonprofit",
+    "ministry",
+    "static-site"
+  ],
+  "license": "MIT",
+  "author": "Church Site Template contributors",
+  "homepage": "https://github.com/kbennett2000/church-site-template#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kbennett2000/church-site-template.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kbennett2000/church-site-template/issues"
+  },
+  "scripts": {
+    "setup": "node scripts/setup.js",
+    "start": "node scripts/dev.js",
+    "cms": "npx -y decap-server",
+    "deploy": "node scripts/deploy-setup.js",
+    "doctor": "node scripts/doctor.js",
+    "welcome": "node scripts/welcome.js --force",
+    "postinstall": "node scripts/welcome.js",
+    "dev": "next dev",
+    "build": "next build",
+    "server": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@radix-ui/react-slot": "^1.1.0",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "gray-matter": "^4.0.3",
+    "lucide-react": "^0.453.0",
+    "next": "^16.2.6",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "tailwind-merge": "^2.5.4",
+    "tailwindcss-animate": "^1.0.7"
+  },
+  "devDependencies": {
+    "@types/node": "^22.7.5",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.14",
+    "typescript": "^5.6.3"
+  }
+}

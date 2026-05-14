@@ -1,0 +1,28 @@
+{
+  "name": "Church Site",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:20",
+  "postCreateCommand": "npm install --no-audit --no-fund",
+  "postAttachCommand": {
+    "welcome": "echo '\\nWelcome! Run \\033[1mnpm run setup\\033[0m on first use, or \\033[1mnpm run start\\033[0m to see the site.\\n'"
+  },
+  "forwardPorts": [3000],
+  "portsAttributes": {
+    "3000": {
+      "label": "Church Site",
+      "onAutoForward": "openPreview"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwindcss",
+        "yzhang.markdown-all-in-one"
+      ],
+      "settings": {
+        "editor.formatOnSave": true,
+        "files.eol": "\n"
+      }
+    }
+  }
+}

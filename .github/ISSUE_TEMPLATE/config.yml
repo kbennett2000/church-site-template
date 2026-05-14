@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 📖 Documentation
+    url: https://github.com/kbennett2000/church-site-template/tree/main/docs
+    about: Browse the docs first — editor guides, tech-volunteer guides, developer docs, FAQ, case studies.
+  - name: ❓ FAQ
+    url: https://github.com/kbennett2000/church-site-template/blob/main/FAQ.md
+    about: Common questions about cost, customization, security, and what happens if maintenance stops.
+  - name: 🏛️ Case studies
+    url: https://github.com/kbennett2000/church-site-template/tree/main/docs/case-studies
+    about: See real churches adopting the template before deciding if it's right for you.

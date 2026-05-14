@@ -1,0 +1,67 @@
+{
+  "events": [
+    {
+      "id": "sunday-traditional",
+      "title": "Sunday Service — Traditional",
+      "time": "9:00 AM",
+      "durationMinutes": 75,
+      "location": "Main Sanctuary",
+      "description": "Hymns, choir, and a Bible message. Communion the first Sunday of every month. Full kids' programming.",
+      "rule": { "kind": "weekly", "dayOfWeek": 0 }
+    },
+    {
+      "id": "sunday-contemporary",
+      "title": "Sunday Service — Contemporary",
+      "time": "11:00 AM",
+      "durationMinutes": 75,
+      "location": "Main Sanctuary",
+      "description": "Worship band, modern music, and a Bible message. Full kids' programming.",
+      "rule": { "kind": "weekly", "dayOfWeek": 0 }
+    },
+    {
+      "id": "wednesday-discipleship",
+      "title": "Wednesday Discipleship Night",
+      "time": "6:30 PM",
+      "durationMinutes": 90,
+      "location": "Campus-wide",
+      "description": "Men's and women's groups, kids' midweek programming, and youth group — all in one evening.",
+      "rule": { "kind": "weekly", "dayOfWeek": 3 }
+    },
+    {
+      "id": "youth-friday",
+      "title": "Youth Friday Night",
+      "time": "7:00 PM",
+      "durationMinutes": 120,
+      "location": "Student Center",
+      "description": "Middle and high schoolers gather for games, worship, and small-group Bible study.",
+      "rule": { "kind": "weekly", "dayOfWeek": 5 }
+    },
+    {
+      "id": "moms-coffee",
+      "title": "Moms' Coffee",
+      "time": "9:30 AM",
+      "durationMinutes": 90,
+      "location": "Family Room",
+      "description": "Weekly gathering for moms with kids of any age. Childcare provided. Coffee and conversation.",
+      "rule": { "kind": "weekly", "dayOfWeek": 4 }
+    },
+    {
+      "id": "mens-breakfast",
+      "title": "Men's Breakfast",
+      "time": "7:00 AM",
+      "durationMinutes": 75,
+      "location": "Fellowship Hall",
+      "description": "First Saturday of the month. Free breakfast, short message, brotherhood.",
+      "rule": { "kind": "nth-of-month", "n": 1, "dayOfWeek": 6 }
+    },
+    {
+      "id": "vbs-week",
+      "title": "Summer VBS",
+      "time": "9:00 AM",
+      "durationMinutes": 180,
+      "location": "Kids Wing",
+      "description": "Five-day summer kids' program. Registration opens in May.",
+      "rule": { "kind": "weekly", "dayOfWeek": 1 }
+    }
+  ]
+}

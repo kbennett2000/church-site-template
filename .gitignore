@@ -1,0 +1,15 @@
+node_modules/
+.next/
+out/
+.env*.local
+.DS_Store
+*.tsbuildinfo
+next-env.d.ts
+.env
+dist
+.cache
+
+# Welcome marker (written by scripts/welcome.js once per local clone so the
+# post-install banner only shows the first time). Don't commit — each fresh
+# clone of a downstream church-instance should also see the welcome once.
+.template-welcomed

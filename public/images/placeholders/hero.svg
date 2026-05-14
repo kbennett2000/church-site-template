@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Hero placeholder">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3c4f6b"/>
+      <stop offset="100%" stop-color="#1f2a3a"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#g)"/>
+  <g fill="#ffffff" fill-opacity="0.06">
+    <circle cx="200" cy="200" r="120"/>
+    <circle cx="1400" cy="700" r="180"/>
+    <circle cx="1300" cy="120" r="60"/>
+  </g>
+  <g font-family="Georgia, 'Times New Roman', serif" text-anchor="middle" fill="#ffffff">
+    <text x="800" y="430" font-size="60" font-weight="600" letter-spacing="2">Replace this hero image</text>
+    <text x="800" y="490" font-size="26" fill-opacity="0.75" letter-spacing="3">Upload via the CMS at /admin or place a file in /public/images/</text>
+  </g>
+</svg>

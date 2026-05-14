@@ -1,0 +1,260 @@
+"use client";
+
+import { useMemo, useState } from "react";
+import { Check, Send } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { HelpIcon } from "@/components/ui/help-icon";
+import { churchInfo } from "@/lib/church-info";
+
+function nextSundays(count: number, from: Date = new Date()) {
+  const out: Date[] = [];
+  const d = new Date(from);
+  while (out.length < count) {
+    d.setDate(d.getDate() + 1);
+    if (d.getDay() === 0) out.push(new Date(d));
+  }
+  return out;
+}
+
+function formatSunday(d: Date) {
+  return d.toLocaleDateString("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+  });
+}
+
+export function VisitForm() {
+  const sundays = useMemo(() => nextSundays(5), []);
+  const [submitted, setSubmitted] = useState(false);
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    adults: "1",
+    kids: "0",
+    kidsAges: "",
+    sunday: sundays[0]?.toISOString().slice(0, 10) ?? "",
+    notes: "",
+  });
+
+  const hasKids = Number(form.kids) > 0;
+
+  function update<K extends keyof typeof form>(key: K, value: string) {
+    setForm((prev) => ({ ...prev, [key]: value }));
+  }
+
+  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    console.log("[Visit form]", form);
+    setSubmitted(true);
+  }
+
+  if (submitted) {
+    return (
+      <div className="rounded-xl border border-border bg-card p-10 text-center">
+        <span className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-primary/10 text-primary">
+          <Check className="h-7 w-7" />
+        </span>
+        <h3 className="mt-5 font-serif text-2xl">
+          We can&apos;t wait to meet you.
+        </h3>
+        <p className="mt-3 text-muted-foreground">
+          Someone from our welcome team will reach out before Sunday. If
+          anything comes up,{" "}
+          <a className="text-accent hover:underline" href={churchInfo.emailHref}>
+            email us
+          </a>{" "}
+          or call{" "}
+          <a className="text-accent hover:underline" href={churchInfo.phoneHref}>
+            {churchInfo.phone}
+          </a>
+          .
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <form
+      onSubmit={onSubmit}
+      className="rounded-xl border border-border bg-card p-6 md:p-10"
+    >
+      <div className="grid gap-5 sm:grid-cols-2">
+        <Field
+          label="Your name"
+          required
+          help="Just so we know who to look for on Sunday. First and last names work best."
+        >
+          <Input
+            required
+            value={form.name}
+            onChange={(e) => update("name", e.target.value)}
+            placeholder="First and last"
+            autoComplete="name"
+          />
+        </Field>
+
+        <Field
+          label="Email"
+          required
+          help="We'll use this to greet you before Sunday — never to add you to a mailing list."
+        >
+          <Input
+            required
+            type="email"
+            value={form.email}
+            onChange={(e) => update("email", e.target.value)}
+            placeholder="you@example.com"
+            autoComplete="email"
+          />
+        </Field>
+
+        <Field
+          label="How many adults?"
+          help="How many grown-ups are coming with you, including yourself."
+        >
+          <Select
+            value={form.adults}
+            onChange={(v) => update("adults", v)}
+            options={["1", "2", "3", "4", "5", "6+"]}
+          />
+        </Field>
+
+        <Field
+          label="How many kids?"
+          help="Helps our kids team get a name tag and a Sunday class ready for each one."
+        >
+          <Select
+            value={form.kids}
+            onChange={(v) => update("kids", v)}
+            options={["0", "1", "2", "3", "4", "5+"]}
+          />
+        </Field>
+
+        {hasKids ? (
+          <Field
+            label="Kids' ages"
+            className="sm:col-span-2"
+            help="We use ages to route kids to the right Sunday class (nursery, preschool, elementary)."
+          >
+            <Input
+              value={form.kidsAges}
+              onChange={(e) => update("kidsAges", e.target.value)}
+              placeholder="e.g. 3, 6, and 9"
+            />
+          </Field>
+        ) : null}
+
+        <Field
+          label="Which Sunday?"
+          className="sm:col-span-2"
+          help="Pick the Sunday you're planning to visit. If you're not sure yet, that's fine — pick 'Not sure yet' below."
+        >
+          <Select
+            value={form.sunday}
+            onChange={(v) => update("sunday", v)}
+            options={sundays.map((d) => ({
+              value: d.toISOString().slice(0, 10),
+              label: formatSunday(d),
+            }))}
+            extraOption={{ value: "unsure", label: "Not sure yet" }}
+          />
+        </Field>
+
+        <Field
+          label="Anything we should know?"
+          hint="Allergies, accessibility needs, questions — totally optional."
+          className="sm:col-span-2"
+        >
+          <textarea
+            value={form.notes}
+            onChange={(e) => update("notes", e.target.value)}
+            rows={3}
+            className="flex w-full rounded-md border border-input bg-card px-4 py-3 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            placeholder="Anything at all — we love questions."
+          />
+        </Field>
+      </div>
+
+      <Button type="submit" variant="accent" size="lg" className="mt-7 w-full sm:w-auto">
+        <Send className="h-4 w-4" />
+        Let us know you&apos;re coming
+      </Button>
+      <p className="mt-3 text-xs text-muted-foreground">
+        We&apos;ll only use this to say hi before Sunday — never to add you to a list.
+      </p>
+    </form>
+  );
+}
+
+function Field({
+  label,
+  required,
+  hint,
+  help,
+  className,
+  children,
+}: {
+  label: string;
+  required?: boolean;
+  hint?: string;
+  help?: string;
+  className?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <label className={`flex flex-col gap-1.5 ${className ?? ""}`}>
+      <span className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground">
+        {label}
+        {required ? <span className="text-accent">*</span> : null}
+        {help ? <HelpIcon text={help} /> : null}
+      </span>
+      {children}
+      {hint ? <span className="text-xs text-muted-foreground">{hint}</span> : null}
+    </label>
+  );
+}
+
+type SelectOption = string | { value: string; label: string };
+
+function Select({
+  value,
+  onChange,
+  options,
+  extraOption,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  options: SelectOption[];
+  extraOption?: { value: string; label: string };
+}) {
+  return (
+    <select
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      className="flex h-11 w-full appearance-none rounded-md border border-input bg-card px-4 py-2 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+      style={{
+        backgroundImage:
+          "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b635a' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e\")",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "right 0.75rem center",
+        backgroundSize: "1.25rem",
+        paddingRight: "2.5rem",
+      }}
+    >
+      {options.map((opt) => {
+        const v = typeof opt === "string" ? opt : opt.value;
+        const l = typeof opt === "string" ? opt : opt.label;
+        return (
+          <option key={v} value={v}>
+            {l}
+          </option>
+        );
+      })}
+      {extraOption ? (
+        <option value={extraOption.value}>{extraOption.label}</option>
+      ) : null}
+    </select>
+  );
+}

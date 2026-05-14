@@ -1,0 +1,40 @@
+{
+  "church": {
+    "shortName": "GCC",
+    "logo": "",
+    "name": "Grace Community Church",
+    "social": {
+      "facebook": "",
+      "youtube": ""
+    },
+    "phone": "(555) 123-4567",
+    "tagline": "A welcoming church in [Your Town]",
+    "officeHours": "Mon–Thu, 9:00 AM – 4:00 PM",
+    "address": {
+      "street": "123 Main Street",
+      "city": "Your Town",
+      "state": "ST",
+      "zip": "12345"
+    },
+    "email": "hello@example.church",
+    "services": [
+      {
+        "name": "",
+        "day": "Sunday",
+        "time": "10:00 AM",
+        "note": "Coffee & fellowship before and after the service",
+        "primary": true
+      }
+    ]
+  },
+  "home": {
+    "hero": {
+      "headline": "A welcoming community where you belong."
+    }
+  },
+  "about": {
+    "hero": {
+      "headline": "Following Jesus together — open to everyone."
+    }
+  }
+}

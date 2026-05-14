@@ -1,0 +1,40 @@
+{
+  "church": {
+    "shortName": "PCC",
+    "logo": "",
+    "name": "Prairie Community Church",
+    "social": {
+      "facebook": "",
+      "youtube": ""
+    },
+    "phone": "(555) 123-4567",
+    "tagline": "A small church for a small town. You belong here.",
+    "officeHours": "By appointment — call or email",
+    "address": {
+      "street": "412 County Road 9",
+      "city": "Prairieville",
+      "state": "NE",
+      "zip": "68001"
+    },
+    "email": "hello@prairie-community.example",
+    "services": [
+      {
+        "name": "",
+        "day": "Sunday",
+        "time": "9:00 AM",
+        "note": "Potluck after the second Sunday of every month",
+        "primary": true
+      }
+    ]
+  },
+  "home": {
+    "hero": {
+      "headline": "Small enough to know your name. Open enough to welcome anyone."
+    }
+  },
+  "about": {
+    "hero": {
+      "headline": "Sixty seats. One service. One family."
+    }
+  }
+}

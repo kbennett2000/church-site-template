@@ -1,0 +1,36 @@
+# Sponsorship configuration for the Church Site Template.
+#
+# When this file has at least one uncommented platform line, GitHub adds a
+# "Sponsor" button to the top of the repository page that visitors can click
+# to support template maintenance. The button lives next to "Use this template",
+# so it's seen by everyone considering adoption.
+#
+# This file ships with everything commented out — no sponsor button shows by
+# default. To enable sponsorships:
+#   1. Set up a sponsorship account on one of the platforms listed below.
+#   2. Uncomment the matching line and replace the placeholder with your handle.
+#   3. Commit and push. The button appears within a few minutes.
+#
+# To disable later, comment the line out again (or delete this file).
+#
+# Full reference:
+#   https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/displaying-a-sponsor-button-in-your-repository
+#
+# Adopting churches: this file is meaningful only for the upstream template
+# repo. In your own church-instance repo, you can either keep it commented out
+# (a clean church website doesn't usually solicit GitHub sponsorships) or
+# point it at your church's giving page if that fits your audience.
+
+# github: your-github-username                # GitHub Sponsors
+# patreon: your-patreon-handle                # Patreon
+# open_collective: your-open-collective-slug  # Open Collective
+# ko_fi: your-ko-fi-handle                    # Ko-fi
+# tidelift: npm/your-package-name             # Tidelift (for npm packages)
+# community_bridge: your-project-slug         # LFX Community Bridge
+# liberapay: your-liberapay-handle            # Liberapay
+# issuehunt: your-issuehunt-handle            # IssueHunt
+# lfx_crowdfunding: your-project-slug         # LFX Crowdfunding
+# polar: your-polar-handle                    # Polar
+# buy_me_a_coffee: your-handle                # Buy Me a Coffee
+# thanks_dev: u/your-handle                   # Thanks.dev
+# custom: ["https://your-church-giving-url.example"]  # Any external URL(s)

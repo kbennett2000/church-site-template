@@ -1,0 +1,25 @@
+{
+  "_note": "Prairie Community Church's actual statement of faith. Adopting churches should replace with their own.",
+  "beliefs": [
+    {
+      "title": "The Bible",
+      "statement": "We believe the Bible is the inspired word of God and the final authority for how we live (2 Timothy 3:16-17)."
+    },
+    {
+      "title": "God",
+      "statement": "We believe in one God, eternally existing as Father, Son, and Holy Spirit (Matthew 28:19)."
+    },
+    {
+      "title": "Jesus",
+      "statement": "We believe Jesus is fully God and fully man, who died for our sins, rose from the dead, and will one day return (1 Corinthians 15:3-4)."
+    },
+    {
+      "title": "Salvation",
+      "statement": "We believe salvation comes through faith in Jesus alone, by God's grace — not by anything we earn (Ephesians 2:8-9)."
+    },
+    {
+      "title": "The Church",
+      "statement": "We believe the church is a family of people who love Jesus and each other, called to worship God and serve our neighbors (Acts 2:42-47)."
+    }
+  ]
+}

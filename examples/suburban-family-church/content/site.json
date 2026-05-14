@@ -1,0 +1,47 @@
+{
+  "church": {
+    "shortName": "OBC",
+    "logo": "",
+    "name": "Oakbridge Community Church",
+    "social": {
+      "facebook": "",
+      "youtube": ""
+    },
+    "phone": "(555) 123-4567",
+    "tagline": "A church for families in every season.",
+    "officeHours": "Mon–Thu, 9:00 AM – 5:00 PM",
+    "address": {
+      "street": "1820 Willow Creek Parkway",
+      "city": "Oakbridge",
+      "state": "TX",
+      "zip": "75001"
+    },
+    "email": "hello@oakbridge.example",
+    "services": [
+      {
+        "name": "Traditional",
+        "day": "Sunday",
+        "time": "9:00 AM",
+        "note": "Hymns and choir. Communion every first Sunday.",
+        "primary": true
+      },
+      {
+        "name": "Contemporary",
+        "day": "Sunday",
+        "time": "11:00 AM",
+        "note": "Worship band and full kids' programming.",
+        "primary": false
+      }
+    ]
+  },
+  "home": {
+    "hero": {
+      "headline": "There's a place for your whole family at Oakbridge."
+    }
+  },
+  "about": {
+    "hero": {
+      "headline": "Following Jesus, raising families, loving Oakbridge."
+    }
+  }
+}

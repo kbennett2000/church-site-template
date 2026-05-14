@@ -1,0 +1,41 @@
+{
+  "_note": "Oakbridge Community Church's full doctrinal statement. Adopting churches should replace with their own.",
+  "beliefs": [
+    {
+      "title": "Scripture",
+      "statement": "We believe the Bible is the inspired, authoritative word of God — sufficient for faith and life (2 Timothy 3:16-17)."
+    },
+    {
+      "title": "God",
+      "statement": "We believe in one God, eternally existing as Father, Son, and Holy Spirit (Matthew 28:19)."
+    },
+    {
+      "title": "Jesus Christ",
+      "statement": "We believe Jesus is fully God and fully man — born of a virgin, crucified for our sins, raised bodily from the dead, ascended to the Father, and one day returning to make all things new (1 Corinthians 15:3-4)."
+    },
+    {
+      "title": "The Holy Spirit",
+      "statement": "We believe the Holy Spirit indwells every believer at the moment of salvation, empowering us to grow in Christlikeness and serve the church."
+    },
+    {
+      "title": "Salvation",
+      "statement": "We believe salvation is a gift of God, received by grace alone, through faith alone, in Christ alone (Ephesians 2:8-9)."
+    },
+    {
+      "title": "Humanity",
+      "statement": "We believe every person is made in the image of God and is loved by him — and that every person needs a Savior (Genesis 1:27; Romans 3:23)."
+    },
+    {
+      "title": "Marriage and Family",
+      "statement": "We believe marriage is a covenant between one man and one woman, a picture of Christ's love for the church, and the foundation of biblical family life (Ephesians 5:22-33)."
+    },
+    {
+      "title": "The Church",
+      "statement": "We believe the church is the body of Christ — a community called to worship God, love one another, and make disciples of all nations (Matthew 28:18-20)."
+    },
+    {
+      "title": "The Return of Christ",
+      "statement": "We believe Jesus will personally and bodily return to gather his people, judge the living and the dead, and make all things new (Revelation 21:1-5)."
+    }
+  ]
+}

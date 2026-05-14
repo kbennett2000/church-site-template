@@ -1,0 +1,37 @@
+{
+  "_note": "These are example beliefs statements. Replace with your church's actual doctrinal statements. If your church belongs to a denomination, use their official statement of faith.",
+  "beliefs": [
+    {
+      "title": "The Bible",
+      "statement": "We believe the Bible — the sixty-six books of the Old and New Testaments — to be the inspired, authoritative word of God, sufficient for every matter of faith and life."
+    },
+    {
+      "title": "God",
+      "statement": "We believe in one God, eternally existing in three persons — Father, Son, and Holy Spirit — equal in power and glory."
+    },
+    {
+      "title": "Jesus Christ",
+      "statement": "We believe Jesus Christ is fully God and fully man, conceived by the Holy Spirit and born of the virgin Mary. He lived a sinless life, died on the cross for our sins, rose bodily from the grave, ascended to the Father, and will one day return."
+    },
+    {
+      "title": "The Holy Spirit",
+      "statement": "We believe the Holy Spirit indwells every believer at the moment of salvation, empowering us to live for God, grow in Christlikeness, and serve the church and world."
+    },
+    {
+      "title": "Humanity",
+      "statement": "We believe every human being is made in the image of God and is therefore inherently dignified — and that every human being is also broken by sin, and unable to save themselves apart from grace."
+    },
+    {
+      "title": "Salvation",
+      "statement": "We believe salvation is by grace alone, through faith alone, in Christ alone. It is the free gift of God, not earned by any work, religious activity, or merit of our own."
+    },
+    {
+      "title": "The Church",
+      "statement": "We believe the church is the body of Christ — the people of God gathered locally to worship, hear the word taught, practice baptism and communion, and serve one another and their neighbors."
+    },
+    {
+      "title": "The Return of Christ",
+      "statement": "We believe Jesus Christ will personally and bodily return to gather his people, judge the living and the dead, and make all things new."
+    }
+  ]
+}

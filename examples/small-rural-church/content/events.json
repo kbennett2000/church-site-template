@@ -1,0 +1,31 @@
+{
+  "events": [
+    {
+      "id": "sunday-service",
+      "title": "Sunday Service",
+      "time": "9:00 AM",
+      "durationMinutes": 75,
+      "location": "Prairie Community Church",
+      "description": "Hymns, prayer, Scripture, and a message from one of our elders.",
+      "rule": { "kind": "weekly", "dayOfWeek": 0 }
+    },
+    {
+      "id": "wednesday-bible-study",
+      "title": "Wednesday Bible Study",
+      "time": "6:30 PM",
+      "durationMinutes": 75,
+      "location": "Fellowship Room",
+      "description": "Verse-by-verse study working through one book of the Bible at a time. Coffee and conversation included.",
+      "rule": { "kind": "weekly", "dayOfWeek": 3 }
+    },
+    {
+      "id": "monthly-potluck",
+      "title": "Monthly Potluck",
+      "time": "10:30 AM",
+      "durationMinutes": 90,
+      "location": "Fellowship Hall (basement)",
+      "description": "After service on the second Sunday. Bring whatever you've got — there's always plenty.",
+      "rule": { "kind": "nth-of-month", "n": 2, "dayOfWeek": 0 }
+    }
+  ]
+}

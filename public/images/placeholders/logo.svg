@@ -1,0 +1,14 @@
+<!--
+  Icon-only logo placeholder. By default site.json sets church.logo to "" so
+  the site falls back to a dynamic avatar-circle + church name in the
+  header and footer. This file exists for adopters who want to point their
+  logo at a quick placeholder while they design a real one.
+
+  Do NOT bake church-specific text into a logo SVG: the site's name comes
+  from /content/site.json `church.name` and must remain the single source
+  of truth. Replace this file with a logo of your own.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Church logo placeholder">
+  <circle cx="32" cy="32" r="30" fill="#3c4f6b"/>
+  <path d="M32 14 L32 50 M20 26 L44 26" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Small groups placeholder">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#5a6d4a"/>
+      <stop offset="100%" stop-color="#2c3a23"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="900" fill="url(#g)"/>
+  <g fill="#ffffff" fill-opacity="0.12">
+    <circle cx="450" cy="430" r="70"/>
+    <circle cx="600" cy="430" r="70"/>
+    <circle cx="750" cy="430" r="70"/>
+  </g>
+  <g font-family="Georgia, 'Times New Roman', serif" text-anchor="middle" fill="#ffffff">
+    <text x="600" y="630" font-size="44" font-weight="600">Small Groups placeholder</text>
+    <text x="600" y="680" font-size="20" fill-opacity="0.75">Replace with a photo of people in community</text>
+  </g>
+</svg>

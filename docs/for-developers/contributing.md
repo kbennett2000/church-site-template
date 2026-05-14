@@ -277,6 +277,12 @@ Most adopting churches will fall into this category. The template version they s
 
 The case for syncing is real but narrow: a critical bug, a security fix, or a genuinely-wanted new feature. Outside those, leave well enough alone.
 
+### Known fixes worth syncing into church instances
+
+If your church instance was created before any of these template fixes landed, apply them manually (Approach A above):
+
+- **Turbopack workspace-root error** (`next.config.mjs`): Next.js 16 Turbopack can error with "couldn't find the Next.js package from the project directory" if `turbopack.root` is not set explicitly. The template fix adds `turbopack: { root: __dirname }` (where `__dirname` is derived from `import.meta.url`) to `next.config.mjs`. Also run `npm install` if you suspect a corrupted `node_modules/next` installation — a missing `node_modules/next/package.json` is the underlying trigger.
+
 ### When to push a change back to the template
 
 If you discover a generic improvement while maintaining a church instance — a bug fix that applies broadly, a doc clarification, an accessibility improvement — contribute it back to the template:

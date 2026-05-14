@@ -28,8 +28,7 @@ Small churches often can't afford a professional website and can't maintain a cu
 A complete, production-ready church website with:
 
 - **Modern, mobile-first design** — looks great on phones (where most visitors will see it) and scales up gracefully to tablets and desktops.
-- **A browser-based editor (Decap CMS)** — staff update sermons, staff bios, events, service times, and more without ever touching code.
-- **Editorial workflow** — every edit becomes a pull request for a tech volunteer to approve before it goes live. Catches typos and broken images.
+- **A browser-based editor (TinaCMS)** — staff sign in with Google and update sermons, staff bios, events, service times, and more without ever touching code. Changes go live automatically within 2-3 minutes.
 - **Sermon archive** — searchable by series, speaker, scripture, or book of the Bible. YouTube embeds, podcast feed, audio downloads.
 - **Calendar** — recurring weekly events and one-off events with `.ics` export and RSVP.
 - **Prayer requests** — private-by-default form for visitors to submit prayer requests to the pastoral team.
@@ -60,7 +59,7 @@ Honest about the floor: this is not zero-effort, but it's well within reach for 
 
 **You do NOT need:** a credit card (everything required is free), a database, a server, programming experience, or a long-term contract with anyone.
 
-After launch, the routine is about 10–15 minutes per month: a tech volunteer reviews pending edits and applies dependency updates. Editors handle the rest from their browser.
+After launch, the routine is about 10 minutes per month: a tech volunteer applies dependency updates. Editors handle the rest from their browser — no approval step needed.
 
 ---
 
@@ -106,7 +105,7 @@ For developers customizing the template, contributing back, or maintaining a chu
 
 ![Homepage screenshot — hero, service time, "Plan Your Visit" CTA](docs/screenshots/marketing/homepage.png)
 
-**The editor (Decap CMS):**
+**The editor (TinaCMS):**
 
 ![CMS dashboard with collections in left sidebar](docs/screenshots/marketing/cms-dashboard.png)
 
@@ -154,7 +153,5 @@ Once you've cloned your copy:
 MIT. See [LICENSE](LICENSE). Use it freely, including for commercial projects — though if you're a small church, the whole point is that it should be free to you.
 
 ## Credits
-
-This template grew out of a redesign project for [Majestic View Church](https://mvckiowa.com/) in Kiowa, Colorado. The MVC version is live at [mvckiowa.com](https://mvckiowa.com/); the lessons from that build became this template. See the [MVC case study](docs/case-studies/majestic-view-church.md) for the full story.
 
 If your church adopts this template, we'd love to hear about it. Open a PR adding yourself to [Live examples](#live-examples) above and to [docs/case-studies/](docs/case-studies/).

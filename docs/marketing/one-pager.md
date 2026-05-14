@@ -22,9 +22,8 @@ A free, open-source website template purpose-built for small churches. We adopt 
 ## What we get
 
 - A modern, mobile-first website — looks great on phones (where ~70% of visitors arrive).
-- A browser-based editor (Decap CMS) — staff update sermons, events, staff bios, and service times without touching code.
+- A browser-based editor (TinaCMS) — staff sign in with Google and update sermons, events, staff bios, and service times without touching code.
 - A sermon archive, calendar, ministries pages, prayer request form, plan-a-visit page, give page, and contact page — all included.
-- An editorial workflow — every change is reviewed by a tech volunteer before it goes live, so typos can't reach Sunday morning.
 - Free, modern hosting on Vercel — scales to thousands of visitors a day at no cost.
 
 ## What it costs
@@ -32,7 +31,7 @@ A free, open-source website template purpose-built for small churches. We adopt 
 - **The template itself:** free, forever (MIT-licensed open source).
 - **Hosting:** $0/month on Vercel's free tier.
 - **GitHub repository:** $0/month (unlimited collaborators).
-- **CMS:** $0/month (Decap is free, open source).
+- **CMS:** $0/month (TinaCloud's free tier covers small-church usage).
 - **Custom domain (optional):** ~$12/year if we want `ourchurch.org`.
 
 **Annual total: ~$12.** No per-user fees, no per-edit charges, no escalating pricing tiers.
@@ -44,7 +43,7 @@ A free, open-source website template purpose-built for small churches. We adopt 
 | Monthly cost | $20–$50/month, growing | $0 |
 | Annual cost | $240–$600 | ~$12 (domain only) |
 | Vendor lock-in | High (content lives in vendor system) | None (content lives in plain files we own) |
-| Editor experience | Browser CMS (varies in quality) | Browser CMS (Decap, clean and minimal) |
+| Editor experience | Browser CMS (varies in quality) | Browser CMS (TinaCMS, clean and modern) |
 | Mobile experience | Varies by template | Mobile-first by design |
 | What if the vendor raises prices? | We pay or migrate (hard) | Doesn't apply — there's no vendor |
 | What if we want to redesign in 5 years? | Start over | Edit the open code (or start over — same options) |

@@ -49,7 +49,7 @@ You're customizing the template, maintaining a church's adopted instance, or con
 - [Adding a CMS collection](for-developers/adding-a-cms-collection.md) — new editable type
 - [Styling and theming](for-developers/styling-and-theming.md) — tokens, palette, type
 - [Contributing](for-developers/contributing.md) — PR workflow; also: syncing template updates into a church instance
-- [Decision log](for-developers/decision-log.md) — why Next.js, Decap, Tailwind, the "Use this template" model, etc.
+- [Decision log](for-developers/decision-log.md) — why Next.js, TinaCMS, Tailwind, the "Use this template" model, etc.
 
 ## 📚 Case studies
 

@@ -7,7 +7,7 @@ time: 10 minutes
 # Content model
 
 **Who this is for:** Developers who need to know exactly what shape each content type has on disk, in TypeScript, and in the CMS config.
-**What you'll accomplish:** Understand the data model end-to-end so you can extend it without breaking sync between Decap and TypeScript.
+**What you'll accomplish:** Understand the data model end-to-end so you can extend it without breaking sync between TinaCMS and TypeScript.
 **You'll need first:**
 - Familiarity with the project layout. See [architecture.md](./architecture.md).
 
@@ -17,11 +17,11 @@ time: 10 minutes
 
 For each content type, three places must stay in sync:
 
-1. **Decap config** — `public/admin/config.yml` declares the fields editors fill in.
+1. **TinaCMS schema** — `tina/config.ts` declares the fields editors fill in.
 2. **TypeScript type** — `lib/<type>.ts` defines the runtime shape (type-only file).
 3. **Loader function** — `content/<type>.ts`, reads files from `content/<type>/` (or imports the matching `.json`).
 
-If you add a field in `config.yml`, you must also add it to the TypeScript type and (if relevant) handle it in the loader. The CMS will happily write a field that the loader ignores — but downstream components won't see it.
+If you add a field in `tina/config.ts`, you must also add it to the TypeScript type and (if relevant) handle it in the loader. The CMS will happily write a field that the loader ignores — but downstream components won't see it.
 
 > **Note:** The TypeScript signatures below are illustrative — they describe the shape but may simplify field optionality. The canonical source of truth is the `lib/<type>.ts` file; verify against it when extending.
 
@@ -71,14 +71,14 @@ export type Sermon = {
 
 **Loader** — `content/sermons.ts` exports `getAllSermons()`, `getLatestSermon()`, `getSermon(id)`. Function exports (not top-level `const`) so CMS edits hot-reload in dev — see [architecture.md](./architecture.md#loader-pattern) for the rationale.
 
-**Decap config** — `public/admin/config.yml`, collection `sermons`.
+**TinaCMS schema** — `tina/config.ts`, collection `sermons`.
 
 **Where consumed:**
 - `app/watch/page.tsx` — sermon archive grid.
 - `app/watch/[id]/page.tsx` — single sermon view with embedded video and prev/next navigation.
 - `components/sections/latest-sermon.tsx` — featured most-recent sermon on the homepage.
 
-**ID:** Decap generates filenames as `{{year}}-{{month}}-{{day}}-{{slug}}.md`. The loader uses the filename (minus `.md`) as `id`, and the dynamic route is `app/watch/[id]/page.tsx`.
+**ID:** TinaCMS generates filenames using the `slugify` function defined in `tina/config.ts` (date + title slug). The loader uses the filename (minus `.md`) as `id`, and the dynamic route is `app/watch/[id]/page.tsx`.
 
 ---
 
@@ -147,7 +147,7 @@ export interface Ministry {
 }
 ```
 
-**Decap config** — collection `ministries`.
+**TinaCMS schema** — `tina/config.ts`, collection `ministries`.
 
 **Where consumed:**
 - `app/ministries/page.tsx` — index of all ministries.
@@ -265,7 +265,7 @@ export interface BeliefsData {
 - `app/beliefs/page.tsx` — full doctrinal statement page.
 - `components/sections/beliefs-teaser.tsx` — homepage preview.
 
-**Order:** Array order in the JSON file. Editors can drag to reorder in Decap.
+**Order:** Array order in the JSON file. Editors can reorder entries in TinaCMS.
 
 ---
 
@@ -458,7 +458,7 @@ A markdown-rendering loader for this file is on the roadmap. Currently the about
 
 The cookbook in three steps:
 
-1. **Edit** `public/admin/config.yml` — add the field to the appropriate collection's `fields:` list. Include a `label`, `widget`, and `hint`.
+1. **Edit** `tina/config.ts` — add the field to the appropriate collection's `fields` array. Include a `type`, `name`, and `label`.
 2. **Edit** `lib/<type>.ts` — add the field to the TypeScript interface. Make it optional (`?:`) if existing content files won't have it yet.
 3. **Update** the loader if any transformation is needed (often nothing — `gray-matter` exposes frontmatter as a plain object).
 4. **Consume** the new field in a page or component.

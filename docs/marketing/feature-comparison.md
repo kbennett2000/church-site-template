@@ -12,7 +12,7 @@ A working comparison for small churches evaluating their options. Honest about t
 | Annual cost | ~$12 (domain) | $192–$588 | $204–$588 | $60–$360+ |
 | Setup time (initial) | ~30 minutes | ~10 minutes | ~10 minutes | 1–4 hours |
 | Setup difficulty | Some technical setup | Easy | Easy | Moderate to hard |
-| Editor experience | Browser CMS (Decap) | Browser CMS | Browser CMS | Browser CMS (admin) |
+| Editor experience | Browser CMS (TinaCMS) | Browser CMS | Browser CMS | Browser CMS (admin) |
 | Mobile-first design | ✅ Built-in | Templates vary | Templates vary | Theme-dependent |
 | Vendor lock-in | None | Heavy | Heavy | Light |
 | Content portability | Plain Markdown + JSON | Export limited | Export limited | Database export |

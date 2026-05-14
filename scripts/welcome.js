@@ -96,7 +96,7 @@ function printNextSteps(alreadyStarted) {
     console.log(`  Pick up where you left off:`);
     console.log("");
     console.log(
-      `    ${c.bold}npm run start${c.reset}  ${c.dim}# preview your site locally${c.reset}`
+      `    ${c.bold}npm run cms${c.reset}    ${c.dim}# preview your site + open the CMS editor${c.reset}`
     );
     console.log(
       `    ${c.bold}npm run deploy${c.reset} ${c.dim}# walk through deploying to Vercel${c.reset}`
@@ -114,8 +114,8 @@ function printNextSteps(alreadyStarted) {
   console.log(`    1. Run ${c.bold}npm run setup${c.reset}`);
   console.log(`       Walks through church name, address, service time, colors.`);
   console.log("");
-  console.log(`    2. Run ${c.bold}npm run start${c.reset}`);
-  console.log(`       Preview your site at http://localhost:3000`);
+  console.log(`    2. Run ${c.bold}npm run cms${c.reset}`);
+  console.log(`       Preview your site and open the CMS at http://localhost:3000`);
   console.log("");
   console.log(`    3. Customize branding (logo, photos, fine-tune colors)`);
   console.log(

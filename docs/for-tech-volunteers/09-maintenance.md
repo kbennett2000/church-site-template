@@ -15,13 +15,15 @@ time: 10 minutes (per month)
 
 ## Monthly tasks (10-15 minutes)
 
-### 1. Approve pending pull requests
+### 1. Check the GitHub repository for any open pull requests
+
+Editors' changes go directly to the `main` branch via TinaCloud, so there's no approval step in normal operation. However, if a developer has opened a pull request for a code change or template update, check:
 
 **Open** your repository's **Pull requests** tab on GitHub.
 
-**Review and merge** any pending changes from editors. See [Grant editor access](./08-grant-editor-access.md) step 8 for the approval flow.
+**Review and merge** any open pull requests.
 
-> **Tip:** If a pull request has sat open for more than a couple days, it's worth pinging the editor to ask if they're still waiting on it.
+> **Tip:** If you see unexpected pull requests from an account you don't recognize, check TinaCloud → Users to make sure only authorized editors have access.
 
 ### 2. Accept dependency upgrade pull requests
 
@@ -105,17 +107,6 @@ If someone has left their role at the church:
 **Click** **Remove** next to their name.
 
 > **Tip:** Set a recurring calendar event titled "Review church site collaborators" for the first day of each quarter.
-
-### Rotate the OAuth client secret (if used long-term)
-
-If you set up a Decap OAuth proxy that uses a GitHub OAuth App, regenerate the **Client Secret** every 6-12 months:
-
-1. **Open** the GitHub OAuth App you created.
-2. **Click** **Generate a new client secret**.
-3. **Update** the new secret in your OAuth proxy (Cloudflare Worker or wherever it's deployed).
-4. **Delete** the old secret from the OAuth App page.
-
-This limits damage in case the secret ever leaks.
 
 ---
 

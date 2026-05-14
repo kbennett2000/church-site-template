@@ -16,8 +16,7 @@
     "tailwind",
     "tailwindcss",
     "cms",
-    "decap-cms",
-    "netlify-cms",
+    "tinacms",
     "nonprofit",
     "ministry",
     "static-site"
@@ -35,13 +34,13 @@
   "scripts": {
     "setup": "node scripts/setup.js",
     "start": "node scripts/dev.js",
-    "cms": "npx -y decap-server",
+    "cms": "tinacms dev -c \"next dev\"",
     "deploy": "node scripts/deploy-setup.js",
     "doctor": "node scripts/doctor.js",
     "welcome": "node scripts/welcome.js --force",
     "postinstall": "node scripts/welcome.js",
     "dev": "next dev",
-    "build": "next build",
+    "build": "tinacms build && next build",
     "server": "next start",
     "lint": "next lint"
   },
@@ -55,11 +54,14 @@
     "next": "^16.2.6",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
+    "resend": "^4.0.0",
     "tailwind-merge": "^2.5.4",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "tinacms": "^2.0.0"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.19",
+    "@tinacms/cli": "^1.6.0",
     "@types/node": "^22.7.5",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",

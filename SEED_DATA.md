@@ -4,7 +4,7 @@ This template ships with placeholder content for a fictional **Grace Community C
 
 You can either:
 
-- Open `/admin` in your browser after running `npm run start` and `npm run cms` (the **easy** path — Decap CMS UI), or
+- Open `/admin` in your browser after running `npm run cms` (the **easy** path — TinaCMS UI), or
 - Edit the files directly in your code editor (the **direct** path — useful for bulk changes).
 
 Most editors should use the CMS. The "direct" file paths below are listed so developers know where each piece of content lives.

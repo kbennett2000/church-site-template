@@ -86,10 +86,27 @@ export function VisitForm() {
     setForm((prev) => ({ ...prev, [key]: value }));
   }
 
-  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    console.log("[Visit form]", form);
-    setSubmitted(true);
+    setError(null);
+    setLoading(true);
+    try {
+      const res = await fetch("/api/submit/visit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error ?? "Unknown error");
+      setSubmitted(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   if (submitted) {
@@ -216,9 +233,12 @@ export function VisitForm() {
         </Field>
       </div>
 
-      <Button type="submit" variant="accent" size="lg" className="mt-7 w-full sm:w-auto">
+      {error ? (
+        <p className="mt-4 text-sm text-destructive">{error}</p>
+      ) : null}
+      <Button type="submit" variant="accent" size="lg" className="mt-7 w-full sm:w-auto" disabled={loading}>
         <Send className="h-4 w-4" />
-        Let us know you&apos;re coming
+        {loading ? "Sending…" : "Let us know you're coming"}
       </Button>
       <p className="mt-3 text-xs text-muted-foreground">
         We&apos;ll only use this to say hi before Sunday — never to add you to a list.

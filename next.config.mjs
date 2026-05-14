@@ -22,10 +22,10 @@ const nextConfig = {
     ],
   },
 
-  // The CMS lives at public/admin/index.html. Vercel auto-serves directory
-  // indexes for static files, but `next dev` doesn't — without this rewrite,
-  // /admin returns 404 locally. Adding the rewrite makes both environments
-  // behave the same way.
+  // The CMS admin is built to public/admin/index.html by `tinacms build` (run
+  // via `npm run cms` in development or `npm run build` in production).
+  // Vercel auto-serves directory indexes for static files, but `next dev`
+  // doesn't — without this rewrite, /admin returns 404 locally.
   async rewrites() {
     return [
       { source: "/admin", destination: "/admin/index.html" },

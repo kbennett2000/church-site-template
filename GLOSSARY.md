@@ -6,7 +6,7 @@ Plain-English definitions of the terms you'll see across this project's docs. Ea
 
 ### Branch
 
-A copy of your site's files where you can make changes without affecting the live site. Decap CMS creates one for each draft you save. When you publish, the branch gets merged back into the main set of files.
+A copy of your site's files where you can make changes without affecting the live site. When you save in the CMS, the change is committed to the main branch and goes live automatically after a short rebuild.
 
 > **Technically:** A named pointer to a sequence of commits in Git.
 
@@ -16,7 +16,7 @@ The process of turning your site's source files into the final HTML, CSS, and Ja
 
 ### CMS
 
-Short for **Content Management System** — the editor you use in your browser at `/admin/`. Lets you update sermons, staff, etc. without editing files directly. This project uses **Decap CMS** specifically.
+Short for **Content Management System** — the editor you use in your browser at `/admin/`. Lets you update sermons, staff, etc. without editing files directly. This project uses **TinaCMS** specifically.
 
 ### Codespace / Codespaces
 
@@ -28,7 +28,7 @@ A person you've invited to your GitHub repository. Collaborators can edit conten
 
 ### Collection
 
-A category of content in the CMS. "Sermons" is a collection. "Staff" is a collection. Each collection is configured in `public/admin/config.yml`.
+A category of content in the CMS. "Sermons" is a collection. "Staff" is a collection. Each collection is configured in `tina/config.ts`.
 
 ### Commit
 
@@ -36,9 +36,9 @@ A saved snapshot of changes to your site's files. Every time the CMS saves your 
 
 > **Technically:** A Git object recording a tree state, parent commit(s), author, message.
 
-### Decap CMS
+### TinaCMS
 
-The free, open-source content editor this site uses. Formerly named "Netlify CMS." Reads and writes files directly through GitHub — no separate database.
+The content editor this site uses. Editors log in with their Google account at `/admin/` and save changes directly to GitHub — no separate database, no approval step needed. Hosted via TinaCloud (free for small-church usage).
 
 ### Deploy / Deployment
 
@@ -54,11 +54,11 @@ The address of your website, like `yourchurch.org`. You buy a domain from a doma
 
 ### Editorial workflow
 
-The process Decap uses where each change becomes a **pull request** that a tech volunteer reviews and approves before it goes live. This safety net is why editors can't accidentally publish typos in the service time.
+A publish process where each change is reviewed by a tech volunteer before going live. This template uses TinaCMS, which publishes directly to the site without a review step — changes are live within 2-3 minutes of saving.
 
 ### Field
 
-One question on a CMS form. The Sermon collection has fields for Title, Speaker, Date, etc. Configured in `public/admin/config.yml`.
+One question on a CMS form. The Sermon collection has fields for Title, Speaker, Date, etc. Configured in `tina/config.ts`.
 
 ### Fork
 
@@ -106,15 +106,15 @@ The command for installing and running Node.js software. When you see `npm run s
 
 ### OAuth
 
-The authentication method the CMS uses to log you in with your GitHub account — like "Sign in with Google" or "Sign in with Facebook" on other sites.
+A standard for letting you log in to one service using an account from another (like "Sign in with Google"). The CMS uses Google OAuth via TinaCloud — editors click "Continue with Google" to sign in.
 
 ### Pull request (PR)
 
-A proposed change to the site, with the before/after laid out clearly. A tech volunteer reviews and merges it. Decap creates these automatically every time you publish an edit.
+A proposed change to a code repository, with the before/after laid out clearly. The CMS (TinaCMS) commits changes directly to the main branch without creating a pull request — changes go live automatically. PRs are used when developers contribute improvements to the template itself.
 
-### Publish
+### Save / Publish
 
-The final step in the CMS when you're done editing. Triggers the pull request → review → merge → deploy chain. **Publishing isn't immediate** — it kicks off the review process. See [What "publish" actually does](docs/for-editors/08-publishing-changes.md).
+The final step in the CMS when you're done editing. Clicking **Save** commits your change directly to the website files. The site rebuilds automatically and your change is live within 2-3 minutes. See [What happens when you click Save](docs/for-editors/08-publishing-changes.md).
 
 ### Repository (repo)
 
@@ -138,7 +138,7 @@ The service that runs your website on the internet. Free for small sites. Someti
 
 ### YAML
 
-Like JSON, a format for storing structured data — but with less punctuation. The CMS configuration (`public/admin/config.yml`) is in YAML. Editors never touch it.
+Like JSON, a format for storing structured data — but with less punctuation. Editors never touch YAML directly; the CMS schema is defined in TypeScript (`tina/config.ts`).
 
 ---
 

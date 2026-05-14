@@ -25,7 +25,7 @@ If you're doing both at the same time (a developer who maintains a specific chur
 
 ## What this project is
 
-This is an **open-source starter template** for small-church websites. It's built on Next.js + Decap CMS and designed so:
+This is an **open-source starter template** for small-church websites. It's built on Next.js + TinaCMS and designed so:
 
 - A non-technical editor can update content through a browser.
 - A semi-technical volunteer can deploy and maintain it.
@@ -186,7 +186,7 @@ Until tests exist:
 
 - Run `npm run build` and verify it passes with no warnings.
 - Run `npm run start` and click through the affected pages.
-- For CMS changes, run a local Decap instance pointed at a test repository.
+- For CMS changes, run `npm run cms` locally (starts TinaCMS dev mode).
 - For setup script changes, run `npm run setup` end-to-end on a clean checkout.
 
 Contributions adding a test framework (Vitest + Playwright likely) are welcome — open an issue first to align on approach.

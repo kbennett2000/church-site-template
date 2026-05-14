@@ -13,3 +13,8 @@ dist
 # post-install banner only shows the first time). Don't commit — each fresh
 # clone of a downstream church-instance should also see the welcome once.
 .template-welcomed
+
+# TinaCMS generated files — created by `npm run cms` (dev) or `npm run build`.
+# Not committed; regenerated automatically at build/dev time.
+.tina/__generated__/
+public/admin/

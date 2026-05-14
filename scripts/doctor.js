@@ -111,29 +111,29 @@ check(
   "Run: npm install"
 );
 
-// 6. CMS config exists
+// 6. TinaCMS schema exists
 check(
-  "CMS configuration (public/admin/config.yml)",
+  "CMS schema (tina/config.ts)",
   () => {
-    if (!fs.existsSync(p("public", "admin", "config.yml"))) {
-      throw new Error("public/admin/config.yml is missing.");
+    if (!fs.existsSync(p("tina", "config.ts"))) {
+      throw new Error("tina/config.ts is missing.");
     }
     return "present";
   },
-  "The CMS won't work without this file. Reinstall the template if it's missing."
+  "Reinstall the template — tina/config.ts is required for the CMS to work."
 );
 
-// 7. CMS repo placeholder check
+// 7. TinaCloud credentials configured
 check(
-  "CMS connected to a real GitHub repo",
+  "TinaCloud credentials set",
   () => {
-    const yml = fs.readFileSync(p("public", "admin", "config.yml"), "utf8");
-    if (/repo:\s*your-org\/your-repo/.test(yml) || /repo:\s*your-org\/mvc-revamp/.test(yml)) {
-      throw new Error("config.yml still has the placeholder repo path.");
+    const clientId = process.env.NEXT_PUBLIC_TINA_CLIENT_ID;
+    if (!clientId || clientId === "your_tina_client_id_here") {
+      throw new Error("NEXT_PUBLIC_TINA_CLIENT_ID is not set.");
     }
     return "configured";
   },
-  "Open public/admin/config.yml — change the 'repo:' line from 'your-org/your-repo' to your actual GitHub repo path (e.g. 'firstbaptist/firstbaptist-site')."
+  "Create a project at https://app.tina.io, then add NEXT_PUBLIC_TINA_CLIENT_ID and TINA_TOKEN to your environment variables (Vercel → Settings → Environment Variables). For local dev, copy .env.local.example to .env.local and fill in the values."
 );
 
 // 8. Content folders populated

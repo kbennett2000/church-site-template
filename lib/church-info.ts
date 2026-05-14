@@ -1,7 +1,7 @@
 import { churchData } from "@/content/site";
 import navData from "@/content/navigation.json";
 
-// Church identity data lives in /content/site.json (editable via Decap CMS).
+// Church identity data lives in /content/site.json (editable via TinaCMS).
 // This file adds derived fields (full address, mapsUrl, tel/mailto hrefs,
 // primaryService) computed from the raw values, plus the nav structure
 // (which is not church-specific data — it's site IA).

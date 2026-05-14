@@ -146,27 +146,24 @@ If `git pull --rebase` shows conflicts, resolve them and continue with `git reba
 
 ## CMS authentication issues
 
-### Editor sees "Not Authorized" after clicking Login with GitHub
+### Editor sees "Not Authorized" after signing in
 
 **Causes (in order of likelihood):**
 
-1. **Editor wasn't added as a collaborator.**
-   - **Fix:** Go to GitHub → Settings → Collaborators → Add them. Ask them to accept the email invitation.
+1. **Editor's email wasn't added in TinaCloud.**
+   - **Fix:** Go to [app.tina.io](https://app.tina.io) → your project → Users → Invite User. Make sure the email matches exactly what the editor used to sign in.
 
-2. **Editor accepted invitation, but `public/admin/config.yml` still points at the template repo.**
-   - **Fix:** Edit `config.yml`, set `repo:` to your actual fork path, commit, push.
+2. **TinaCloud credentials (`NEXT_PUBLIC_TINA_CLIENT_ID` / `TINA_TOKEN`) aren't set in Vercel.**
+   - **Fix:** Vercel → Settings → Environment Variables. Add both values from TinaCloud → your project → Overview. Then Vercel → Deployments → Redeploy.
 
-3. **OAuth proxy is misconfigured.**
-   - **Fix:** Re-check the **Authorization callback URL** on the GitHub OAuth App matches what the proxy expects. See [Decap external OAuth docs](https://decapcms.org/docs/external-oauth-clients/).
+3. **The Vercel project isn't connected to the correct TinaCloud project.**
+   - **Fix:** In TinaCloud, confirm the project is pointing at the correct GitHub repository (organization/repo-name).
 
-### Editor sees the login button but clicking it opens a window that closes immediately
+### The `/admin/` page returns 404 or blank
 
-**Cause:** Pop-up blocker, or the OAuth proxy is returning an error.
+**Cause:** TinaCMS admin UI wasn't built yet.
 
-**Fix:**
-1. **Have the editor** allow pop-ups for your site.
-2. **Check** the browser console (F12 → Console tab) for error messages.
-3. **Verify** the OAuth proxy is running. For Cloudflare Workers, check the Worker's logs in the Cloudflare dashboard.
+**Fix:** The admin is generated at build time by `tinacms build`. Make sure `npm run build` (which runs `tinacms build && next build`) completed successfully. Check the Vercel build logs for errors.
 
 ### "Failed to fetch" errors in the CMS after a successful login
 

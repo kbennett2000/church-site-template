@@ -72,7 +72,7 @@ Open the entry you're editing (sermon, staff member, ministry, etc.).
 
 A picker window opens showing all the photos already uploaded to the site, with an **Upload** button at the top.
 
-![Decap media picker](/docs/screenshots/editor/upload-photos-picker.png)
+![Media picker](/docs/screenshots/editor/upload-photos-picker.png)
 
 ### 3. Upload a new photo
 
@@ -96,9 +96,9 @@ The picker closes and you should now see a preview of the photo next to the fiel
 
 **Change** Status to **Ready for Review**.
 
-**Click** **Publish** → **Publish now**.
+**Click** **Save**.
 
-Within 5 minutes (after the tech volunteer approves), the photo will appear on the site.
+Within 2-3 minutes (after the site rebuilds automatically), the photo will appear on the site.
 
 ## Where the files go
 
@@ -109,7 +109,7 @@ Every photo you upload is stored in the website's `images/uploads/` folder. You 
 - **Photo looks blurry on the published site.** The original was too small. Re-upload using a photo at least 1200 pixels wide.
 - **Staff portrait shows mostly forehead or chin.** The photo isn't square. Crop it to a square before uploading, with the face centered.
 - **Photo upload takes forever or fails.** The file is too big (over 5 MB). Shrink it with one of the tools listed above.
-- **The same photo shows up twice in the picker.** That's fine — Decap won't overwrite a file with the same name. The newest upload appears first.
+- **The same photo shows up twice in the picker.** That's fine — the CMS won't overwrite a file with the same name. The newest upload appears first.
 - **The wrong photo shows up on the published page.** Open the entry, click the photo field, pick the right one from the picker, and re-publish.
 
 ## What's next?

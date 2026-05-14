@@ -49,12 +49,14 @@ This will walk you through getting your church site online — for free,
 on Vercel.com. You'll do the clicking in your web browser; this terminal
 just tells you what to do next.
 
-Time needed: about 15 minutes
-Cost: $0 (Vercel has a generous free tier for small sites)
+Time needed: about 25 minutes
+Cost: $0 (Vercel, TinaCloud, and Resend all have free tiers)
 
 ${c.bold}You'll need:${c.reset}
   • A GitHub account (free)
-  • A Vercel account (free, you can sign up with GitHub)
+  • A Vercel account (free, sign up with GitHub)
+  • A TinaCloud account (free, for the CMS editor login)
+  • A Resend account (free, for form submissions to your inbox)
   • Your site already set up (you ran ${c.bold}npm run setup${c.reset})
 `);
 
@@ -63,7 +65,7 @@ ${c.bold}You'll need:${c.reset}
   // ---- Step 1: GitHub account
   await step(
     1,
-    7,
+    9,
     "Create a GitHub account",
     `  GitHub is where your site's files will live. Vercel reads from there.
 
@@ -77,7 +79,7 @@ ${c.bold}You'll need:${c.reset}
   // ---- Step 2: Create the repo
   await step(
     2,
-    7,
+    9,
     "Create a new repository on GitHub",
     `  A "repository" (or "repo") is a folder for your site's files.
 
@@ -99,7 +101,7 @@ ${c.bold}You'll need:${c.reset}
   // ---- Step 3: Push the code
   await step(
     3,
-    7,
+    9,
     "Upload this site to GitHub",
     `  ${c.bold}Do this in this terminal${c.reset} (open a new terminal tab if needed):
 
@@ -118,7 +120,7 @@ ${c.bold}You'll need:${c.reset}
   // ---- Step 4: Vercel account
   await step(
     4,
-    7,
+    9,
     "Create a Vercel account",
     `  Vercel is the service that will run your site.
 
@@ -133,7 +135,7 @@ ${c.bold}You'll need:${c.reset}
   // ---- Step 5: Import
   await step(
     5,
-    7,
+    9,
     "Import your repository into Vercel",
     `  ${c.bold}Do this on Vercel:${c.reset}
     a. Click ${c.bold}Add New...${c.reset} → ${c.bold}Project${c.reset}
@@ -144,41 +146,95 @@ ${c.bold}You'll need:${c.reset}
   framework/build settings exactly as they are.`
   );
 
-  // ---- Step 6: Environment variables (none for now, but flag for later)
+  // ---- Step 6: TinaCloud setup
   await step(
     6,
-    7,
-    "Deploy",
-    `  ${c.bold}Do this on Vercel:${c.reset}
-    a. Scroll to the bottom of the import page
-    b. Click ${c.bold}${c.green}Deploy${c.reset}
+    9,
+    "Set up TinaCloud (editor login)",
+    `  TinaCloud handles who can log in to your CMS at /admin.
+  Editors sign in with Google — no GitHub account required.
 
-  Vercel will build your site (this takes 1-3 minutes).
-  When it finishes, you'll see a celebration page with a URL like:
+  ${c.bold}Do this:${c.reset}
+    a. Open ${c.cyan}https://app.tina.io${c.reset} and create a free account
+    b. Click ${c.bold}New Project${c.reset}
+    c. Connect your GitHub account when prompted
+    d. Select your ${c.bold}church-site${c.reset} repository
+    e. On the project dashboard, open ${c.bold}Overview${c.reset}
+    f. Copy the ${c.bold}Client ID${c.reset} and ${c.bold}Token${c.reset} — you'll need both in Step 7
 
-    ${c.cyan}https://church-site-xyz.vercel.app${c.reset}
-
-  ${c.bold}That URL is your live site.${c.reset} Click it to visit it.`
+  ${c.dim}Don't close TinaCloud yet — keep it open for the next step.${c.reset}`
   );
 
-  // ---- Step 7: Custom domain (optional)
+  // ---- Step 7: Resend setup
   await step(
     7,
-    7,
-    "Optional: connect a custom domain",
-    `  Your site is now live at ${c.dim}*.vercel.app${c.reset}. To use your own
-  domain (like ${c.cyan}yourchurch.org${c.reset}):
+    9,
+    "Set up Resend (form email delivery)",
+    `  Resend sends form submissions (visit form, contact, prayer requests)
+  to your church's inbox.
 
-    a. In Vercel, click your project → ${c.bold}Settings${c.reset} → ${c.bold}Domains${c.reset}
-    b. Type your domain and click ${c.bold}Add${c.reset}
-    c. Vercel shows DNS records to set at your domain registrar
-       (GoDaddy, Namecheap, Google Domains, etc.)
-    d. Add those records in your registrar's dashboard
-    e. Wait 5-60 minutes for DNS to propagate
+  ${c.bold}Do this:${c.reset}
+    a. Open ${c.cyan}https://resend.com${c.reset} and create a free account
+    b. In the Resend dashboard, go to ${c.bold}API Keys${c.reset} → ${c.bold}Create API Key${c.reset}
+    c. Give it a name (e.g. "Church Site") and copy the key
 
-  ${c.dim}Don't have a domain yet? Vercel lets you buy one through them, or you${c.reset}
-  ${c.dim}can buy from any registrar. Costs ~$10-15/year typically.${c.reset}`
+  ${c.bold}Optional — add a custom sending domain:${c.reset}
+    d. Go to ${c.bold}Domains${c.reset} → ${c.bold}Add Domain${c.reset}
+    e. Enter your church's domain (e.g. yourchurch.org)
+    f. Follow Resend's DNS instructions (takes 5–30 minutes to verify)
+    g. Once verified, you can send from noreply@yourchurch.org
+
+  ${c.dim}Without a custom domain, Resend uses "onboarding@resend.dev" as the
+  sender. This works for testing but looks unprofessional for production.
+  Verifying your domain takes about 10 minutes total.${c.reset}`
   );
+
+  // ---- Step 8: Environment variables on Vercel
+  await step(
+    8,
+    9,
+    "Add environment variables to Vercel",
+    `  These secrets connect your site to TinaCloud and Resend.
+
+  ${c.bold}Do this on Vercel:${c.reset}
+    a. Open your project → ${c.bold}Settings${c.reset} → ${c.bold}Environment Variables${c.reset}
+    b. Add each variable below (Name + Value, keep Scope as "All Environments"):
+
+    ${c.cyan}NEXT_PUBLIC_TINA_CLIENT_ID${c.reset}  → Client ID from TinaCloud
+    ${c.cyan}TINA_TOKEN${c.reset}                  → Token from TinaCloud
+    ${c.cyan}RESEND_API_KEY${c.reset}              → API key from Resend
+    ${c.cyan}RESEND_FROM_EMAIL${c.reset}           → noreply@yourchurch.org (or leave
+                                   blank to use Resend's test sender)
+    ${c.cyan}CHURCH_EMAIL${c.reset}                → The inbox that gets form submissions
+                                   (e.g. office@yourchurch.org)
+
+    c. Click ${c.bold}Save${c.reset} after each variable
+    d. Go to ${c.bold}Deployments${c.reset} → click ${c.bold}Redeploy${c.reset} on the latest deployment
+       so the new variables take effect
+
+  ${c.dim}Keep these values secret — don't share them or commit them to git.${c.reset}`
+  );
+
+  // ---- Step 9: Deploy + custom domain
+  await step(
+    9,
+    9,
+    "Deploy and connect a custom domain",
+    `  ${c.bold}Deploy (if not already live):${c.reset}
+    a. On the Vercel import page, click ${c.bold}${c.green}Deploy${c.reset}
+    b. Build takes 2-4 minutes — longer than before because TinaCMS
+       compiles the admin UI during the build
+
+  ${c.bold}Optional: connect a custom domain${c.reset}
+    c. Vercel project → ${c.bold}Settings${c.reset} → ${c.bold}Domains${c.reset} → type your domain → ${c.bold}Add${c.reset}
+    d. Add the DNS records Vercel shows at your domain registrar
+       (GoDaddy, Namecheap, Google Domains, etc.)
+    e. Wait 5–60 minutes for DNS to propagate
+
+  ${c.dim}Don't have a domain yet? Vercel lets you buy one, or buy from any
+  registrar (~$10–15/year typically).${c.reset}`
+  );
+
 
   console.log(`
 ${c.green}${c.bold}═══════════════════════════════════════════════════════════${c.reset}
@@ -187,10 +243,14 @@ ${c.green}${c.bold}════════════════════�
 
 ${c.bold}What happens next:${c.reset}
 
-  • Every time someone publishes a change in the CMS, Vercel
+  • Editors log in to the CMS at ${c.cyan}yoursite.com/admin${c.reset} using Google.
+    Changes are saved directly to your GitHub repo and Vercel
     rebuilds the site automatically — usually within 2 minutes.
 
-  • To invite editors and set up CMS auth, see
+  • To invite editors, add their email address in TinaCloud:
+    ${c.cyan}app.tina.io${c.reset} → your project → ${c.bold}Users${c.reset}
+
+  • See the full guide:
     ${c.cyan}docs/for-tech-volunteers/08-grant-editor-access.md${c.reset}
 
   • Don't share your Vercel password. Do share the live URL.

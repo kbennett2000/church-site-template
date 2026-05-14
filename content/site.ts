@@ -4,7 +4,7 @@ import data from "./site.json";
 // SITE-WIDE SETTINGS
 // =============================================================================
 // The actual values for everything below live in /content/site.json so that
-// Decap CMS can edit them via the "Site Settings" collection in the browser.
+// TinaCMS can edit them via the "Site Settings" collection in the browser.
 //
 // This file exists for two reasons:
 //   1. Re-export the JSON-loaded values so /app and /components can import

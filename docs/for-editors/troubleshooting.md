@@ -16,29 +16,26 @@ time: as needed
 
 ## "I can't log in"
 
-### Symptom: "Not authorized" after I click Login with GitHub
+### Symptom: "Not authorized" after signing in
 
-**Cause:** Your GitHub username hasn't been added to the church's GitHub repository (the website's filing cabinet) yet. Or, you were added but didn't accept the email invitation.
+**Cause:** Your email address hasn't been added to the CMS yet, or you signed in with a different email than the one your tech volunteer added.
 
 **Fix:**
-1. **Open** your email and look for a message from GitHub titled something like "You've been invited to..."
-2. **Click** the **View invitation** link inside.
-3. **Click** **Accept invitation** on the GitHub page.
-4. **Go back** to the editor and try logging in again.
+1. **Check** which email address you used to sign in.
+2. **Contact** your tech volunteer and confirm they added that exact email address.
+3. **Try again** — if you used Google to sign in, make sure it's the same Google account linked to that email.
 
-If you can't find the invitation email, ask your tech volunteer to confirm they added the username spelled exactly as it appears on your GitHub profile page (at `github.com/yourusername`).
+### Symptom: I don't see the invitation email from TinaCloud
 
-### Symptom: GitHub asks me to authorize the church site every time I log in
+**Cause:** It may have landed in spam, or the invitation expired.
 
-**Cause:** Cookies cleared, or you logged out of GitHub between sessions.
+**Fix:** Check your spam folder for an email from TinaCloud (tina.io). If you can't find it, ask your tech volunteer to send a fresh invitation.
 
-**Fix:** Click **Authorize** — it's safe. The editor needs permission to read and write the church's files, and that permission is per-browser-session by design.
+### Symptom: The sign-in page keeps refreshing with no error message
 
-### Symptom: The login button does nothing when I click it
+**Cause:** A cookie or session issue in your browser.
 
-**Cause:** Pop-up blocker is hiding the GitHub login window.
-
-**Fix:** Check the address bar for a small "pop-up blocked" icon. **Click** it and **allow** pop-ups from the church's site, then try Login with GitHub again.
+**Fix:** Try opening the editor in a private/incognito window, or clear your browser cookies for the church's site and try again.
 
 ---
 
@@ -102,18 +99,17 @@ This is by far the most common question. See the dedicated section in [Publishin
 
 ---
 
-## "Decap says I'm not authorized" mid-session
+## "I got signed out unexpectedly"
 
 ### Symptom: I was working fine, then suddenly got an "unauthorized" error
 
-**Cause:** Your GitHub login expired, or someone changed your access permissions while you were working.
+**Cause:** Your session expired after a long browser absence, or cookies were cleared.
 
 **Fix:**
-1. **Click** the user-avatar dropdown at the top right of the editor.
-2. **Click** **Log out**.
-3. **Log back in** with Login with GitHub.
+1. **Click** **Log out** (if visible) or close and reopen the `/admin/` page.
+2. **Sign in again** with Google or your email.
 
-If that doesn't work, your access may have been removed by mistake. Email the tech volunteer.
+If that doesn't work, your access may have been removed. Email the tech volunteer.
 
 ---
 

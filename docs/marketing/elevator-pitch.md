@@ -24,11 +24,11 @@ Short pitches you can use in 30 seconds (or less) when someone asks "what's this
 
 ## For a tech volunteer
 
-> A complete Next.js + Decap CMS church starter. Use-this-template, customize the seed data, push to Vercel. Free tier handles thousands of visitors a day. PR-based editorial workflow means typos get caught before they go live. The whole thing is plain Markdown and JSON in your repo — no vendor lock-in. Built so a non-technical staff member can keep it updated after handoff.
+> A complete Next.js + TinaCMS church starter. Use-this-template, customize the seed data, push to Vercel. Free tier handles thousands of visitors a day. Editors log in with Google and save changes directly — no GitHub account needed, no approval step. The whole thing is plain Markdown and JSON in your repo — no vendor lock-in. Built so a non-technical staff member can keep it updated after handoff.
 
 ## For a developer
 
-> Next.js 16 (App Router, RSC), Tailwind, Decap CMS in editorial-workflow mode. Designed as a GitHub template repo — clicking "Use this template" gives a church their own independent codebase. Content is plain files (Markdown frontmatter via gray-matter, JSON). Every page is statically generated. Free on Vercel's hobby tier. Open source under MIT.
+> Next.js 16 (App Router, RSC), Tailwind, TinaCMS + TinaCloud. Designed as a GitHub template repo — clicking "Use this template" gives a church their own independent codebase. Content is plain files (Markdown frontmatter via gray-matter, JSON). Every page is statically generated. Free on Vercel's hobby tier. Open source under MIT.
 
 ## For someone evaluating it vs. Wix/Squarespace
 
@@ -36,11 +36,11 @@ Short pitches you can use in 30 seconds (or less) when someone asks "what's this
 
 ## For someone worried about being non-technical
 
-> The hard part is one 30-minute session a semi-technical volunteer does once at the beginning. After that, the church secretary, the pastor, anyone — edits sermons and events and staff bios in their browser like they're using Squarespace. There's no terminal, no GitHub, no code in their world. The volunteer steps in once a month for about 10 minutes to approve their edits.
+> The hard part is one 30-minute session a semi-technical volunteer does once at the beginning. After that, the church secretary, the pastor, anyone — edits sermons and events and staff bios in their browser like they're using Squarespace. There's no terminal, no GitHub, no code in their world. They sign in with their Google account, make a change, hit Save, and it's live in 2 minutes.
 
 ## For another developer building open-source
 
-> Open-source church-website starter on Next.js + Decap. Designed around GitHub's "Use this template" feature so adopters get a clean, independent repo (no fork relationship). Generic seed data — clearly placeholder, with `[Replace with…]` markers throughout. Three-track docs (editor / tech volunteer / developer). Inaugural case study and submission template for adopters. MIT.
+> Open-source church-website starter on Next.js + TinaCMS. Designed around GitHub's "Use this template" feature so adopters get a clean, independent repo (no fork relationship). Generic seed data — clearly placeholder, with `[Replace with…]` markers throughout. Three-track docs (editor / tech volunteer / developer). Inaugural case study and submission template for adopters. MIT.
 
 ---
 

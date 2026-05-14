@@ -33,9 +33,9 @@ Once you've done all that, the editors at your church (pastor, secretary, minist
 You're not building a website from scratch. You're inheriting a complete, polished, mobile-first church website with:
 
 - A modern, fast public site (Next.js).
-- A browser-based editor (Decap CMS) so non-technical staff can update content.
+- A browser-based editor (TinaCMS) so non-technical staff can update content — staff sign in with Google, no GitHub account required.
 - Free hosting (Vercel) with automatic rebuilds whenever content changes.
-- A pull-request-based safety net: every edit gets reviewed before going live.
+- Wired-up forms: visit RSVPs, prayer requests, contact messages, and newsletter signups land directly in the church's inbox via Resend.
 
 You'll customize the content, branding, and a few photos. You will not be writing code unless you want to.
 
@@ -90,9 +90,9 @@ If you're the kind of person who wants to understand before you start clicking �
 
 **Connect your domain** — Point `yourchurch.org` at Vercel by adding two DNS records at your domain registrar (the place you bought the domain).
 
-**Grant editor access** — Invite the editors to the GitHub repository as collaborators, and set up the Decap authentication so they can log in with their GitHub account.
+**Grant editor access** — Invite editors to TinaCloud so they can log in with their Google account and manage content directly.
 
-**Maintenance** — Every month or so, you'll review pending edits from editors, accept routine dependency updates, and check that nothing's broken.
+**Maintenance** — Every month or so, you'll accept routine dependency updates, review the site for anything broken, and handle any support questions from editors.
 
 ---
 

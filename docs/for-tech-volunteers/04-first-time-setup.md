@@ -145,12 +145,12 @@ All set
 **Type:**
 
 ```
-npm run start
+npm run cms
 ```
 
 **Press** Enter.
 
-After about 5-15 seconds, you should now see:
+After about 15-30 seconds (TinaCMS compiles the editor UI on first run), you should see:
 
 ```
 ✓ Ready in 5.2s
@@ -173,15 +173,13 @@ In the terminal, press **Ctrl+C** to stop the running site.
 
 If you want to test the editing experience yourself before inviting editors:
 
-1. Open a **second terminal** in the same project folder.
-2. Run `npm run cms`. You should now see `Decap CMS Proxy Server listening on port 8081`.
-3. With both terminals running, open [http://localhost:3000/admin](http://localhost:3000/admin) in your browser.
-4. Click **Login** (no GitHub prompt). You'll land in the editor.
-5. Edit something — a sermon, a staff bio — and refresh the public site to see the change.
+1. With `npm run cms` running, open [http://localhost:3000/admin](http://localhost:3000/admin) in your browser.
+2. In local mode, TinaCMS does not require a login. You'll land directly in the editor.
+3. Edit something — a sermon, a staff bio — and refresh the public site to see the change.
 
-Edits in this mode write directly to your local `/content/` folder. They won't reach the live site until you commit and push the files (or until editors do the same from a deployed CMS).
+Edits in local mode write directly to your `/content/` folder. They won't reach the live site until you commit and push the files.
 
-This is local-development mode only. In production, the CMS uses the GitHub-backed flow described in [Grant editor access](./08-grant-editor-access.md).
+For the production login experience (Google sign-in, real editors), see [Grant editor access](./08-grant-editor-access.md).
 
 ---
 

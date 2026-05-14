@@ -8,12 +8,28 @@ import { Input } from "@/components/ui/input";
 export function Newsletter() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    console.log("[Newsletter signup]", { email });
-    setSubmitted(true);
-    setEmail("");
+    setError(null);
+    setLoading(true);
+    try {
+      const res = await fetch("/api/submit/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error ?? "Unknown error");
+      setSubmitted(true);
+      setEmail("");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -42,22 +58,28 @@ export function Newsletter() {
               Thanks — we&apos;ll be in touch.
             </div>
           ) : (
-            <form
-              onSubmit={onSubmit}
-              className="mx-auto mt-8 flex max-w-md flex-col gap-3 sm:flex-row"
-            >
-              <Input
-                type="email"
-                required
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                aria-label="Email address"
-              />
-              <Button type="submit" variant="accent">
-                Subscribe
-              </Button>
-            </form>
+            <>
+              <form
+                onSubmit={onSubmit}
+                className="mx-auto mt-8 flex max-w-md flex-col gap-3 sm:flex-row"
+              >
+                <Input
+                  type="email"
+                  required
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  aria-label="Email address"
+                  disabled={loading}
+                />
+                <Button type="submit" variant="accent" disabled={loading}>
+                  {loading ? "Subscribing…" : "Subscribe"}
+                </Button>
+              </form>
+              {error ? (
+                <p className="mt-3 text-sm text-destructive">{error}</p>
+              ) : null}
+            </>
           )}
         </div>
       </div>

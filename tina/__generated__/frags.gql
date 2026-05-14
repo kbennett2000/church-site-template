@@ -1,0 +1,201 @@
+fragment SiteParts on Site {
+  __typename
+  church {
+    __typename
+    name
+    shortName
+    tagline
+    logo
+    phone
+    email
+    officeHours
+    address {
+      __typename
+      street
+      city
+      state
+      zip
+    }
+    services {
+      __typename
+      name
+      day
+      time
+      note
+      primary
+    }
+    social {
+      __typename
+      facebook
+      youtube
+    }
+  }
+  home {
+    __typename
+    hero {
+      __typename
+      headline
+    }
+  }
+  about {
+    __typename
+    hero {
+      __typename
+      headline
+    }
+  }
+}
+
+fragment NavigationParts on Navigation {
+  __typename
+  items {
+    __typename
+    label
+    href
+    children {
+      __typename
+      label
+      href
+    }
+  }
+}
+
+fragment StoryParts on Story {
+  __typename
+  body
+}
+
+fragment BeliefsParts on Beliefs {
+  __typename
+  beliefs {
+    __typename
+    title
+    statement
+  }
+}
+
+fragment EventsParts on Events {
+  __typename
+  events {
+    __typename
+    id
+    title
+    time
+    durationMinutes
+    location
+    description
+    rule {
+      __typename
+      kind
+      dayOfWeek
+      nth
+    }
+  }
+}
+
+fragment PagesParts on Pages {
+  __typename
+  title
+  description
+  body
+}
+
+fragment StaffParts on Staff {
+  __typename
+  name
+  role
+  email
+  photo
+  order
+  body
+}
+
+fragment EldersParts on Elders {
+  __typename
+  name
+  photo
+  order
+  body
+}
+
+fragment MinistriesParts on Ministries {
+  __typename
+  slug
+  title
+  tagline
+  description
+  image
+  whoFor
+  meetings {
+    __typename
+    day
+    time
+    location
+    note
+  }
+  whatToExpect
+  leader {
+    __typename
+    name
+    role
+    email
+    photo
+  }
+  body
+}
+
+fragment SermonsParts on Sermons {
+  __typename
+  title
+  series
+  speaker
+  date
+  scripture
+  book
+  youtubeId
+  thumbnail
+  audioUrl
+  notesUrl
+  body
+}
+
+fragment AnnouncementsParts on Announcements {
+  __typename
+  title
+  date
+  expires
+  pinned
+  link
+  linkLabel
+  body
+}
+
+fragment GroupsParts on Groups {
+  __typename
+  name
+  day
+  time
+  neighborhood
+  lifeStage
+  leader
+  leaderPhoto
+  description
+}
+
+fragment Serve_rolesParts on Serve_roles {
+  __typename
+  title
+  team
+  commitment
+  training
+  description
+  icon
+  order
+}
+
+fragment Prayer_requestsParts on Prayer_requests {
+  __typename
+  initials
+  date
+  body
+}

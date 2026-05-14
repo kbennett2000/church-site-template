@@ -19,9 +19,8 @@ What you'll actually pay for:
 | The template code | $0 | — |
 | GitHub account (unlimited private repos) | $0 | Yes |
 | Vercel hosting (free "Hobby" tier) | $0 | Yes |
-| Decap CMS (the editor) | $0 | Yes |
+| TinaCMS + TinaCloud (the editor) | $0 | Yes |
 | A custom domain (`yourchurch.org`) | ~$10–$15/year | No (optional — you can launch on a free `*.vercel.app` URL) |
-| A GitHub OAuth proxy for the CMS | $0 (self-hosted) or a few $/mo (third-party) | Yes, for production |
 | Vercel Pro tier (analytics, larger teams) | ~$20/month per editor | No |
 
 A typical small church spends **$12 a year** total (a domain) and nothing else.
@@ -88,7 +87,7 @@ This template is maintained as open-source — there's no support contract or SL
 Your church's site **keeps working**. Here's why:
 
 - **Your repo is independent.** When you used "Use this template," GitHub gave you a clean copy with no link back to ours. If we abandoned the upstream tomorrow, your repo wouldn't change.
-- **The dependencies are mainstream.** Next.js, React, Tailwind, Decap CMS — all huge projects with their own maintenance teams. They'll outlive us.
+- **The dependencies are mainstream.** Next.js, React, Tailwind, TinaCMS — all actively maintained projects. They'll outlive us.
 - **The architecture is portable.** Content is plain Markdown and JSON. If the template approach fundamentally broke down, a developer could migrate your content to any other system in a few hours.
 
 The realistic worst case: in 3–5 years, dependencies have major version updates that need attention. A developer (yours, or one you hire briefly) handles the upgrade. Your content survives.

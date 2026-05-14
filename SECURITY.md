@@ -38,7 +38,7 @@ This project is in scope:
 - Documentation that, if misleading, could cause unsafe deployments.
 
 Out of scope (report to the upstream project):
-- Next.js, React, Tailwind, Decap CMS, Vercel, GitHub — upstream security teams handle their own.
+- Next.js, React, Tailwind, TinaCMS, Vercel, GitHub — upstream security teams handle their own.
 - A church's own modifications to a fork.
 - Vulnerabilities in third-party services (Vercel, Pushpay, etc.).
 

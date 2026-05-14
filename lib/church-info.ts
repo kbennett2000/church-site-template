@@ -88,5 +88,6 @@ export const nav = [
     ],
   },
   { label: "Calendar", href: "/calendar" },
+  { label: "Announcements", href: "/announcements" },
   { label: "Give", href: "/give" },
 ] as const;

@@ -180,6 +180,7 @@ fragment GroupsParts on Groups {
   leader
   leaderPhoto
   description
+  contactEmail
 }
 
 fragment Serve_rolesParts on Serve_roles {

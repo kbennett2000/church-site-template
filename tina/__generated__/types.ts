@@ -1006,6 +1006,7 @@ export type Groups = Node & Document & {
   leader?: Maybe<Scalars['String']['output']>;
   leaderPhoto?: Maybe<Scalars['String']['output']>;
   description?: Maybe<Scalars['String']['output']>;
+  contactEmail?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
   _sys: SystemInfo;
   _values: Scalars['JSON']['output'];
@@ -1020,6 +1021,7 @@ export type GroupsFilter = {
   leader?: InputMaybe<StringFilter>;
   leaderPhoto?: InputMaybe<ImageFilter>;
   description?: InputMaybe<StringFilter>;
+  contactEmail?: InputMaybe<StringFilter>;
 };
 
 export type GroupsConnectionEdges = {
@@ -1559,6 +1561,7 @@ export type GroupsMutation = {
   leader?: InputMaybe<Scalars['String']['input']>;
   leaderPhoto?: InputMaybe<Scalars['String']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
+  contactEmail?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type Serve_RolesMutation = {
@@ -1599,7 +1602,7 @@ export type SermonsPartsFragment = { __typename: 'Sermons', title: string, serie
 
 export type AnnouncementsPartsFragment = { __typename: 'Announcements', title: string, date?: string | null, expires?: string | null, pinned?: boolean | null, link?: string | null, linkLabel?: string | null, body?: any | null };
 
-export type GroupsPartsFragment = { __typename: 'Groups', name: string, day?: string | null, time?: string | null, neighborhood?: string | null, lifeStage?: string | null, leader?: string | null, leaderPhoto?: string | null, description?: string | null };
+export type GroupsPartsFragment = { __typename: 'Groups', name: string, day?: string | null, time?: string | null, neighborhood?: string | null, lifeStage?: string | null, leader?: string | null, leaderPhoto?: string | null, description?: string | null, contactEmail?: string | null };
 
 export type Serve_RolesPartsFragment = { __typename: 'Serve_roles', title: string, team?: string | null, commitment?: string | null, training?: string | null, description?: string | null, icon?: string | null, order?: number | null };
 
@@ -1819,7 +1822,7 @@ export type GroupsQueryVariables = Exact<{
 }>;
 
 
-export type GroupsQuery = { __typename?: 'Query', groups: { __typename: 'Groups', id: string, name: string, day?: string | null, time?: string | null, neighborhood?: string | null, lifeStage?: string | null, leader?: string | null, leaderPhoto?: string | null, description?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
+export type GroupsQuery = { __typename?: 'Query', groups: { __typename: 'Groups', id: string, name: string, day?: string | null, time?: string | null, neighborhood?: string | null, lifeStage?: string | null, leader?: string | null, leaderPhoto?: string | null, description?: string | null, contactEmail?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
 
 export type GroupsConnectionQueryVariables = Exact<{
   before?: InputMaybe<Scalars['String']['input']>;
@@ -1831,7 +1834,7 @@ export type GroupsConnectionQueryVariables = Exact<{
 }>;
 
 
-export type GroupsConnectionQuery = { __typename?: 'Query', groupsConnection: { __typename?: 'GroupsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'GroupsConnectionEdges', cursor: string, node?: { __typename: 'Groups', id: string, name: string, day?: string | null, time?: string | null, neighborhood?: string | null, lifeStage?: string | null, leader?: string | null, leaderPhoto?: string | null, description?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
+export type GroupsConnectionQuery = { __typename?: 'Query', groupsConnection: { __typename?: 'GroupsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'GroupsConnectionEdges', cursor: string, node?: { __typename: 'Groups', id: string, name: string, day?: string | null, time?: string | null, neighborhood?: string | null, lifeStage?: string | null, leader?: string | null, leaderPhoto?: string | null, description?: string | null, contactEmail?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
 
 export type Serve_RolesQueryVariables = Exact<{
   relativePath: Scalars['String']['input'];
@@ -2065,6 +2068,7 @@ export const GroupsPartsFragmentDoc = gql`
   leader
   leaderPhoto
   description
+  contactEmail
 }
     `;
 export const Serve_RolesPartsFragmentDoc = gql`

@@ -7,4 +7,5 @@ lifeStage: "Men"
 leader: "Group Leader"
 leaderPhoto: ""
 description: "Coffee, breakfast, and one chapter at a time. New guys always welcome."
+contactEmail: ""
 ---

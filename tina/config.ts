@@ -477,6 +477,12 @@ export default defineConfig({
           { type: "string", name: "leader", label: "Leader Name" },
           { type: "image", name: "leaderPhoto", label: "Leader Photo (optional)" },
           { type: "string", name: "description", label: "Description", ui: { component: "textarea" } },
+          {
+            type: "string",
+            name: "contactEmail",
+            label: "Contact Email",
+            description: "Email that receives interest notifications for this group. Leave blank to use the church's main inbox.",
+          },
         ],
       },
 

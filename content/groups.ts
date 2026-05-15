@@ -12,6 +12,7 @@ export type Group = {
   leader: string;
   leaderPhoto: string;
   description: string;
+  contactEmail: string;
 };
 
 const DIR = path.join(process.cwd(), "content/groups");
@@ -34,7 +35,12 @@ export function getGroups(): Group[] {
         leader: String(data.leader ?? ""),
         leaderPhoto: String(data.leaderPhoto ?? ""),
         description: String(data.description ?? ""),
+        contactEmail: String(data.contactEmail ?? ""),
       };
     })
     .sort((a, b) => a.name.localeCompare(b.name));
+}
+
+export function getGroup(id: string): Group | undefined {
+  return getGroups().find((g) => g.id === id);
 }

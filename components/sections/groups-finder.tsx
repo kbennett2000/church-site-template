@@ -1,9 +1,10 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
-import { Calendar, Clock, MapPin, Users, X, Search } from "lucide-react";
+import { Calendar, Clock, MapPin, Users, X, Search, Send, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import type { Group } from "@/content/groups";
 import { churchInfo } from "@/lib/church-info";
 
@@ -25,6 +26,8 @@ const DAYS = [
   "Friday",
   "Saturday",
 ] as const;
+
+type ModalStatus = "idle" | "loading" | "success" | "error";
 
 export function GroupsFinder({ groups }: { groups: Group[] }) {
   const lifeStages = useMemo(
@@ -50,6 +53,71 @@ export function GroupsFinder({ groups }: { groups: Group[] }) {
   function clear() {
     setDay("all");
     setLifeStage("all");
+  }
+
+  // Modal state
+  const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
+  const [formName, setFormName] = useState("");
+  const [formEmail, setFormEmail] = useState("");
+  const [formPhone, setFormPhone] = useState("");
+  const [formMessage, setFormMessage] = useState("");
+  const [modalStatus, setModalStatus] = useState<ModalStatus>("idle");
+  const [errorMsg, setErrorMsg] = useState("");
+  const nameInputRef = useRef<HTMLInputElement>(null);
+
+  function openModal(group: Group) {
+    setSelectedGroup(group);
+    setFormName("");
+    setFormEmail("");
+    setFormPhone("");
+    setFormMessage("");
+    setModalStatus("idle");
+    setErrorMsg("");
+  }
+
+  function closeModal() {
+    setSelectedGroup(null);
+  }
+
+  // Focus the name field when modal opens
+  useEffect(() => {
+    if (selectedGroup) {
+      setTimeout(() => nameInputRef.current?.focus(), 50);
+    }
+  }, [selectedGroup]);
+
+  // Close on Escape key
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") closeModal();
+    }
+    if (selectedGroup) window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [selectedGroup]);
+
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (!selectedGroup) return;
+    setModalStatus("loading");
+    try {
+      const res = await fetch("/api/submit/group", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          groupId: selectedGroup.id,
+          name: formName,
+          email: formEmail,
+          phone: formPhone,
+          message: formMessage,
+        }),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error ?? "Unknown error");
+      setModalStatus("success");
+    } catch (err) {
+      setErrorMsg(err instanceof Error ? err.message : "Something went wrong.");
+      setModalStatus("error");
+    }
   }
 
   return (
@@ -147,24 +215,141 @@ export function GroupsFinder({ groups }: { groups: Group[] }) {
                 </dl>
 
                 <Button
-                  asChild
                   variant="outline"
                   size="sm"
                   className="mt-5"
+                  onClick={() => openModal(g)}
                 >
-                  <a
-                    href={`${churchInfo.emailHref}?subject=Interested in ${encodeURIComponent(
-                      g.name
-                    )}`}
-                  >
-                    I&apos;m interested
-                  </a>
+                  I&apos;m interested
                 </Button>
               </div>
             </li>
           ))}
         </ul>
       )}
+
+      {/* Interest modal */}
+      {selectedGroup ? (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="group-modal-title"
+        >
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-black/50"
+            onClick={closeModal}
+            aria-hidden="true"
+          />
+
+          {/* Panel */}
+          <div className="relative z-10 w-full max-w-md rounded-2xl border border-border bg-background p-6 shadow-xl">
+            <button
+              type="button"
+              onClick={closeModal}
+              className="absolute right-4 top-4 rounded-md p-1 text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              aria-label="Close"
+            >
+              <X className="h-5 w-5" />
+            </button>
+
+            {modalStatus === "success" ? (
+              <div className="flex flex-col items-center py-8 text-center">
+                <span className="grid h-14 w-14 place-items-center rounded-full bg-primary/10 text-primary">
+                  <Check className="h-7 w-7" />
+                </span>
+                <h2 className="mt-4 font-serif text-2xl">We&apos;ll be in touch.</h2>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  Someone from {selectedGroup.name} will reach out soon.
+                </p>
+                <Button variant="outline" className="mt-6" onClick={closeModal}>
+                  Close
+                </Button>
+              </div>
+            ) : (
+              <>
+                <h2
+                  id="group-modal-title"
+                  className="font-serif text-xl leading-snug pr-6"
+                >
+                  I&apos;m interested in{" "}
+                  <span className="text-accent">{selectedGroup.name}</span>
+                </h2>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Fill in what you&apos;re comfortable sharing — only your name is required.
+                </p>
+
+                <form onSubmit={onSubmit} className="mt-5 space-y-3">
+                  <div>
+                    <label htmlFor="group-name" className="sr-only">Your name</label>
+                    <Input
+                      id="group-name"
+                      ref={nameInputRef}
+                      required
+                      placeholder="Your name *"
+                      value={formName}
+                      onChange={(e) => setFormName(e.target.value)}
+                      disabled={modalStatus === "loading"}
+                      autoComplete="name"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="group-email" className="sr-only">Email address</label>
+                    <Input
+                      id="group-email"
+                      type="email"
+                      placeholder="Email address (optional)"
+                      value={formEmail}
+                      onChange={(e) => setFormEmail(e.target.value)}
+                      disabled={modalStatus === "loading"}
+                      autoComplete="email"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="group-phone" className="sr-only">Phone number</label>
+                    <Input
+                      id="group-phone"
+                      type="tel"
+                      placeholder="Phone number (optional)"
+                      value={formPhone}
+                      onChange={(e) => setFormPhone(e.target.value)}
+                      disabled={modalStatus === "loading"}
+                      autoComplete="tel"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="group-message" className="sr-only">Brief message</label>
+                    <textarea
+                      id="group-message"
+                      placeholder="Brief message (optional)"
+                      value={formMessage}
+                      onChange={(e) => setFormMessage(e.target.value)}
+                      disabled={modalStatus === "loading"}
+                      rows={3}
+                      className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-none"
+                    />
+                  </div>
+
+                  {modalStatus === "error" ? (
+                    <p className="text-xs text-destructive">{errorMsg}</p>
+                  ) : null}
+
+                  <Button
+                    type="submit"
+                    variant="accent"
+                    className="w-full"
+                    disabled={modalStatus === "loading"}
+                  >
+                    <Send className="h-4 w-4" />
+                    {modalStatus === "loading" ? "Sending…" : "Send message"}
+                  </Button>
+                </form>
+              </>
+            )}
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

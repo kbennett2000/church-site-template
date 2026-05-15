@@ -7,4 +7,5 @@ lifeStage: "Mixed"
 leader: "Group Leader"
 leaderPhoto: ""
 description: "A deeper dive into the morning's text. Open to anyone, any stage."
+contactEmail: ""
 ---

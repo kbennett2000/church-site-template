@@ -7,4 +7,5 @@ lifeStage: "Women"
 leader: "Group Leader"
 leaderPhoto: ""
 description: "After kid drop-off — bring your Bible, your coffee, and your questions."
+contactEmail: ""
 ---

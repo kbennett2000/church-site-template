@@ -89,14 +89,6 @@
     {
       "label": "Calendar",
       "href": "/calendar"
-    },
-    {
-      "label": "Give",
-      "href": "/give"
-    },
-    {
-      "href": "/pages/a-new-page",
-      "label": "My New Page"
     }
   ]
 }

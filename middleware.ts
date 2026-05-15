@@ -8,7 +8,11 @@ import { NextRequest, NextResponse } from "next/server";
 // which doesn't have Node.js built-ins like Buffer.
 
 export const config = {
-  matcher: ["/admin/devotionals/:path*", "/api/admin/:path*"],
+  matcher: [
+    "/admin/devotionals/:path*",
+    "/admin/digest/:path*",
+    "/api/admin/:path*",
+  ],
 };
 
 export function middleware(req: NextRequest) {

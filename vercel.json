@@ -3,6 +3,10 @@
     {
       "path": "/api/cron/devotionals",
       "schedule": "0 * * * *"
+    },
+    {
+      "path": "/api/cron/digest",
+      "schedule": "0 * * * *"
     }
   ]
 }

@@ -128,6 +128,31 @@ export const devotionalSendLog = pgTable("devotional_send_log", {
 });
 
 // ---------------------------------------------------------------------------
+// digest_send_log
+// ---------------------------------------------------------------------------
+// One row per weekly digest send run. Idempotency key is week_start —
+// the send job refuses to send twice for the same week unless forced.
+
+export const digestSendLog = pgTable("digest_send_log", {
+  id: uuid("id").primaryKey().defaultRandom(),
+
+  /** YYYY-MM-DD of the Monday of the week this digest covers. */
+  weekStart: varchar("week_start", { length: 10 }).notNull().unique(),
+
+  /** YYYY-MM-DD of the Sunday of the week this digest covers. */
+  weekEnd: varchar("week_end", { length: 10 }).notNull(),
+
+  sentAt: timestamp("sent_at", { withTimezone: true }).notNull().defaultNow(),
+
+  attempted: integer("attempted").notNull().default(0),
+  sent: integer("sent").notNull().default(0),
+  failed: integer("failed").notNull().default(0),
+
+  /** JSON-stringified array of { subscriberId, message } objects. */
+  errors: text("errors"),
+});
+
+// ---------------------------------------------------------------------------
 // Inferred TypeScript types
 // ---------------------------------------------------------------------------
 
@@ -135,3 +160,4 @@ export type Subscriber = typeof subscribers.$inferSelect;
 export type NewSubscriber = typeof subscribers.$inferInsert;
 export type SubscriberPlan = typeof subscriberPlans.$inferSelect;
 export type DevotionalSendLog = typeof devotionalSendLog.$inferSelect;
+export type DigestSendLog = typeof digestSendLog.$inferSelect;

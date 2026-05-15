@@ -4,8 +4,8 @@
 
 import { and, count, desc, eq, gt, sql } from "drizzle-orm";
 import { db } from "./index";
-import { subscribers, subscriberPlans, devotionalSendLog } from "./schema";
-import type { Subscriber, SubscriberPlan, DevotionalSendLog } from "./schema";
+import { subscribers, subscriberPlans, devotionalSendLog, digestSendLog } from "./schema";
+import type { Subscriber, SubscriberPlan, DevotionalSendLog, DigestSendLog } from "./schema";
 
 // ---------------------------------------------------------------------------
 // Subscriber lookups
@@ -309,6 +309,65 @@ export async function getRecentSendLogs(limit = 30): Promise<DevotionalSendLog[]
     .from(devotionalSendLog)
     .orderBy(desc(devotionalSendLog.runAt))
     .limit(limit);
+}
+
+// ---------------------------------------------------------------------------
+// Digest send log queries
+// ---------------------------------------------------------------------------
+
+/** Returns the digest send log entry for the given week, or null. */
+export async function getDigestSendLog(
+  weekStart: string
+): Promise<DigestSendLog | null> {
+  const rows = await db
+    .select()
+    .from(digestSendLog)
+    .where(eq(digestSendLog.weekStart, weekStart))
+    .limit(1);
+  return rows[0] ?? null;
+}
+
+export async function getRecentDigestSendLogs(limit = 30): Promise<DigestSendLog[]> {
+  return db
+    .select()
+    .from(digestSendLog)
+    .orderBy(desc(digestSendLog.sentAt))
+    .limit(limit);
+}
+
+export async function logDigestSend(args: {
+  weekStart: string;
+  weekEnd: string;
+  attempted: number;
+  sent: number;
+  failed: number;
+  errors: Array<{ subscriberId: string; message: string }>;
+}): Promise<void> {
+  await db.insert(digestSendLog).values({
+    weekStart: args.weekStart,
+    weekEnd: args.weekEnd,
+    attempted: args.attempted,
+    sent: args.sent,
+    failed: args.failed,
+    errors: args.errors.length > 0 ? JSON.stringify(args.errors) : null,
+  });
+}
+
+/** Used by the manual send-now endpoint to overwrite a prior log row when force=true. */
+export async function deleteDigestSendLog(weekStart: string): Promise<void> {
+  await db.delete(digestSendLog).where(eq(digestSendLog.weekStart, weekStart));
+}
+
+/**
+ * On a hard bounce of a digest email, strip the "digest" tag from the subscriber.
+ * They may still have other tags (e.g. "devotionals") and should continue to receive
+ * those — this is narrower than markSubscriberBounced which would block all email.
+ */
+export async function removeDigestTagOnBounce(email: string): Promise<void> {
+  await db
+    .update(subscribers)
+    .set({ tags: sql`array_remove(${subscribers.tags}, 'digest')` })
+    .where(eq(subscribers.email, email.toLowerCase().trim()));
 }
 
 // ---------------------------------------------------------------------------

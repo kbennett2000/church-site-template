@@ -30,7 +30,7 @@ Values currently in use:
 | `"devotionals"` | Subscriber wants the daily devotional emails |
 | `"digest"` | Subscriber wants the weekly church digest |
 
-A subscriber can have zero, one, or both tags. The send jobs filter on tags — the devotional cron only sends to subscribers with `'devotionals' = ANY(tags)`, the digest cron (coming soon) only sends to subscribers with `'digest' = ANY(tags)`.
+A subscriber can have zero, one, or both tags. The send jobs filter on tags — the devotional cron only sends to subscribers with `'devotionals' = ANY(tags)`, the digest cron only sends to subscribers with `'digest' = ANY(tags)`.
 
 ---
 
@@ -137,3 +137,29 @@ For selective unsubscription (e.g., keeping devotionals but dropping digest), th
 **The devotional cron must never query all active subscribers — it must filter by the `devotionals` tag.** If you update `getActiveSubscribersWithPlans()` or introduce a new path that fetches "all active subscribers," add the tag filter. Otherwise, digest-only subscribers will start receiving devotionals they didn't sign up for.
 
 The current `getActiveSubscribersWithPlans()` in `lib/db/queries.ts` already applies this filter.
+
+---
+
+## Worked example: the weekly digest
+
+The weekly digest is the canonical example of the tag pattern in use. It's worth tracing through end to end:
+
+### 1. Subscribing
+
+The `/digest/subscribe` page renders `<DigestSubscribeForm>` (`components/digest/digest-subscribe-form.tsx`), which POSTs to the **same** `/api/devotionals/subscribe` route used by devotional signups — only with `tags: ["digest"]` in the body. The route merges this tag with whatever the subscriber already has, so a user who was already a devotional subscriber and then subscribes to the digest ends up with `tags: ["devotionals", "digest"]`.
+
+### 2. Send-time filtering
+
+When the digest cron fires (`app/api/cron/digest/route.ts`), it calls `sendWeeklyDigest`, which calls `findActiveSubscribersForDigest()`. That query filters on `status='active' AND 'digest' = ANY(tags)`. Devotional-only subscribers are correctly excluded.
+
+### 3. Bounce isolation
+
+Hard bounces in the digest send loop call `removeTagFromSubscriber(id, "digest")` — narrower than the devotional pattern, which marks the whole subscriber as `bounced`. A digest bounce drops them from digest sends only; if they also subscribed to devotionals, those continue.
+
+### 4. Preferences
+
+The preferences page at `/preferences?token=…` reads the subscriber's `tags` array, renders one checkbox per known tag, and saves the updated array back via `/api/preferences`. A subscriber can toggle either tag independently. Unchecking the last tag is allowed — the subscriber stays in the table with an empty `tags` array, and no cron picks them up.
+
+### 5. Idempotency
+
+The digest cron also tracks per-week idempotency in `digest_send_log` (one row per `weekStart`, unique index). Tag filtering and idempotency are orthogonal: the tag filter decides *who* gets this week's digest; the send log decides *whether* this week's digest sends at all.

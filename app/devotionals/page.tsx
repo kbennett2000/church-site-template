@@ -6,6 +6,7 @@ import { getAllReadingPlans, getTodayEntry, planDurationLabel } from "@/content/
 import { features } from "@/content/site";
 import { churchInfo } from "@/lib/church-info";
 import type { ReadingPlan } from "@/lib/devotionals/types";
+import { SubscribeForm } from "@/components/devotionals/subscribe-form";
 
 // Revalidate hourly so "today's reading" stays current without a full rebuild.
 export const revalidate = 3600;
@@ -29,7 +30,7 @@ function formatDisplayDate(iso: string) {
   });
 }
 
-function PlanCard({ plan }: { plan: ReadingPlan }) {
+function PlanCard({ plan, allPlans }: { plan: ReadingPlan; allPlans: ReadingPlan[] }) {
   const todayEntry = getTodayEntry(plan);
   const styleLabel = STYLE_LABELS[plan.style] ?? plan.style;
 
@@ -91,20 +92,19 @@ function PlanCard({ plan }: { plan: ReadingPlan }) {
         )}
       </div>
 
-      <div className="border-t border-border px-6 py-4 md:px-8 flex items-center justify-between gap-4">
-        <Link
-          href={`/devotionals/${plan.slug}`}
-          className="text-sm font-medium text-foreground/70 hover:text-accent transition-colors"
-        >
-          View full schedule →
-        </Link>
-        <button
-          disabled
-          title="Email subscription will be available soon. Check back after your church enables the subscriber system."
-          className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground opacity-50 cursor-not-allowed select-none"
-        >
-          Subscribe by email
-        </button>
+      <div className="border-t border-border p-6 md:p-8">
+        <div className="mb-4">
+          <Link
+            href={`/devotionals/${plan.slug}`}
+            className="text-sm font-medium text-foreground/70 hover:text-accent transition-colors"
+          >
+            View full schedule →
+          </Link>
+        </div>
+        <SubscribeForm
+          plans={allPlans.map((p) => ({ slug: p.slug, title: p.title, isActive: p.isActive }))}
+          preselectedSlug={plan.slug}
+        />
       </div>
     </div>
   );
@@ -227,7 +227,7 @@ export default function DevotionalsPage() {
           </p>
           <div className="mt-8 grid gap-6 lg:grid-cols-2">
             {activePlans.map((plan) => (
-              <PlanCard key={plan.slug} plan={plan} />
+              <PlanCard key={plan.slug} plan={plan} allPlans={plans} />
             ))}
           </div>
         </section>
@@ -244,7 +244,7 @@ export default function DevotionalsPage() {
           </p>
           <div className="mt-8 grid gap-6 lg:grid-cols-2">
             {inactivePlans.map((plan) => (
-              <PlanCard key={plan.slug} plan={plan} />
+              <PlanCard key={plan.slug} plan={plan} allPlans={plans} />
             ))}
           </div>
         </section>

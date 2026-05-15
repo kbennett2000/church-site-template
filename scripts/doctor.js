@@ -186,6 +186,26 @@ check(
   "Reinstall the template — package.json should have these scripts."
 );
 
+// 11. DATABASE_URL (only required when features.devotionals is true)
+check(
+  "Database URL (if devotionals enabled)",
+  () => {
+    const sitePath = p("content", "site.json");
+    if (!fs.existsSync(sitePath)) return "site.json not found — skipping";
+    const site = JSON.parse(fs.readFileSync(sitePath, "utf8"));
+    const enabled = site?.features?.devotionals === true;
+    if (!enabled) return "devotionals disabled — DATABASE_URL not required";
+    const url = process.env.DATABASE_URL ?? process.env.POSTGRES_URL ?? "";
+    if (!url) {
+      throw new Error(
+        "features.devotionals is true but DATABASE_URL is not set."
+      );
+    }
+    return "set";
+  },
+  "Set DATABASE_URL in .env.local (copy from Vercel → Storage → your database). Then run: npm run db:setup"
+);
+
 // ---- Summary ----
 console.log("");
 if (issues.length === 0) {

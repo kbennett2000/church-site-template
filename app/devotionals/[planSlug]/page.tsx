@@ -10,6 +10,7 @@ import {
 import { features } from "@/content/site";
 import { churchInfo } from "@/lib/church-info";
 import type { ReadingPlan, ReadingPlanEntry } from "@/lib/devotionals/types";
+import { SubscribeForm } from "@/components/devotionals/subscribe-form";
 
 export const revalidate = 3600;
 
@@ -210,20 +211,13 @@ export default async function PlanPage({
               {todayEntry.title ?? todayEntry.scriptureReference}
             </h2>
             <p className="mt-1 text-muted-foreground">{todayEntry.scriptureReference}</p>
-            <div className="mt-5 flex flex-wrap gap-3">
+            <div className="mt-5">
               <Link
                 href={`/devotionals/${plan.slug}/${todayEntry.date}`}
                 className="inline-flex items-center gap-2 rounded-lg bg-accent px-5 py-2.5 text-sm font-medium text-accent-foreground transition hover:opacity-90"
               >
                 Read today&apos;s passage
               </Link>
-              <button
-                disabled
-                title="Email subscription coming soon."
-                className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-5 py-2.5 text-sm font-medium text-foreground opacity-50 cursor-not-allowed"
-              >
-                Subscribe to this plan
-              </button>
             </div>
           </div>
         </section>
@@ -251,24 +245,18 @@ export default async function PlanPage({
         </ul>
       </section>
 
-      {!todayEntry && (
-        <section className="border-t border-border bg-muted/40 py-16 md:py-20">
-          <div className="container max-w-lg">
-            <h2 className="font-serif text-2xl">Subscribe to this plan</h2>
-            <p className="mt-3 text-muted-foreground">
-              Get {plan.title} delivered to your inbox each morning. Email
-              subscriptions will be available soon.
-            </p>
-            <button
-              disabled
-              title="Email subscription coming soon."
-              className="mt-5 inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground opacity-50 cursor-not-allowed"
-            >
-              Subscribe by email — coming soon
-            </button>
-          </div>
-        </section>
-      )}
+      <section className="border-t border-border bg-muted/40 py-16 md:py-20">
+        <div className="container max-w-lg">
+          <SubscribeForm
+            plans={getAllReadingPlans().map((p) => ({
+              slug: p.slug,
+              title: p.title,
+              isActive: p.isActive,
+            }))}
+            preselectedSlug={plan.slug}
+          />
+        </div>
+      </section>
     </>
   );
 }

@@ -49,9 +49,9 @@ export async function GET(req: NextRequest) {
   // Send welcome email (best-effort — don't block on failure)
   try {
     await sendWelcomeEmail({ subscriber, origin });
-  } catch {
-    // log but don't fail the verification
-    console.error("[verify] Welcome email failed to send for", subscriber.email);
+  } catch (err) {
+    // Verification already succeeded; log but don't reverse it.
+    console.error("[verify] Welcome email failed for", subscriber.email, err);
   }
 
   return NextResponse.redirect(`${origin}/devotionals/verify?status=success`);
@@ -89,10 +89,14 @@ async function sendWelcomeEmail({
   );
 
   const resend = getResend();
-  await resend.emails.send({
+  const { error } = await resend.emails.send({
     from: `${settings.senderName} <${settings.senderEmail}>`,
     to: subscriber.email,
     subject: `Welcome! Your ${churchName} devotionals start tomorrow`,
     html,
   });
+
+  if (error) {
+    throw new Error(`Resend error: ${JSON.stringify(error)}`);
+  }
 }

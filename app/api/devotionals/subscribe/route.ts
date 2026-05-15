@@ -11,6 +11,9 @@ import { getResend } from "@/lib/resend";
 import { churchData } from "@/content/site";
 import { eq } from "drizzle-orm";
 
+const EMAIL_SEND_FAILED =
+  "We couldn't send your confirmation email. Please try again or contact the church.";
+
 export async function POST(req: NextRequest) {
   let body: unknown;
   try {
@@ -63,7 +66,7 @@ export async function POST(req: NextRequest) {
       await upsertPlanSubscription(existing.id, slug);
     }
 
-    await sendVerificationEmail({
+    const sendError = await sendVerificationEmail({
       to: email,
       name: name ?? existing.name ?? null,
       planSlugs,
@@ -72,6 +75,11 @@ export async function POST(req: NextRequest) {
       settings,
       baseUrl: new URL(req.url).origin,
     });
+
+    if (sendError) {
+      console.error("[subscribe] Verification email failed for existing subscriber", email, sendError);
+      return NextResponse.json({ error: EMAIL_SEND_FAILED }, { status: 500 });
+    }
   } else {
     const [row] = await db
       .insert(subscribers)
@@ -91,7 +99,7 @@ export async function POST(req: NextRequest) {
       await upsertPlanSubscription(row.id, slug);
     }
 
-    await sendVerificationEmail({
+    const sendError = await sendVerificationEmail({
       to: email,
       name: name ?? null,
       planSlugs,
@@ -100,11 +108,21 @@ export async function POST(req: NextRequest) {
       settings,
       baseUrl: new URL(req.url).origin,
     });
+
+    if (sendError) {
+      // Roll back the new row so the user can retry without hitting a duplicate-email error.
+      await db.delete(subscribers).where(eq(subscribers.id, row.id)).catch((dbErr) => {
+        console.error("[subscribe] Rollback failed after email send failure", dbErr);
+      });
+      console.error("[subscribe] Verification email failed, rolled back new subscriber", email, sendError);
+      return NextResponse.json({ error: EMAIL_SEND_FAILED }, { status: 500 });
+    }
   }
 
   return NextResponse.json({ ok: true });
 }
 
+/** Returns the Resend error if the send failed, or null on success. */
 async function sendVerificationEmail({
   to,
   name,
@@ -121,7 +139,7 @@ async function sendVerificationEmail({
   churchName: string;
   settings: ReturnType<typeof getDevotionalEmailSettings>;
   baseUrl: string;
-}) {
+}): Promise<unknown> {
   const planTitles = planSlugs
     .map((slug) => {
       const plan = getReadingPlan(slug);
@@ -144,10 +162,12 @@ async function sendVerificationEmail({
   );
 
   const resend = getResend();
-  await resend.emails.send({
+  const { error } = await resend.emails.send({
     from: `${settings.senderName} <${settings.senderEmail}>`,
     to,
     subject: `Confirm your devotional subscription — ${churchName}`,
     html,
   });
+
+  return error ?? null;
 }

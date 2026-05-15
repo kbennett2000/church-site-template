@@ -32,7 +32,7 @@ export async function GET(req: NextRequest) {
     .set({ status: "unsubscribed", unsubscribedAt: new Date() })
     .where(eq(subscribers.id, subscriber.id));
 
-  // Send confirmation email (best-effort)
+  // Send confirmation email (best-effort — unsubscribe already completed above)
   try {
     const settings = getDevotionalEmailSettings();
     const churchName = churchData?.name ?? settings.senderName;
@@ -50,14 +50,18 @@ export async function GET(req: NextRequest) {
     );
 
     const resend = getResend();
-    await resend.emails.send({
+    const { error } = await resend.emails.send({
       from: `${settings.senderName} <${settings.senderEmail}>`,
       to: subscriber.email,
       subject: `You've been unsubscribed from ${churchName} devotionals`,
       html,
     });
-  } catch {
-    console.error("[unsubscribe] Confirmation email failed for", subscriber.email);
+
+    if (error) {
+      throw new Error(`Resend error: ${JSON.stringify(error)}`);
+    }
+  } catch (err) {
+    console.error("[unsubscribe] Confirmation email failed for", subscriber.email, err);
   }
 
   return NextResponse.redirect(`${origin}/devotionals/unsubscribe?status=success`);

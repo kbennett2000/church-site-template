@@ -91,7 +91,10 @@ Commit and push — Vercel will rebuild and the `/devotionals` page will go live
 In the CMS, go to **Admin → Devotional Email Settings** and fill in:
 
 - **Sender name** — Your church name (e.g., "Grace Community Church")
-- **Sender email** — A verified address from your Resend domain (e.g., `devotionals@gracecc.org`)
+- **Sender email** — A verified address from your Resend domain (e.g., `devotionals@gracecc.org`).
+  **Important:** The `RESEND_FROM_EMAIL` environment variable overrides this CMS field in production.
+  Set `RESEND_FROM_EMAIL=devotionals@yourchurch.org` in Vercel → Settings → Environment Variables.
+  The CMS field is a human-readable reference only; the env var is what actually controls the sender.
 - **Intro** / **Outro** — The opening and closing lines of every devotional email
 - **Brand color** — Your primary hex color (used for buttons and headings in emails)
 - **Footer text** — Your church name, address, and unsubscribe note

@@ -6,6 +6,13 @@ type: explanation
 
 Issues identified but deferred for a later decision. Don't act on these without confirmation.
 
+> **Note:** the stale-JWT gotcha below is now surfaced in user-facing docs as well —
+> [`managing-admin-access.md`](../for-editors/managing-admin-access.md#common-issue-a-new-admin-still-cant-sign-in)
+> for editors and
+> [`admin-access-google-oauth.md`](../for-tech-volunteers/admin-access-google-oauth.md#known-limitation-stale-jwt-after-allowlist-change)
+> for tech volunteers. This file remains the canonical place for the technical
+> root-cause analysis and the fix-options discussion.
+
 ## Stale JWT after allowlist change
 
 **Symptom (user-facing):** A user is added to the admin allowlist (either in

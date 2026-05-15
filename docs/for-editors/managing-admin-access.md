@@ -57,6 +57,22 @@ they signed in with doesn't match what you typed. Common causes:
 Have them sign out (the button is on the access-denied page) and try the
 right account.
 
+## Common issue: a new admin still can't sign in
+
+If you just added someone and they tell you they still see **Access
+Denied** — and you've already confirmed the email matches their Google
+account — ask them to **sign out and sign back in**.
+
+The site remembers who's signed in for up to 30 days. If they tried to
+sign in *before* you added them to the list, the site is still
+remembering that earlier attempt and won't re-check the list until they
+start a fresh session. Signing out clears that memory; signing back in
+re-checks the list and lets them through.
+
+Their sign-out button is on the access-denied page they're stuck on.
+After they sign out and click **Sign in with Google** again, they should
+land on the admin page.
+
 ## Removing an admin
 
 1. Same page — **Admin Access** in the CMS sidebar.

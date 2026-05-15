@@ -16,7 +16,7 @@ The subscriber system uses two tables:
 - **`subscribers`** — one row per unique email address, holds identity and delivery preferences
 - **`subscriber_plans`** — join table linking subscribers to reading plans
 
-The schema is defined in [lib/db/schema.ts](../../lib/db/schema.ts) using Drizzle ORM. Migrations are applied with `drizzle-kit push` (schema-push mode, not SQL migration files). The stack is Vercel Postgres + `@vercel/postgres` + `drizzle-orm/vercel-postgres`.
+The schema is defined in [lib/db/schema.ts](../../lib/db/schema.ts) using Drizzle ORM. Schema changes are managed through committed SQL migration files — see [database-migrations.md](./database-migrations.md) for the workflow. The stack is Vercel Postgres + `@vercel/postgres` + `drizzle-orm/vercel-postgres`.
 
 ---
 
@@ -137,16 +137,9 @@ export const db = drizzle(pool, { schema });
 
 ## Drizzle migrations
 
-This project uses **drizzle-kit push** (not SQL migration files). Push diffs the schema against the live database and applies changes interactively.
+Schema source: `lib/db/schema.ts`. Drizzle config: `drizzle.config.ts`. Migration files live in `drizzle/migrations/` and are committed to git.
 
-```bash
-npm run db:migrate   # drizzle-kit push
-npm run db:studio    # open Drizzle Studio UI
-npm run db:setup     # checks DATABASE_URL then runs push
-```
-
-Schema source: `lib/db/schema.ts`  
-Drizzle config: `drizzle.config.ts`
+For the full workflow (generate → review → commit → apply), how to handle renames safely, and recovery from a failed migration, see [database-migrations.md](./database-migrations.md).
 
 ---
 
@@ -159,7 +152,9 @@ Drizzle config: `drizzle.config.ts`
 ## Adding columns
 
 1. Add the column to `lib/db/schema.ts`.
-2. Run `npm run db:migrate` — drizzle-kit push will detect the new column and prompt you to apply it.
-3. Update `lib/db/queries.ts` if the new column needs to be read or written.
+2. Run `npm run db:generate` to produce a new SQL file in `drizzle/migrations/`.
+3. Review the generated SQL, then commit it.
+4. Run `npm run db:migrate` to apply it locally; production picks it up on the next deploy that runs `db:migrate`.
+5. Update `lib/db/queries.ts` if the new column needs to be read or written.
 
-There is no migration history file — the source of truth is `schema.ts` and the live database.
+The source of truth is the committed migration files plus `schema.ts`. See [database-migrations.md](./database-migrations.md) for full details, including how to handle renames without data loss.

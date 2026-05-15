@@ -24,7 +24,7 @@
 - **UI:** React 19, Tailwind CSS 3.4, semantic-token theme system, shadcn-style primitives in `/components/ui/`
 - **Type system:** TypeScript 5.6 strict mode
 - **CMS:** TinaCMS + TinaCloud (Google/email auth, commits directly to `main`, no PR workflow) at `/admin/`
-- **Email:** Resend (transactional; 5 form surfaces wired: visit, prayer, contact, newsletter, serve)
+- **Email:** Resend (transactional; 5 form surfaces wired: visit, prayer, contact, newsletter, serve; plus daily devotional + weekly digest pipelines with double-opt-in subscriber DB)
 - **Content:** Markdown + frontmatter (via `gray-matter`) and JSON in `/content/`
 - **Icons:** `lucide-react`
 - **Fonts:** Inter (sans) + Fraunces (serif) via `next/font/google`
@@ -88,7 +88,7 @@ When you see "Grace Community Church" in code, it's the seed data — never edit
 - Any component code (`/app/`, `/components/`, `/lib/`)
 - Any other doc
 
-There's a final grep sweep documented in [`docs/PRE_LAUNCH_REVIEW.md`](docs/PRE_LAUNCH_REVIEW.md). The current state is clean.
+The current state is clean — `grep -rE "Majestic|\bMVC\b|mvckiowa|Kiowa" --exclude-dir={node_modules,.next,.git}` should match only the legitimate locations above.
 
 ---
 
@@ -175,25 +175,21 @@ There's a final grep sweep documented in [`docs/PRE_LAUNCH_REVIEW.md`](docs/PRE_
 │
 ├── docs/
 │   ├── README.md               doc map (4 tracks: editors, tech-vol, devs, case studies)
-│   ├── PRE_LAUNCH_REVIEW.md    persona review + appendices for v0.1.0 launch copy
+│   ├── AUDIT.md                2026-05-15 doc audit + prioritized action list
 │   ├── SCREENSHOTS_NEEDED.md   capture checklist
-│   ├── USABILITY_REVIEW.md     internal persona-driven readthrough audit
-│   ├── USABILITY_REVIEW_RAW.md raw findings
 │   ├── design.md               palette/type/density rationale
 │   │
-│   ├── for-editors/            01–09 numbered guides + troubleshooting + glossary
-│   ├── for-tech-volunteers/    01 overview → 10 customize-deeper, all sequential
+│   ├── for-editors/            numbered guides + troubleshooting + glossary + email/admin guides
+│   ├── for-tech-volunteers/    01 overview → 10 customize-deeper, plus admin/email/db setup
 │   ├── for-developers/         architecture / content-model / decision-log / contributing / etc.
 │   ├── case-studies/
 │   │   ├── README.md           submission instructions
-│   │   ├── majestic-view-church.md   inaugural case study (screenshots + quote pending)
-│   │   ├── _TEMPLATE.md        copy-paste for new case study submissions
-│   │   └── screenshots/        per-church subdirs
-│   ├── marketing/
-│   │   ├── one-pager.md        PDF-ready board pitch
-│   │   ├── elevator-pitch.md   8 pitch variants
-│   │   └── feature-comparison.md   vs. Wix/Squarespace/WordPress/DIY
-│   └── video-scripts/          screencast scripts paired with editor + tech-vol guides
+│   │   ├── majestic-view-church.md   inaugural case study (placeholder until launch)
+│   │   └── _TEMPLATE.md        copy-paste for new case study submissions
+│   └── marketing/
+│       ├── one-pager.md        PDF-ready board pitch
+│       ├── elevator-pitch.md   pitch variants
+│       └── feature-comparison.md   vs. Wix/Squarespace/WordPress/DIY
 │
 └── scripts/                    Node CLI scripts
     ├── setup.js                npm run setup — interactive setup wizard
@@ -209,7 +205,7 @@ There's a final grep sweep documented in [`docs/PRE_LAUNCH_REVIEW.md`](docs/PRE_
 
 ### TinaCMS schema — the single source of CMS truth
 
-`tina/config.ts` is the schema for all 14 collections. It replaces the old `public/admin/config.yml`. The `public/admin/` directory is now gitignored — it's generated at dev/build time by TinaCMS. **Do not commit `public/admin/` or `.tina/__generated__/`.**
+`tina/config.ts` is the schema for all 20 collections (site, navigation, story, beliefs, events, pages, staff, elders, ministries, sermons, announcements, groups, serve_roles, giving, prayer_requests, readingPlans, devotionalEmailSettings, digestSettings, digestNotes, adminAccess). It replaces the old `public/admin/config.yml`. The `public/admin/` directory is now gitignored — it's generated at dev/build time by TinaCMS. **Do not commit `public/admin/` or `.tina/__generated__/`.**
 
 `npm run build` (`tinacms build && next build`) requires `NEXT_PUBLIC_TINA_CLIENT_ID` and `TINA_TOKEN` to be set. For local Next.js testing without credentials, run `npx next build` directly — it skips the TinaCMS step and still produces the full static site. For local CMS work, use `npm run cms` (local mode, no credentials needed).
 
@@ -356,7 +352,7 @@ Pre-launch review pass:
 - Verified production image refs all resolve (the only "missing" refs are pedagogical examples in doc code blocks)
 - `npm run doctor` → all checks pass except intentional placeholder warning
 - `npm run build` → 28 static pages, TypeScript clean, no warnings
-- Persona role-play (pastor / tech-vol / developer) written to `docs/PRE_LAUNCH_REVIEW.md` with launch-copy appendices
+- Persona role-play (pastor / tech-vol / developer) — appendices included launch-copy drafts <!-- FLAG: PRE_LAUNCH_REVIEW.md no longer exists on disk; the launch-copy drafts referenced from "Pre-launch" section below are gone. Either recreate the file or update the references that depend on it. -->
 
 ---
 
@@ -415,8 +411,8 @@ The build output should show:
 
 1. **Capture screenshots** per [`docs/SCREENSHOTS_NEEDED.md`](docs/SCREENSHOTS_NEEDED.md). At minimum the 4 marketing screenshots (homepage desktop/mobile, CMS dashboard, calendar).
 2. **Toggle "Template repository"** in GitHub repo Settings.
-3. **Tag `v0.1.0`** and create the GitHub Release using the [draft body in PRE_LAUNCH_REVIEW.md Appendix B](docs/PRE_LAUNCH_REVIEW.md#appendix-b--draft-v010-release-announcement).
-4. **Set the repo description** using the [draft in PRE_LAUNCH_REVIEW.md Appendix A](docs/PRE_LAUNCH_REVIEW.md#appendix-a--draft-repo-description).
+3. **Tag `v0.1.0`** and create the GitHub Release. <!-- FLAG: the release-announcement draft used to live in docs/PRE_LAUNCH_REVIEW.md Appendix B but that file is gone. Either recreate it or write the release notes fresh from CHANGELOG.md (which itself also doesn't exist yet — see the changelog gap noted below). -->
+4. **Set the repo description.** <!-- FLAG: the description draft used to live in docs/PRE_LAUNCH_REVIEW.md Appendix A but that file is gone. Either recreate it or write fresh. -->
 5. **Add topics** to the repo (list above).
 6. **Optionally:** capture the inaugural case-study screenshots (MVC old/new homepage, mobile, calendar, CMS) once permission is confirmed.
 7. **Optionally:** collect a staff quote from MVC for the case study (currently a `<!-- TODO -->` block).
@@ -454,7 +450,8 @@ The build output should show:
 - [`docs/for-developers/decision-log.md`](docs/for-developers/decision-log.md) — 9 ADRs, ADR-009 is the foundational one
 - [`docs/for-developers/contributing.md`](docs/for-developers/contributing.md) — including the "syncing template updates into a church instance" section
 - [`SEED_DATA.md`](SEED_DATA.md) — every placeholder and what to replace
-- [`docs/PRE_LAUNCH_REVIEW.md`](docs/PRE_LAUNCH_REVIEW.md) — persona findings + launch-copy drafts
+- [`docs/AUDIT.md`](docs/AUDIT.md) — 2026-05-15 documentation audit + prioritized action list
+<!-- FLAG: CHANGELOG.md is referenced from README and elsewhere but does not exist on disk. Either create it or remove the references. -->
 - [`CHANGELOG.md`](CHANGELOG.md) — feature inventory + known limitations
 - [`README.md`](README.md) — the public face of the template
 

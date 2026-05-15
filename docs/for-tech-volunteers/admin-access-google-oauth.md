@@ -237,6 +237,40 @@ that's how you force-revoke all sessions. Sign in again.
 
 ---
 
+## Known limitation: stale JWT after allowlist change
+
+When you add a new admin to `content/admin-access.json` (via the CMS) or
+to `ADMIN_ALLOWLIST`, that admin's `isAdmin` claim is **not re-evaluated
+automatically** on subsequent requests. The JWT issued at their previous
+sign-in carries `isAdmin: false` until either:
+
+- they sign out and sign back in (forces a fresh JWT), or
+- the JWT expires on its 30-day max age.
+
+This bites most often when a new volunteer tries to sign in *before*
+their email has been added to the allowlist — they get denied, the JWT
+is cached with `isAdmin: false`, and adding them later doesn't unstick
+them on its own.
+
+**Why this is the default.** Auth.js v5 in JWT-strategy mode treats the
+`jwt` callback as a passthrough on every request after the first; only
+the initial sign-in (or a forced re-issue) runs the
+"is-this-email-on-the-allowlist" check. This avoids hitting the
+allowlist source on every protected request, which would otherwise add
+latency to every page load.
+
+**Workaround.** Tell new admins: if you see "Access Denied" after being
+added, sign out (button on the access-denied page) and sign back in. The
+editor doc [managing-admin-access.md](../for-editors/managing-admin-access.md#common-issue-a-new-admin-still-cant-sign-in)
+surfaces this for non-technical users.
+
+**Plans to fix it.** Tracked in
+[admin-access-followups.md](../for-developers/admin-access-followups.md).
+The intended fix is to re-evaluate `isAdmin` on every JWT callback (the
+allowlist read is cheap — a bundled JSON file and one env var).
+
+---
+
 ## Security follow-ups for later
 
 These aren't blockers, but worth knowing about for production:

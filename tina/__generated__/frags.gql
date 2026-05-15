@@ -49,6 +49,10 @@ fragment SiteParts on Site {
     devotionals
     digest
   }
+  adminAuth {
+    __typename
+    provider
+  }
 }
 
 fragment NavigationParts on Navigation {
@@ -318,6 +322,17 @@ fragment DigestSettingsParts on DigestSettings {
   logoUrl
   footerText
   introHtml
+}
+
+fragment AdminAccessParts on AdminAccess {
+  __typename
+  admins {
+    __typename
+    email
+    role
+    addedAt
+    addedBy
+  }
 }
 
 fragment DigestNotesParts on DigestNotes {

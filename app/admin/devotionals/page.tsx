@@ -7,6 +7,7 @@ import {
   getRecentSendLogs,
 } from "@/lib/db/queries";
 import { getAllReadingPlans } from "@/content/devotionals";
+import { AdminHeaderControls } from "@/components/admin/admin-header-controls";
 
 export const metadata: Metadata = {
   title: "Devotional Subscribers — Admin",
@@ -36,14 +37,17 @@ export default async function AdminDevotionalsPage() {
 
   return (
     <main className="max-w-4xl mx-auto px-4 py-12 space-y-10">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-4">
         <h1 className="text-2xl font-bold">Devotional subscribers</h1>
-        <a
-          href="/api/admin/devotionals/export"
-          className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium hover:bg-muted transition-colors"
-        >
-          Export CSV
-        </a>
+        <div className="flex items-center gap-3">
+          <a
+            href="/api/admin/devotionals/export"
+            className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium hover:bg-muted transition-colors"
+          >
+            Export CSV
+          </a>
+          <AdminHeaderControls />
+        </div>
       </div>
 
       {/* Subscriber stats */}

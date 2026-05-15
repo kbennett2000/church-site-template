@@ -5,6 +5,7 @@ import {
   findActiveSubscribersForDigest,
 } from "@/lib/db/queries";
 import { getDigestSettings } from "@/lib/digest/settings";
+import { AdminHeaderControls } from "@/components/admin/admin-header-controls";
 
 export const metadata: Metadata = { title: "Weekly Digest — Admin" };
 export const dynamic = "force-dynamic";
@@ -18,14 +19,17 @@ export default async function AdminDigestPage() {
 
   return (
     <main className="max-w-4xl mx-auto px-4 py-12 space-y-10">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-4">
         <h1 className="text-2xl font-bold">Weekly digest</h1>
-        <Link
-          href="/admin/digest/preview"
-          className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
-        >
-          Preview this week →
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link
+            href="/admin/digest/preview"
+            className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+          >
+            Preview this week →
+          </Link>
+          <AdminHeaderControls />
+        </div>
       </div>
 
       <section className="grid grid-cols-2 sm:grid-cols-4 gap-4">

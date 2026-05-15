@@ -54,5 +54,8 @@
   "features": {
     "devotionals": false,
     "digest": false
+  },
+  "adminAuth": {
+    "provider": "google"
   }
 }

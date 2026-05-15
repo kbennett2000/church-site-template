@@ -90,6 +90,8 @@ type Query {
   devotionalEmailSettingsConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: DevotionalEmailSettingsFilter): DevotionalEmailSettingsConnection!
   digestSettings(relativePath: String): DigestSettings!
   digestSettingsConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: DigestSettingsFilter): DigestSettingsConnection!
+  adminAccess(relativePath: String): AdminAccess!
+  adminAccessConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: AdminAccessFilter): AdminAccessConnection!
   digestNotes(relativePath: String): DigestNotes!
   digestNotesConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: DigestNotesFilter): DigestNotesConnection!
 }
@@ -113,6 +115,7 @@ input DocumentFilter {
   readingPlans: ReadingPlansFilter
   devotionalEmailSettings: DevotionalEmailSettingsFilter
   digestSettings: DigestSettingsFilter
+  adminAccess: AdminAccessFilter
   digestNotes: DigestNotesFilter
 }
 
@@ -139,7 +142,7 @@ type Collection {
   documents(before: String, after: String, first: Float, last: Float, sort: String, filter: DocumentFilter, folder: String): DocumentConnection!
 }
 
-union DocumentNode = Site | Navigation | Story | Beliefs | Events | Pages | Staff | Elders | Ministries | Sermons | Announcements | Groups | Serve_roles | Giving | Prayer_requests | ReadingPlans | DevotionalEmailSettings | DigestSettings | DigestNotes | Folder
+union DocumentNode = Site | Navigation | Story | Beliefs | Events | Pages | Staff | Elders | Ministries | Sermons | Announcements | Groups | Serve_roles | Giving | Prayer_requests | ReadingPlans | DevotionalEmailSettings | DigestSettings | AdminAccess | DigestNotes | Folder
 
 type SiteChurchAddress {
   street: String
@@ -195,11 +198,16 @@ type SiteFeatures {
   digest: Boolean
 }
 
+type SiteAdminAuth {
+  provider: String
+}
+
 type Site implements Node & Document {
   church: SiteChurch
   home: SiteHome
   about: SiteAbout
   features: SiteFeatures
+  adminAuth: SiteAdminAuth
   id: ID!
   _sys: SystemInfo!
   _values: JSON!
@@ -278,11 +286,16 @@ input SiteFeaturesFilter {
   digest: BooleanFilter
 }
 
+input SiteAdminAuthFilter {
+  provider: StringFilter
+}
+
 input SiteFilter {
   church: SiteChurchFilter
   home: SiteHomeFilter
   about: SiteAboutFilter
   features: SiteFeaturesFilter
+  adminAuth: SiteAdminAuthFilter
 }
 
 type SiteConnectionEdges {
@@ -1102,6 +1115,42 @@ type DigestSettingsConnection implements Connection {
   edges: [DigestSettingsConnectionEdges]
 }
 
+type AdminAccessAdmins {
+  email: String!
+  role: String
+  addedAt: String
+  addedBy: String
+}
+
+type AdminAccess implements Node & Document {
+  admins: [AdminAccessAdmins]
+  id: ID!
+  _sys: SystemInfo!
+  _values: JSON!
+}
+
+input AdminAccessAdminsFilter {
+  email: StringFilter
+  role: StringFilter
+  addedAt: DatetimeFilter
+  addedBy: StringFilter
+}
+
+input AdminAccessFilter {
+  admins: AdminAccessAdminsFilter
+}
+
+type AdminAccessConnectionEdges {
+  cursor: String!
+  node: AdminAccess
+}
+
+type AdminAccessConnection implements Connection {
+  pageInfo: PageInfo!
+  totalCount: Float!
+  edges: [AdminAccessConnectionEdges]
+}
+
 type DigestNotes implements Node & Document {
   weekOf: String!
   title: String
@@ -1174,6 +1223,8 @@ type Mutation {
   createDevotionalEmailSettings(relativePath: String!, params: DevotionalEmailSettingsMutation!): DevotionalEmailSettings!
   updateDigestSettings(relativePath: String!, params: DigestSettingsMutation!): DigestSettings!
   createDigestSettings(relativePath: String!, params: DigestSettingsMutation!): DigestSettings!
+  updateAdminAccess(relativePath: String!, params: AdminAccessMutation!): AdminAccess!
+  createAdminAccess(relativePath: String!, params: AdminAccessMutation!): AdminAccess!
   updateDigestNotes(relativePath: String!, params: DigestNotesMutation!): DigestNotes!
   createDigestNotes(relativePath: String!, params: DigestNotesMutation!): DigestNotes!
 }
@@ -1197,6 +1248,7 @@ input DocumentUpdateMutation {
   readingPlans: ReadingPlansMutation
   devotionalEmailSettings: DevotionalEmailSettingsMutation
   digestSettings: DigestSettingsMutation
+  adminAccess: AdminAccessMutation
   digestNotes: DigestNotesMutation
   relativePath: String
 }
@@ -1220,6 +1272,7 @@ input DocumentMutation {
   readingPlans: ReadingPlansMutation
   devotionalEmailSettings: DevotionalEmailSettingsMutation
   digestSettings: DigestSettingsMutation
+  adminAccess: AdminAccessMutation
   digestNotes: DigestNotesMutation
 }
 
@@ -1277,11 +1330,16 @@ input SiteFeaturesMutation {
   digest: Boolean
 }
 
+input SiteAdminAuthMutation {
+  provider: String
+}
+
 input SiteMutation {
   church: SiteChurchMutation
   home: SiteHomeMutation
   about: SiteAboutMutation
   features: SiteFeaturesMutation
+  adminAuth: SiteAdminAuthMutation
 }
 
 input NavigationItemsChildrenMutation {
@@ -1554,6 +1612,17 @@ input DigestSettingsMutation {
   logoUrl: String
   footerText: String
   introHtml: JSON
+}
+
+input AdminAccessAdminsMutation {
+  email: String
+  role: String
+  addedAt: String
+  addedBy: String
+}
+
+input AdminAccessMutation {
+  admins: [AdminAccessAdminsMutation]
 }
 
 input DigestNotesMutation {

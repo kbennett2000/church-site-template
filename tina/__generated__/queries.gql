@@ -988,6 +988,61 @@ query digestSettingsConnection($before: String, $after: String, $first: Float, $
   }
 }
 
+query adminAccess($relativePath: String!) {
+  adminAccess(relativePath: $relativePath) {
+    ... on Document {
+      _sys {
+        filename
+        basename
+        hasReferences
+        breadcrumbs
+        path
+        relativePath
+        extension
+      }
+      id
+    }
+    ...AdminAccessParts
+  }
+}
+
+query adminAccessConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: AdminAccessFilter) {
+  adminAccessConnection(
+    before: $before
+    after: $after
+    first: $first
+    last: $last
+    sort: $sort
+    filter: $filter
+  ) {
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    totalCount
+    edges {
+      cursor
+      node {
+        ... on Document {
+          _sys {
+            filename
+            basename
+            hasReferences
+            breadcrumbs
+            path
+            relativePath
+            extension
+          }
+          id
+        }
+        ...AdminAccessParts
+      }
+    }
+  }
+}
+
 query digestNotes($relativePath: String!) {
   digestNotes(relativePath: $relativePath) {
     ... on Document {

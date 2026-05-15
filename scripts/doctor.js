@@ -267,6 +267,74 @@ checkEmailLogo(
   "devotionals"
 );
 
+// 12b. Admin authentication configured (depends on site.adminAuth.provider)
+check(
+  "Admin authentication configured",
+  () => {
+    const sitePath = p("content", "site.json");
+    if (!fs.existsSync(sitePath)) return "site.json not found — skipping";
+    const site = JSON.parse(fs.readFileSync(sitePath, "utf8"));
+    const provider = site?.adminAuth?.provider === "google" ? "google" : "basic";
+
+    if (provider === "basic") {
+      const pw = process.env.ADMIN_PASSWORD ?? "";
+      if (!pw) {
+        throw new Error(
+          "Site Settings → Admin Authentication is 'basic' but ADMIN_PASSWORD is not set. The custom admin pages will return 503 until it is."
+        );
+      }
+      if (pw.length < 12) {
+        throw new Error(
+          `ADMIN_PASSWORD is only ${pw.length} characters. Use at least 12 characters — preferably a random string.`
+        );
+      }
+      return "basic (ADMIN_PASSWORD set)";
+    }
+
+    // Google provider
+    const missing = [];
+    if (!process.env.GOOGLE_CLIENT_ID) missing.push("GOOGLE_CLIENT_ID");
+    if (!process.env.GOOGLE_CLIENT_SECRET) missing.push("GOOGLE_CLIENT_SECRET");
+    if (!process.env.NEXTAUTH_SECRET && !process.env.AUTH_SECRET) {
+      missing.push("NEXTAUTH_SECRET (or AUTH_SECRET)");
+    }
+    if (!process.env.NEXTAUTH_URL && !process.env.AUTH_URL && !process.env.VERCEL_URL) {
+      missing.push("NEXTAUTH_URL");
+    }
+    if (missing.length) {
+      throw new Error(
+        `Site Settings → Admin Authentication is 'google' but these env vars are missing: ${missing.join(", ")}. See docs/for-tech-volunteers/admin-access-google-oauth.md.`
+      );
+    }
+
+    // Allowlist must have at least one source.
+    const accessPath = p("content", "admin-access.json");
+    const fromEnv = (process.env.ADMIN_ALLOWLIST ?? "")
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
+    let fromCms = [];
+    if (fs.existsSync(accessPath)) {
+      try {
+        const access = JSON.parse(fs.readFileSync(accessPath, "utf8"));
+        fromCms = (access.admins ?? [])
+          .map((a) => (typeof a?.email === "string" ? a.email.trim() : ""))
+          .filter(Boolean);
+      } catch {
+        // ignore — caught below if it leaves both empty
+      }
+    }
+    if (fromCms.length === 0 && fromEnv.length === 0) {
+      throw new Error(
+        "Admin allowlist is empty. Add at least one email to content/admin-access.json (Admin Access in the CMS) OR set ADMIN_ALLOWLIST=you@example.com in your environment. Without an entry, nobody will be able to access the admin pages even after signing in."
+      );
+    }
+    const count = fromCms.length + fromEnv.length;
+    return `google (${count} email${count === 1 ? "" : "s"} on allowlist)`;
+  },
+  "If using 'basic': set ADMIN_PASSWORD in .env.local (and in Vercel for production). If using 'google': follow docs/for-tech-volunteers/admin-access-google-oauth.md."
+);
+
 // 12. Migration files present (only relevant when features.devotionals is true)
 check(
   "Database migration files (if devotionals enabled)",

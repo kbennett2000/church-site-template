@@ -137,6 +137,28 @@ var config_default = defineConfig({
                 }
               }
             ]
+          },
+          {
+            type: "object",
+            name: "adminAuth",
+            label: "Admin Authentication",
+            ui: {
+              description: "How the custom admin pages (/admin/devotionals, /admin/digest) are protected. Does NOT affect TinaCMS at /admin/ \u2014 that has its own login. Switching providers requires environment variables and a redeploy; see docs/for-tech-volunteers/admin-access-google-oauth.md."
+            },
+            fields: [
+              {
+                type: "string",
+                name: "provider",
+                label: "Sign-in method",
+                options: [
+                  { label: "Shared password (HTTP Basic Auth)", value: "basic" },
+                  { label: "Google sign-in (per-person)", value: "google" }
+                ],
+                ui: {
+                  description: "Shared password is the simplest to set up \u2014 one ADMIN_PASSWORD env var protects everything. Google sign-in gives each volunteer their own account, with an editable allowlist of admin emails. Pick Google when you have more than one or two admins or want a clean audit trail."
+                }
+              }
+            ]
           }
         ]
       },
@@ -1229,6 +1251,77 @@ var config_default = defineConfig({
             name: "introHtml",
             label: "Intro (optional)",
             ui: { description: "Opening block shown above the digest content. A short greeting or seasonal note." }
+          }
+        ]
+      },
+      // ======================================================================
+      // 20. ADMIN ACCESS  (content/admin-access.json)
+      // ======================================================================
+      // List of Google accounts permitted to sign in to the custom admin
+      // pages when Site Settings → Admin Authentication is set to "Google
+      // sign-in". Only consulted in that mode; the Basic Auth path ignores
+      // this file. The ADMIN_ALLOWLIST env var can supplement this list
+      // (useful for bootstrapping when the list is empty).
+      {
+        name: "adminAccess",
+        label: "Admin Access",
+        path: "content",
+        format: "json",
+        match: { include: "admin-access" },
+        ui: {
+          allowedActions: { create: false, delete: false },
+          global: true
+        },
+        fields: [
+          {
+            type: "object",
+            name: "admins",
+            label: "Admins",
+            list: true,
+            ui: {
+              itemProps: (item) => ({ label: item?.email ?? "Admin" }),
+              description: "Each entry is one Google account that can sign in. The email must match exactly what Google has on file for that account \u2014 it's the same address you'd see in their Gmail or Google Workspace."
+            },
+            fields: [
+              {
+                type: "string",
+                name: "email",
+                label: "Email",
+                isTitle: true,
+                required: true,
+                ui: {
+                  description: "The email associated with the Google account that should have admin access. Case-insensitive. Works with both gmail.com addresses and Google Workspace custom domains (e.g. pastor@yourchurch.org if your church uses Google Workspace)."
+                }
+              },
+              {
+                type: "string",
+                name: "role",
+                label: "Role",
+                options: [
+                  { label: "Admin (full access)", value: "admin" }
+                ],
+                ui: {
+                  description: 'Currently only "admin" exists. Reserved for future roles like "editor" with narrower permissions.'
+                }
+              },
+              {
+                type: "datetime",
+                name: "addedAt",
+                label: "Added On",
+                ui: {
+                  dateFormat: "YYYY-MM-DD",
+                  description: "When this person was given access. For audit purposes only."
+                }
+              },
+              {
+                type: "string",
+                name: "addedBy",
+                label: "Added By (note)",
+                ui: {
+                  description: 'Optional note about who granted access and why. Example: "Pastor invited 2026-05-01 \u2014 leads communications team".'
+                }
+              }
+            ]
           }
         ]
       },

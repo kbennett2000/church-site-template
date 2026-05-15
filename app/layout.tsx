@@ -4,6 +4,7 @@ import Script from "next/script";
 import "./globals.css";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { SignedOutBanner } from "@/components/admin/signed-out-banner";
 import { churchInfo } from "@/lib/church-info";
 import { givingConfig, shouldLoadModalScript, getModalScriptSrc } from "@/lib/giving";
 
@@ -47,6 +48,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${fraunces.variable}`}>
       <body className="font-sans">
+        <SignedOutBanner />
         <SiteHeader />
         <main>{children}</main>
         <SiteFooter />

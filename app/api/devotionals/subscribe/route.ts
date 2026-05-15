@@ -147,7 +147,7 @@ async function sendVerificationEmail({
     })
     .filter(Boolean) as string[];
 
-  const verificationUrl = `${baseUrl}/devotionals/verify?token=${verToken}`;
+  const verificationUrl = `${baseUrl}/api/devotionals/verify?token=${verToken}`;
 
   const html = await render(
     VerificationEmail({

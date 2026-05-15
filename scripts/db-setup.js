@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 // Interactive Postgres setup helper. Run with: npm run db:setup
 //
-// Checks that DATABASE_URL is set and then runs drizzle-kit push
-// to create or migrate the database schema.
+// Checks that DATABASE_URL is set and then runs drizzle-kit migrate
+// to apply the migration files in drizzle/migrations/ to the database.
 
 "use strict";
 
@@ -41,20 +41,20 @@ if (!url) {
 
 console.log(`${c.green}✓${c.reset} DATABASE_URL found.\n`);
 
-// ── 2. Run drizzle-kit push ────────────────────────────────────────────────
+// ── 2. Run drizzle-kit migrate ─────────────────────────────────────────────
 
-console.log(`Running ${c.cyan}drizzle-kit push${c.reset} to apply schema...\n`);
+console.log(`Running ${c.cyan}drizzle-kit migrate${c.reset} to apply pending migrations...\n`);
 
 try {
-  execSync("npx drizzle-kit push", {
+  execSync("npx drizzle-kit migrate", {
     cwd: ROOT,
     stdio: "inherit",
     env: { ...process.env },
   });
-  console.log(`\n${c.green}${c.bold}✓ Schema applied.${c.reset}\n`);
+  console.log(`\n${c.green}${c.bold}✓ Migrations applied.${c.reset}\n`);
   console.log(`Next step: run ${c.cyan}npm run doctor${c.reset} to verify the full setup.\n`);
 } catch {
-  console.log(`\n${c.red}✗ drizzle-kit push failed.${c.reset}\n`);
+  console.log(`\n${c.red}✗ drizzle-kit migrate failed.${c.reset}\n`);
   console.log(
     "Check that DATABASE_URL points to a running Postgres instance and that your IP is allowed.\n"
   );

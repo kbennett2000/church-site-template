@@ -58,7 +58,7 @@ From your project directory, run:
 npm run db:setup
 ```
 
-This checks that `DATABASE_URL` is set and then runs `drizzle-kit push` to create the `subscribers` and `subscriber_plans` tables. You only need to do this once (or after schema changes).
+This checks that `DATABASE_URL` is set and then runs `drizzle-kit migrate` to apply the SQL migration files from `drizzle/migrations/` to your database. These files are included in the repo, so no generation step is needed on first install — just apply them.
 
 To verify the tables were created:
 
@@ -67,6 +67,39 @@ npm run db:studio
 ```
 
 This opens Drizzle Studio in your browser — a visual view of your database.
+
+### Safe schema-change workflow
+
+If you (or a future developer) ever need to change the database schema, **do not use `npm run db:push`** on a production database. `db:push` can DROP and recreate tables when it encounters a change it can't apply non-destructively, which destroys your subscriber data.
+
+The safe workflow is:
+
+```bash
+# 1. Edit lib/db/schema.ts with your changes
+# 2. Generate a SQL migration file — does NOT touch the database
+npm run db:generate
+
+# 3. Review the generated file in drizzle/migrations/
+#    Confirm it contains only ALTER TABLE / CREATE INDEX etc., not DROP TABLE.
+
+# 4. Commit the migration file to git
+
+# 5. Apply it to the database
+npm run db:migrate
+```
+
+`db:generate` creates a dated SQL file (e.g., `0001_add_subscriber_notes.sql`). Review it before running `db:migrate`. If you see `DROP TABLE` or `DROP COLUMN` in the generated SQL, stop — Drizzle detected a destructive change and the migration file will say so explicitly. Rename columns in schema instead of dropping-and-adding if you want to preserve data.
+
+### What if I accidentally ran db:push and lost data?
+
+Neon (the recommended Postgres provider) keeps 7 days of point-in-time recovery on the free tier.
+
+1. Go to your Neon dashboard → your project → **Branches**.
+2. Click **Restore** next to your main branch.
+3. Choose the timestamp just before the accidental push.
+4. Neon creates a new branch at that point in time — verify the data there before restoring.
+
+Full instructions: https://neon.tech/docs/guides/branch-restore
 
 ---
 
@@ -132,7 +165,7 @@ Click **Unsubscribe** at the bottom of the manage page. You should land at `/dev
 npm run doctor
 ```
 
-With `features.devotionals: true`, doctor now checks that `DATABASE_URL` is set. All 11 checks should pass.
+With `features.devotionals: true`, doctor now checks that `DATABASE_URL` is set and that migration files exist in `drizzle/migrations/`. All 12 checks should pass.
 
 ---
 

@@ -206,6 +206,33 @@ check(
   "Set DATABASE_URL in .env.local (copy from Vercel → Storage → your database). Then run: npm run db:setup"
 );
 
+// 12. Migration files present (only relevant when features.devotionals is true)
+check(
+  "Database migration files (if devotionals enabled)",
+  () => {
+    const sitePath = p("content", "site.json");
+    if (!fs.existsSync(sitePath)) return "site.json not found — skipping";
+    const site = JSON.parse(fs.readFileSync(sitePath, "utf8"));
+    const enabled = site?.features?.devotionals === true;
+    if (!enabled) return "devotionals disabled — skipping";
+
+    const migrationsDir = p("drizzle", "migrations");
+    if (!fs.existsSync(migrationsDir)) {
+      throw new Error(
+        "drizzle/migrations/ directory is missing. Migration files have not been generated."
+      );
+    }
+    const sqlFiles = fs.readdirSync(migrationsDir).filter((f) => f.endsWith(".sql"));
+    if (sqlFiles.length === 0) {
+      throw new Error(
+        "drizzle/migrations/ exists but contains no .sql files."
+      );
+    }
+    return `${sqlFiles.length} migration file${sqlFiles.length === 1 ? "" : "s"} — run npm run db:migrate to apply any pending`;
+  },
+  "Run: npm run db:generate  to create migration files from the current schema, then npm run db:migrate  to apply them. See docs/for-developers/database-migrations.md."
+);
+
 // ---- Summary ----
 console.log("");
 if (issues.length === 0) {

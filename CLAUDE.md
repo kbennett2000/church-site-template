@@ -199,7 +199,7 @@ There's a final grep sweep documented in [`docs/PRE_LAUNCH_REVIEW.md`](docs/PRE_
     ├── setup.js                npm run setup — interactive setup wizard
     ├── dev.js                  npm run start — wrapper around `next dev`
     ├── deploy-setup.js         npm run deploy — Vercel walkthrough
-    ├── doctor.js               npm run doctor — 11 health checks
+    ├── doctor.js               npm run doctor — 12 health checks
     └── welcome.js              post-install banner (run once via marker file)
 ```
 
@@ -388,7 +388,7 @@ Things I've learned about how they work, beyond what's in the auto-memory:
 After any non-trivial edit:
 
 ```bash
-npm run doctor    # 11 health checks; 1 expected "fail" (TinaCloud credentials not set locally)
+npm run doctor    # 12 health checks; 1 expected "fail" (TinaCloud credentials not set locally)
 npx next build   # Next.js-only build — skips tinacms step, works without credentials
 ```
 
@@ -478,7 +478,7 @@ The build output should show:
 npm run cms         # tinacms dev + next dev on :3000 (single terminal; enables /admin/ locally)
 npm run build       # production build (requires NEXT_PUBLIC_TINA_CLIENT_ID + TINA_TOKEN)
 npx next build      # Next.js-only build — works without TinaCloud credentials
-npm run doctor      # 11 health checks
+npm run doctor      # 12 health checks
 
 # First-time / re-configuration
 npm run setup       # interactive wizard (church name, address, palette)

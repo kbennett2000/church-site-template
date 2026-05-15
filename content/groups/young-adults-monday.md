@@ -7,6 +7,6 @@ lifeStage: Young Adults
 leader: Group Leader
 leaderPhoto: ''
 description: 20s & 30s working through a book of the Bible — dinner included.
-contactEmail: kbennett2000@hotmail.com
+contactEmail: kbennett2000@gmail.com
 ---
 

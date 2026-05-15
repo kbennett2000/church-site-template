@@ -75,6 +75,54 @@ The free online service that hosts the church's website files (in a repository).
 
 ---
 
+### Vercel
+
+The service that runs the actual website on the internet. When you click **Save** in the editor, Vercel notices, rebuilds the site, and publishes the new version — usually within 2-3 minutes. **You never log in to Vercel as an editor.** Your tech volunteer set it up once and you don't need to think about it.
+
+---
+
+### Slug
+
+The short, lowercase, hyphenated version of a name used in a web address. The slug for "Wednesday Bible Study" might be `wednesday-bible-study`. You'll only see this word if you're managing reading plans or custom pages, where slugs become part of the page's URL. The rule of thumb: lowercase letters, numbers, and hyphens only.
+
+---
+
+### Double opt-in
+
+A two-step sign-up process for email subscribers. After someone enters their email, they get a confirmation email with a link they have to click before they're added to the list. This proves the email address is real and that the person actually wants the emails — it's the gold standard for email newsletters and the law in many places.
+
+---
+
+### RSVP
+
+Short for "please respond" (from French). On the church site, **RSVP** means an event has a button visitors can click to say they're coming. Useful for potlucks, breakfasts, and other events where you need a headcount. You turn RSVPs on or off per event when you create it.
+
+---
+
+### Environment variable
+
+A configuration setting (like a password or an API key) that the website uses behind the scenes. Things like `RESEND_API_KEY` or `ADMIN_PASSWORD` are environment variables. **Editors don't touch these** — they live in Vercel and are managed by your tech volunteer. They're mentioned here because you might see the term in another doc and wonder.
+
+---
+
+### Cron
+
+An automated job that runs on a schedule — every hour, every day at 8 AM, every Monday morning, etc. The daily devotional emails are sent by a cron job. The weekly digest is sent by a cron job. You don't set up cron jobs as an editor — your tech volunteer did this during setup. The word just means "scheduled task."
+
+---
+
+### YAML / frontmatter
+
+**Frontmatter** is the block of settings at the top of a content file — for example, a sermon's title, date, and speaker. It's written in **YAML**, a format that's picky about indentation and colons. As an editor working through the CMS, **you don't write YAML directly** — the form fields handle it for you. The terms only show up if a doc is talking about advanced editing or if your tech volunteer mentions them.
+
+---
+
+### Feature Flags
+
+Settings in **Site Settings** that turn major features of the site on or off — like whether the Daily Devotionals page exists, or whether the Weekly Digest email is enabled. If a doc tells you to turn on a feature flag, look for **Site Settings → Features** in the CMS.
+
+---
+
 ## What's next?
 
 - [Getting started](./01-getting-started.md) — the first-time login walkthrough.

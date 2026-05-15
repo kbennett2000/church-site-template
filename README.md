@@ -1,6 +1,6 @@
 # Church Site Template
 
-> A free, modern, mobile-first website template for small churches. Editors update content in their browser — no developer needed long-term. Deploy free on Vercel in about 30 minutes.
+> A free, modern, mobile-first website template for small churches. Editors update content in their browser — no developer needed long-term. Deploy free on Vercel — about 30 minutes of hands-on time, plan for ~90 minutes the first time end-to-end if you're also installing Node.js, signing up for Vercel and TinaCloud, and waiting on DNS.
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Made with Next.js](https://img.shields.io/badge/built%20with-Next.js-black)](https://nextjs.org/)
@@ -13,7 +13,7 @@
 
 > 💡 *"Use this template"* is the modern, simpler alternative to forking. You get a clean repo with no fork history — better for a long-running church website. If you prefer the classic fork-and-clone flow (e.g. for staying in sync with template updates), see [the developer notes on syncing template changes](docs/for-developers/contributing.md#keeping-a-church-instance-in-sync-with-the-template).
 
-Once you have your own copy, follow the [30-minute setup guide](docs/for-tech-volunteers/01-overview.md).
+Once you have your own copy, follow the [setup guide](docs/for-tech-volunteers/01-overview.md) — about 30 minutes of hands-on work, ~90 minutes of real elapsed time the first time you do it.
 
 ---
 
@@ -53,7 +53,7 @@ Honest about the floor: this is not zero-effort, but it's well within reach for 
 | What | Cost | Notes |
 |---|---|---|
 | A GitHub account | Free | [Sign up at github.com](https://github.com/signup) if you don't have one. |
-| About 30 minutes for initial setup | Free | Follow the [tech-volunteer overview](docs/for-tech-volunteers/01-overview.md). |
+| ~30 min hands-on, plan ~90 min total first time | Free | Hands-on time vs. real elapsed time (installs + DNS wait) differ — see the [tech-volunteer overview](docs/for-tech-volunteers/01-overview.md) for the breakdown. |
 | A Vercel account | Free | Free tier is plenty for typical small-church traffic (thousands of visitors a day). |
 | A custom domain | ~$12/year (optional) | Like `yourchurch.org`. Optional — you can launch on a `*.vercel.app` URL first and add the domain later. |
 
@@ -82,7 +82,7 @@ For church staff who keep the site updated — sermons, events, staff bios, serv
 
 For the one semi-technical person at the church doing initial setup and deployment.
 
-**[→ 30-minute setup guide](docs/for-tech-volunteers/01-overview.md)**
+**[→ Setup guide (~90 min first time)](docs/for-tech-volunteers/01-overview.md)**
 
 </td>
 <td width="33%" valign="top">

@@ -438,3 +438,15 @@ Created a warm placeholder that names MVC, explains why MVC was chosen as the in
 ### What's still open
 
 Everything else in this audit — items 5 through 24 in §5, plus the tribal-knowledge gaps in §3 and the redundancies in §4 — remains untouched. Pass 1 was strictly scoped to the four launch-blockers. Two unrelated broken-reference issues surfaced during the CLAUDE.md edit and are flagged inline: the missing `PRE_LAUNCH_REVIEW.md` (and its launch-copy appendices) and the missing `CHANGELOG.md`. Both are out of scope for this pass.
+
+---
+
+## Session A note — 2026-05-15
+
+One additional technical-audit item was closed alongside the adoption-audit Session A pass:
+
+**§5 item 9 — spurious `CHURCH_EMAIL` reference in [`setup-devotional-emails.md`](docs/for-tech-volunteers/setup-devotional-emails.md) Step 6 ✅**
+
+Step 6's troubleshooting list now clarifies that `CHURCH_EMAIL` is only used by the form-submission handlers, not devotionals.
+
+The rest of this audit's items remain unfixed.

@@ -14,7 +14,7 @@ time: 5 minutes
 
 ## What you're about to do
 
-You're adopting a template for your church. Here's what the next 30 minutes looks like:
+You're adopting a template for your church. Here's the whole journey:
 
 1. **Make your own copy of the template repo** on GitHub (one click — the green "Use this template" button).
 2. **Open it in your browser** (Codespaces) or on your computer (clone + Node.js).
@@ -55,9 +55,13 @@ You'll customize the content, branding, and a few photos. You will not be writin
 | 7 | Invite editors and set up CMS authentication | 10 min | [Grant editor access](./08-grant-editor-access.md) |
 | 8 | Routine maintenance (monthly) | 10 min/month | [Maintenance](./09-maintenance.md) |
 
-**Total time on the first day: about 30 minutes**, assuming Node.js is already installed (or you use Codespaces). If you need to install Node.js first, add another 10–15 minutes. If you spend time customizing branding (real photos, fine-tuning colors), add 10–20 minutes more.
+**How long this actually takes:**
 
-> **Heads-up:** the "30 minutes" target is *initial deployment* — you'll have a live site at a `*.vercel.app` URL. Replacing all the placeholder content (staff bios, ministries, beliefs, real photos) is a separate batch of work, typically a weekend afternoon. See [SEED_DATA.md](../../SEED_DATA.md) for the full checklist.
+- **First-time tech volunteer, end-to-end:** plan for **roughly 90 minutes**. That includes installing Node.js (10–15 min) or picking Codespaces, finding the TinaCloud/Vercel credentials your first time, and waiting on DNS propagation for the custom domain (5–60 min, mostly waiting, not working). If anything goes sideways, allow a full afternoon.
+- **Hands-on time only** (skipping installs and waits): **about 30 minutes.** That's the "steady-state" number you'll see in marketing copy — accurate if you've done this before, or if you skip the custom domain on day one and add it later.
+- **First content pass** (replacing placeholder staff bios, ministries, beliefs, real photos): **a separate weekend afternoon.** See [SEED_DATA.md](../../SEED_DATA.md) for the full checklist.
+
+The 30-minute number isn't a lie — it's the time the actual steps take with no waiting and no first-time fumbling. But on a real Saturday morning, with installs and DNS waits and looking-up-where-the-credentials-live, plan for 90 minutes and feel good if you finish faster.
 
 > **Tip:** If anything goes wrong along the way, [troubleshooting](./troubleshooting.md) covers the common issues.
 

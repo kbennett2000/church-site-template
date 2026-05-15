@@ -145,7 +145,7 @@ If you use SOAP-style reading plans, also fill in the SOAP-specific **intro** an
 5. Check `/admin/devotionals` (password protected) — your subscriber should appear with status **active**.
 
 If the email doesn't arrive, check:
-- `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, and `CHURCH_EMAIL` are set in Vercel environment variables.
+- `RESEND_API_KEY` and `RESEND_FROM_EMAIL` are set in Vercel environment variables. (`CHURCH_EMAIL` is *not* required for devotionals — it's only used by the contact/prayer/visit form handlers.)
 - The sender email domain is verified in your Resend dashboard.
 - Check Resend's **Logs** for a bounce or block.
 

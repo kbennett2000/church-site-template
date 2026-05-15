@@ -65,7 +65,7 @@ You should now see a welcome banner:
 
 ### 3. Wait for dependencies to install
 
-The script first installs all the project's required software packages. The first time this runs, it takes 1-3 minutes. You'll see a few lines of output ending with a green checkmark:
+The script first installs all the project's required software packages. The first time this runs, it takes 1-3 minutes. **You'll see a wall of text scroll by — that's normal.** Just leave the window alone and wait for the green checkmark. When it's done, you'll see a few lines of output ending with the checkmark:
 
 ```
 Step 2 — Installing required software

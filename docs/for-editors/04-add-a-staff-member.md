@@ -84,9 +84,7 @@ The **Display Order** number controls who appears first on the staff page.
 
 > **Warning:** If you give two people the same number, the order between them is unpredictable. Check the staff list before you publish to make sure each person has a unique number.
 
-> **Tip:** If you need to insert a new person between existing entries (say, between #2 and #3), you can:
-> - **Option A (easy):** Give the new person `2.5` — fractional numbers work fine.
-> - **Option B (tidy):** Renumber the people below them to make room (open each entry, change the number, save).
+> **Tip:** If you need to insert a new person between existing entries (say, between #2 and #3), give the new person `2.5`. Fractional numbers work fine — you don't have to renumber anyone else. The site sorts by the number, so `2.5` lands between `2` and `3` exactly where you'd expect.
 
 ### 8. Fill in Bio
 
@@ -100,7 +98,7 @@ Example: *"John has served as Senior Pastor since 2018. He and his wife Sarah ha
 
 **Click** the **Save** button at the top.
 
-TinaCMS commits your change directly to the site. Within 2-3 minutes, the new staff member will appear on the About page and the Contact page in the order you set.
+TinaCMS commits (saves a snapshot of) your change directly to the site. Within 2-3 minutes, the new staff member will appear on the About page and the Contact page in the order you set.
 
 ## How to remove a staff member
 

@@ -140,7 +140,7 @@ For example: *"Boaz steps onto the page as a picture of faithful, quiet kindness
 
 **Click** the **Save** button at the top of the form.
 
-You should now see a confirmation that the change was saved. TinaCMS commits the change directly to the website — no tech volunteer approval needed.
+You should now see a confirmation that the change was saved. TinaCMS commits (saves a snapshot of) the change directly to the website — no tech volunteer approval needed.
 
 Wait about 2-3 minutes, then open the public site. The sermon will appear on the watch page and update the "latest sermon" section on the homepage.
 

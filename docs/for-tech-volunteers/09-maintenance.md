@@ -98,15 +98,32 @@ This verifies everything is still wired up correctly — config files exist, con
 
 ### Review editor access
 
-**Open** GitHub → your repo → **Settings** → **Collaborators**.
+> ⚠️ **Important — read first:** Editor CMS access is controlled in **TinaCloud**, not GitHub. Removing someone from GitHub Collaborators does **NOT** revoke their CMS access — they can still sign in at `/admin/` and edit the site. Always revoke via TinaCloud first.
 
-For each name in the list, ask yourself: "Does this person still need access?"
+There are up to **three** places someone might have access. Review each:
 
-If someone has left their role at the church:
+**1. TinaCloud (the CMS — the one that actually matters for editors).** This is where editors sign in to update sermons, events, staff, etc.
 
-**Click** **Remove** next to their name.
+- **Open** [app.tina.io](https://app.tina.io) → your project → **Users**.
+- For each user, ask yourself: "Does this person still need to edit the site?"
+- If someone has left their role, **click** their row → **Remove user**.
 
-> **Tip:** Set a recurring calendar event titled "Review church site collaborators" for the first day of each quarter.
+See [Grant editor access](./08-grant-editor-access.md) for the canonical add/remove procedure.
+
+**2. The admin allowlist** (if you set up Google sign-in for the custom admin pages — `/admin/digest`, `/admin/devotionals`).
+
+- **Open** the CMS at `/admin/` → **Admin Access**.
+- Remove anyone who shouldn't be on the admin list any more.
+
+See [Managing admin access](../for-editors/managing-admin-access.md) for details.
+
+**3. GitHub Collaborators** (only relevant if you gave someone direct repository access — usually only other developers/tech volunteers, not editors).
+
+- **Open** GitHub → your repo → **Settings** → **Collaborators**.
+- Remove anyone who shouldn't have repo-level access any more.
+- Note: this is *separate* from CMS access. Removing from GitHub does not revoke CMS access; you must also do step 1.
+
+> **Tip:** Set a recurring calendar event titled "Review church site access" for the first day of each quarter. Include all three checks above so nothing gets skipped.
 
 ---
 
@@ -177,11 +194,15 @@ This creates a new commit that undoes the deletion. Merge it and the entry comes
 
 ## When someone leaves
 
-**Within 24 hours** of a volunteer or editor leaving the church (or transitioning out of their role):
+**Within 24 hours** of a volunteer or editor leaving the church (or transitioning out of their role), revoke access in the right places. CMS editor access lives in TinaCloud, not GitHub — make sure step 1 happens.
 
-1. **Remove** them as a GitHub collaborator (Settings → Collaborators).
-2. **If they had Vercel access**, remove that too.
-3. **If they had access to the domain registrar**, change the password or remove their account.
+1. **TinaCloud** ([app.tina.io](https://app.tina.io) → your project → **Users** → Remove). This is the one that actually stops them editing the site.
+2. **Admin allowlist** (CMS → **Admin Access** → delete their row), if Google sign-in is enabled for the custom admin pages.
+3. **GitHub collaborators** (Settings → Collaborators → Remove), if they had repo-level access.
+4. **Vercel team members**, if they had Vercel access.
+5. **Domain registrar account**, if they had access there.
+
+> ⚠️ **Remember:** removing a GitHub collaborator does **not** revoke CMS access. An editor whose TinaCloud access is still active can keep signing in to `/admin/` and editing the site even after losing the GitHub role. Always start with TinaCloud.
 
 ---
 

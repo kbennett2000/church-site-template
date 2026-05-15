@@ -11,6 +11,20 @@ This guide explains how to make sure devotional emails (and other site emails) l
 
 ---
 
+## Before you start: Resend sandbox mode and the verified-owner-only limit
+
+> ⚠️ **The single most common "why isn't this working?" trap.** If you use the default Resend sender address `onboarding@resend.dev`, Resend will **only deliver to the one email address that owns your Resend account** — the email you signed up with. It silently drops every other recipient.
+
+This is Resend's sandbox-mode safety: it lets you smoke-test the integration without verifying a domain, but it keeps you from accidentally emailing strangers. For your church site, that means:
+
+- **Testing** with `onboarding@resend.dev` works fine — but only if you're subscribed under your *own* Resend account email. Sign up your spouse, the pastor, or a test Gmail address and the email will appear to send, show up in Resend's logs as `delivered`, but never reach the inbox.
+- **The fix is to verify your own domain** (Step 1 below). Once verified, `devotionals@yourchurch.org` (or any address on your domain) sends to anyone, just like a normal email account.
+- **Symptoms you've hit this trap:** the welcome / verification email arrived fine when you tested with your own email, but other subscribers say nothing ever came. Check Resend → **Logs** — if you see `delivered` but the recipient says nothing arrived, you're sending from the sandbox.
+
+Plan to verify your domain *before* you invite real subscribers. Domain verification takes 10–30 minutes including DNS propagation; sandbox mode is for testing only.
+
+---
+
 ## Step 1 — Verify your sending domain in Resend
 
 When you signed up for Resend and added `RESEND_API_KEY`, you entered an "from" address for site emails (e.g., `noreply@yourchurch.org`). Before Resend can send from that address at scale, you need to verify ownership of that domain.

@@ -72,7 +72,7 @@ Same pattern for any field on the form:
 
 **Click** the **Save** button at the top.
 
-TinaCMS commits the change directly to the site. Within 2-3 minutes, every page that shows that information will update automatically.
+TinaCMS commits (saves a snapshot of) the change directly to the site. Within 2-3 minutes, every page that shows that information will update automatically.
 
 ## What about the homepage headline?
 

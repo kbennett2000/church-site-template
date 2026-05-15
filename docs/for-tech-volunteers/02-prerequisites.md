@@ -25,11 +25,13 @@ If you'd rather not install software on your computer, **use Codespaces**. It ru
 **Pros:**
 - Zero install. Works from any computer with a browser.
 - The same setup every time (no "works on my machine" issues).
-- Free for 60 hours/month — more than enough for setup and maintenance.
+- Free for 60 hours per month.
 
 **Cons:**
 - Requires an internet connection.
 - Slightly slower than running locally.
+
+> **About the 60-hour quota:** Codespaces counts time only while a codespace is actively running (terminal open, editor in foreground). Casual content updates use **less than 5 hours per month** — you won't hit the limit unless you're doing serious development. If you do approach it, stopping the codespace when you're done (rather than just closing the browser tab) and deleting old codespaces clears most of it.
 
 **Skip the rest of this page and go to [Use this template](./03-use-this-template.md).** Codespaces gives you Node.js and Git built in.
 

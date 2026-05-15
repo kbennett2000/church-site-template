@@ -26,6 +26,54 @@ The website understands three patterns. Pick the one that matches your event:
 2. **Nth of month** — happens on the Nth Saturday/Sunday/etc. of each month. (Example: "Second Saturday Men's Breakfast" — the 2nd Saturday every month.)
 3. **Last of month** — happens on the last Saturday/Sunday/etc. of each month. (Example: "Last Sunday Potluck.")
 
+## Three filled-in examples (read these first)
+
+Most editors find it easier to see a complete example than to read the steps cold. Here are the three patterns above, filled in:
+
+**Example 1 — Wednesday Bible Study (weekly, 7 PM)**
+
+| Field | Value |
+| --- | --- |
+| Internal ID | `wednesday-bible-study` |
+| Event Name | Wednesday Bible Study |
+| Start Time | 7:00 PM |
+| Duration | 90 |
+| Location | Fellowship Hall |
+| Recurrence Type | weekly |
+| Day of Week | 3 (Wednesday) |
+| Which week of the month | (leave blank) |
+| Needs RSVP? | Off |
+
+**Example 2 — Second Saturday Men's Breakfast**
+
+| Field | Value |
+| --- | --- |
+| Internal ID | `mens-breakfast` |
+| Event Name | Men's Breakfast |
+| Start Time | 8:00 AM |
+| Duration | 90 |
+| Location | Fellowship Hall |
+| Recurrence Type | nth-of-month |
+| Day of Week | 6 (Saturday) |
+| Which week of the month | 2 (second) |
+| Needs RSVP? | On |
+
+**Example 3 — Last Sunday Potluck**
+
+| Field | Value |
+| --- | --- |
+| Internal ID | `last-sunday-potluck` |
+| Event Name | Last Sunday Potluck |
+| Start Time | 11:00 AM |
+| Duration | 90 |
+| Location | Fellowship Hall |
+| Recurrence Type | last-of-month |
+| Day of Week | 0 (Sunday) |
+| Which week of the month | (leave blank) |
+| Needs RSVP? | On |
+
+The fields are explained in the steps below — but if you can already see which row of which example matches your event, you can skip to step 13 (Save) once you've filled them in.
+
 ## Steps
 
 ### 1. Open Recurring Events
@@ -146,52 +194,6 @@ If RSVPs aren't needed (like for regular Sunday service), **leave** the toggle o
 **Click** the **Save** button at the top of the page.
 
 TinaCMS commits the change directly to the site. Within 2-3 minutes, the new event will appear on the calendar for every future occurrence.
-
-## Examples
-
-Here are three complete examples to help you see the pattern.
-
-**Example 1: Wednesday Bible Study (weekly, 7 PM)**
-
-| Field | Value |
-| --- | --- |
-| Internal ID | `wednesday-bible-study` |
-| Event Name | Wednesday Bible Study |
-| Start Time | 7:00 PM |
-| Duration | 90 |
-| Location | Fellowship Hall |
-| Recurrence Type | weekly |
-| Day of Week | 3 (Wednesday) |
-| Which week of the month | (leave blank) |
-| Needs RSVP? | Off |
-
-**Example 2: Second Saturday Men's Breakfast**
-
-| Field | Value |
-| --- | --- |
-| Internal ID | `mens-breakfast` |
-| Event Name | Men's Breakfast |
-| Start Time | 8:00 AM |
-| Duration | 90 |
-| Location | Fellowship Hall |
-| Recurrence Type | nth-of-month |
-| Day of Week | 6 (Saturday) |
-| Which week of the month | 2 (second) |
-| Needs RSVP? | On |
-
-**Example 3: Last Sunday Potluck**
-
-| Field | Value |
-| --- | --- |
-| Internal ID | `last-sunday-potluck` |
-| Event Name | Last Sunday Potluck |
-| Start Time | 11:00 AM |
-| Duration | 90 |
-| Location | Fellowship Hall |
-| Recurrence Type | last-of-month |
-| Day of Week | 0 (Sunday) |
-| Which week of the month | (leave blank) |
-| Needs RSVP? | On |
 
 ## Common Mistakes
 

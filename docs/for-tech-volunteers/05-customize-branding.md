@@ -44,7 +44,7 @@ Pick a format and shape:
 
 Both **square icon logos** and **wide wordmark logos** work — the site auto-scales to fit. If you have both, the wordmark usually looks better in the header.
 
-If your logo is on a colored background, edit it to have a transparent background. [Photopea](https://www.photopea.com/) is a free browser-based editor that handles this in 30 seconds.
+If your logo is on a colored background, edit it to have a transparent background. [Photopea](https://www.photopea.com/) is a free browser-based editor that does this well. Budget **5–10 minutes** the first time you use it (learning where the magic-wand tool is, getting the edges clean) — it's faster on the second logo. Search YouTube for "Photopea remove background" if you want a walkthrough.
 
 #### 1b. Add your logo to the project
 
@@ -194,11 +194,24 @@ Same pattern for `/content/ministries/youth.md`, `/content/ministries/women.md`,
 
 ### 4. Fine-tune colors beyond the four setup palettes
 
-> **Code editing starts here.** Everything below this point involves opening real code files (CSS, TypeScript, JSX) and changing values inside them. If your church's brand colors are *close* to one of the four palettes from `npm run setup`, **stop here — that's good enough**. Push the fine-tuning to a developer or skip it entirely.
->
-> If you do want to proceed, take a deep breath. The changes are small and reversible (every edit is in git history — you can roll back).
+#### The four palettes at a glance
 
-The four palettes are starting points. To match your church's exact brand colors, edit the CSS variables in `app/globals.css`.
+If you ran `npm run setup`, you picked one of these. Here's what each one actually looks like:
+
+| Palette | Background | Primary | Accent |
+|---|---|---|---|
+| **Sandstone & Sage** (default) | <img src="https://placehold.co/40x24/F8F2E8/F8F2E8.png" alt="warm cream" /> `#F8F2E8` warm cream | <img src="https://placehold.co/40x24/475C49/475C49.png" alt="deep sage" /> `#475C49` deep sage | <img src="https://placehold.co/40x24/BB5A37/BB5A37.png" alt="terracotta" /> `#BB5A37` terracotta |
+| **Mountain Morning** | <img src="https://placehold.co/40x24/F6F1E4/F6F1E4.png" alt="soft alpine" /> `#F6F1E4` soft alpine | <img src="https://placehold.co/40x24/2F4A3A/2F4A3A.png" alt="evergreen" /> `#2F4A3A` evergreen | <img src="https://placehold.co/40x24/B8842F/B8842F.png" alt="brass" /> `#B8842F` brass |
+| **High Desert** | <img src="https://placehold.co/40x24/FAF3E5/FAF3E5.png" alt="warm white" /> `#FAF3E5` warm white | <img src="https://placehold.co/40x24/A24A2A/A24A2A.png" alt="burnt sienna" /> `#A24A2A` burnt sienna | <img src="https://placehold.co/40x24/7A7B3F/7A7B3F.png" alt="olive" /> `#7A7B3F` olive |
+| **Coastal** | <img src="https://placehold.co/40x24/F8F3E8/F8F3E8.png" alt="soft sand" /> `#F8F3E8` soft sand | <img src="https://placehold.co/40x24/2A4963/2A4963.png" alt="deep navy" /> `#2A4963` deep navy | <img src="https://placehold.co/40x24/C47438/C47438.png" alt="warm orange" /> `#C47438` warm orange |
+
+> If the swatch images don't load, the hex codes alongside each one tell the same story — drop the hex into any color picker to see the shade.
+
+> **Code editing starts here.** Everything below this point involves opening real code files (CSS, TypeScript, JSX) and changing values inside them. If your church's brand colors are *close* to one of the four palettes above, **stop here — that's good enough**. Push the fine-tuning to a developer or skip it entirely.
+>
+> If you do want to proceed, the changes are small and reversible (every edit is in git history — you can roll back).
+
+To match your church's exact brand colors, edit the CSS variables in `app/globals.css`.
 
 #### 4a. Understand the color system
 

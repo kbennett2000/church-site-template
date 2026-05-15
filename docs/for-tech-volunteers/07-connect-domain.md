@@ -100,6 +100,12 @@ Every registrar puts this in a slightly different place. Look for:
 
 The page you're looking for has a list (often a table) of DNS records.
 
+> ⚠️ **If you can't find a DNS or "Custom Records" section anywhere in your registrar's settings:** some registrars (the cheapest GoDaddy plans, and certain "domain + hosting" bundles from companies like Wix, Squarespace, Bluehost, or 1&1/Ionos) don't expose raw DNS records — they hand you a built-in page builder instead and lock the DNS away. If yours does this, you have two options:
+> 1. **Upgrade the plan** to one that includes DNS management (sometimes called "DNS hosting" or "Custom DNS"). This is usually a few dollars a month.
+> 2. **Transfer the domain to a registrar that supports custom DNS** — [Cloudflare](https://cloudflare.com/products/registrar/), [Namecheap](https://www.namecheap.com/), [Porkbun](https://porkbun.com/), and [name.com](https://name.com) all do. Transfers take 5–7 days and are free or near-free; you keep the domain.
+>
+> You cannot use this template's Vercel hosting without DNS control — there's no workaround. Pick option 1 or 2 before continuing.
+
 ### 5. Remove any conflicting records
 
 > **Don't panic about email.** Email and websites use completely different DNS record types. Email lives in **MX records** and (sometimes) **TXT records**. Websites live in **A records** and **CNAME records**. We're only touching the website records in this step. Your email will keep working as long as you don't touch the MX or TXT records.

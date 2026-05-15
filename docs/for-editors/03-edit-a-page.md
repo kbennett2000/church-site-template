@@ -86,7 +86,7 @@ There's also a small text-mode toggle for editors who want to write in Markdown 
 
 **Click** the **Save** button at the top.
 
-TinaCMS commits your change directly to the site. Within 2-3 minutes, Vercel rebuilds and the updated About page appears on the public site.
+TinaCMS commits (saves a snapshot of) your change directly to the site. Within 2-3 minutes, Vercel rebuilds and the updated About page appears on the public site.
 
 > **Tip:** If it doesn't appear after 3 minutes, press Ctrl+Shift+R (Windows) or Cmd+Shift+R (Mac) to force a fresh load.
 

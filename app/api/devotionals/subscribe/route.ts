@@ -66,15 +66,20 @@ export async function POST(req: NextRequest) {
       await upsertPlanSubscription(existing.id, slug);
     }
 
-    const sendError = await sendVerificationEmail({
-      to: email,
-      name: name ?? existing.name ?? null,
-      planSlugs,
-      verToken,
-      churchName,
-      settings,
-      baseUrl: new URL(req.url).origin,
-    });
+    let sendError: unknown;
+    try {
+      sendError = await sendVerificationEmail({
+        to: email,
+        name: name ?? existing.name ?? null,
+        planSlugs,
+        verToken,
+        churchName,
+        settings,
+        baseUrl: new URL(req.url).origin,
+      });
+    } catch (err) {
+      sendError = err;
+    }
 
     if (sendError) {
       console.error("[subscribe] Verification email failed for existing subscriber", email, sendError);
@@ -99,15 +104,20 @@ export async function POST(req: NextRequest) {
       await upsertPlanSubscription(row.id, slug);
     }
 
-    const sendError = await sendVerificationEmail({
-      to: email,
-      name: name ?? null,
-      planSlugs,
-      verToken,
-      churchName,
-      settings,
-      baseUrl: new URL(req.url).origin,
-    });
+    let sendError: unknown;
+    try {
+      sendError = await sendVerificationEmail({
+        to: email,
+        name: name ?? null,
+        planSlugs,
+        verToken,
+        churchName,
+        settings,
+        baseUrl: new URL(req.url).origin,
+      });
+    } catch (err) {
+      sendError = err;
+    }
 
     if (sendError) {
       // Roll back the new row so the user can retry without hitting a duplicate-email error.

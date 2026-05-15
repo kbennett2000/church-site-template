@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { Inter, Fraunces } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { churchInfo } from "@/lib/church-info";
+import { givingConfig, shouldLoadModalScript, getModalScriptSrc } from "@/lib/giving";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -48,6 +50,9 @@ export default function RootLayout({
         <SiteHeader />
         <main>{children}</main>
         <SiteFooter />
+        {shouldLoadModalScript(givingConfig) && (
+          <Script src={getModalScriptSrc(givingConfig)!} strategy="afterInteractive" />
+        )}
       </body>
     </html>
   );

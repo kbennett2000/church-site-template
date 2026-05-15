@@ -80,6 +80,8 @@ type Query {
   groupsConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: GroupsFilter): GroupsConnection!
   serve_roles(relativePath: String): Serve_roles!
   serve_rolesConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: Serve_rolesFilter): Serve_rolesConnection!
+  giving(relativePath: String): Giving!
+  givingConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: GivingFilter): GivingConnection!
   prayer_requests(relativePath: String): Prayer_requests!
   prayer_requestsConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: Prayer_requestsFilter): Prayer_requestsConnection!
 }
@@ -98,6 +100,7 @@ input DocumentFilter {
   announcements: AnnouncementsFilter
   groups: GroupsFilter
   serve_roles: Serve_rolesFilter
+  giving: GivingFilter
   prayer_requests: Prayer_requestsFilter
 }
 
@@ -124,7 +127,7 @@ type Collection {
   documents(before: String, after: String, first: Float, last: Float, sort: String, filter: DocumentFilter, folder: String): DocumentConnection!
 }
 
-union DocumentNode = Site | Navigation | Story | Beliefs | Events | Pages | Staff | Elders | Ministries | Sermons | Announcements | Groups | Serve_roles | Prayer_requests | Folder
+union DocumentNode = Site | Navigation | Story | Beliefs | Events | Pages | Staff | Elders | Ministries | Sermons | Announcements | Groups | Serve_roles | Giving | Prayer_requests | Folder
 
 type SiteChurchAddress {
   street: String
@@ -747,6 +750,138 @@ type Serve_rolesConnection implements Connection {
   edges: [Serve_rolesConnectionEdges]
 }
 
+type GivingPlanningCenter {
+  subdomain: String
+}
+
+type GivingTithely {
+  organizationId: String
+  formUrl: String
+}
+
+type GivingPushpay {
+  merchantHandle: String
+}
+
+type GivingSubsplash {
+  embedCode: String
+}
+
+type GivingStripe {
+  paymentLinkUrl: String
+}
+
+type GivingCustomUrl {
+  url: String
+  linkText: String
+}
+
+type GivingOfflineGivingTextToGive {
+  enabled: Boolean
+  number: String
+  keyword: String
+}
+
+type GivingOfflineGiving {
+  enabled: Boolean
+  mailingAddress: String
+  inPersonInstructions: String
+  textToGive: GivingOfflineGivingTextToGive
+}
+
+type GivingFaq {
+  question: String!
+  answer: String
+}
+
+type Giving implements Node & Document {
+  provider: String
+  displayMode: String
+  callToAction: String
+  supportingMessage: String
+  planningCenter: GivingPlanningCenter
+  tithely: GivingTithely
+  pushpay: GivingPushpay
+  subsplash: GivingSubsplash
+  stripe: GivingStripe
+  customUrl: GivingCustomUrl
+  offlineGiving: GivingOfflineGiving
+  faq: [GivingFaq]
+  id: ID!
+  _sys: SystemInfo!
+  _values: JSON!
+}
+
+input GivingPlanningCenterFilter {
+  subdomain: StringFilter
+}
+
+input GivingTithelyFilter {
+  organizationId: StringFilter
+  formUrl: StringFilter
+}
+
+input GivingPushpayFilter {
+  merchantHandle: StringFilter
+}
+
+input GivingSubsplashFilter {
+  embedCode: StringFilter
+}
+
+input GivingStripeFilter {
+  paymentLinkUrl: StringFilter
+}
+
+input GivingCustomUrlFilter {
+  url: StringFilter
+  linkText: StringFilter
+}
+
+input GivingOfflineGivingTextToGiveFilter {
+  enabled: BooleanFilter
+  number: StringFilter
+  keyword: StringFilter
+}
+
+input GivingOfflineGivingFilter {
+  enabled: BooleanFilter
+  mailingAddress: StringFilter
+  inPersonInstructions: StringFilter
+  textToGive: GivingOfflineGivingTextToGiveFilter
+}
+
+input GivingFaqFilter {
+  question: StringFilter
+  answer: StringFilter
+}
+
+input GivingFilter {
+  provider: StringFilter
+  displayMode: StringFilter
+  callToAction: StringFilter
+  supportingMessage: StringFilter
+  planningCenter: GivingPlanningCenterFilter
+  tithely: GivingTithelyFilter
+  pushpay: GivingPushpayFilter
+  subsplash: GivingSubsplashFilter
+  stripe: GivingStripeFilter
+  customUrl: GivingCustomUrlFilter
+  offlineGiving: GivingOfflineGivingFilter
+  faq: GivingFaqFilter
+}
+
+type GivingConnectionEdges {
+  cursor: String!
+  node: Giving
+}
+
+type GivingConnection implements Connection {
+  pageInfo: PageInfo!
+  totalCount: Float!
+  edges: [GivingConnectionEdges]
+}
+
 type Prayer_requests implements Node & Document {
   initials: String
   date: String
@@ -805,6 +940,8 @@ type Mutation {
   createGroups(relativePath: String!, params: GroupsMutation!): Groups!
   updateServe_roles(relativePath: String!, params: Serve_rolesMutation!): Serve_roles!
   createServe_roles(relativePath: String!, params: Serve_rolesMutation!): Serve_roles!
+  updateGiving(relativePath: String!, params: GivingMutation!): Giving!
+  createGiving(relativePath: String!, params: GivingMutation!): Giving!
   updatePrayer_requests(relativePath: String!, params: Prayer_requestsMutation!): Prayer_requests!
   createPrayer_requests(relativePath: String!, params: Prayer_requestsMutation!): Prayer_requests!
 }
@@ -823,6 +960,7 @@ input DocumentUpdateMutation {
   announcements: AnnouncementsMutation
   groups: GroupsMutation
   serve_roles: Serve_rolesMutation
+  giving: GivingMutation
   prayer_requests: Prayer_requestsMutation
   relativePath: String
 }
@@ -841,6 +979,7 @@ input DocumentMutation {
   announcements: AnnouncementsMutation
   groups: GroupsMutation
   serve_roles: Serve_rolesMutation
+  giving: GivingMutation
   prayer_requests: Prayer_requestsMutation
 }
 
@@ -1040,6 +1179,65 @@ input Serve_rolesMutation {
   description: String
   icon: String
   order: Float
+}
+
+input GivingPlanningCenterMutation {
+  subdomain: String
+}
+
+input GivingTithelyMutation {
+  organizationId: String
+  formUrl: String
+}
+
+input GivingPushpayMutation {
+  merchantHandle: String
+}
+
+input GivingSubsplashMutation {
+  embedCode: String
+}
+
+input GivingStripeMutation {
+  paymentLinkUrl: String
+}
+
+input GivingCustomUrlMutation {
+  url: String
+  linkText: String
+}
+
+input GivingOfflineGivingTextToGiveMutation {
+  enabled: Boolean
+  number: String
+  keyword: String
+}
+
+input GivingOfflineGivingMutation {
+  enabled: Boolean
+  mailingAddress: String
+  inPersonInstructions: String
+  textToGive: GivingOfflineGivingTextToGiveMutation
+}
+
+input GivingFaqMutation {
+  question: String
+  answer: String
+}
+
+input GivingMutation {
+  provider: String
+  displayMode: String
+  callToAction: String
+  supportingMessage: String
+  planningCenter: GivingPlanningCenterMutation
+  tithely: GivingTithelyMutation
+  pushpay: GivingPushpayMutation
+  subsplash: GivingSubsplashMutation
+  stripe: GivingStripeMutation
+  customUrl: GivingCustomUrlMutation
+  offlineGiving: GivingOfflineGivingMutation
+  faq: [GivingFaqMutation]
 }
 
 input Prayer_requestsMutation {

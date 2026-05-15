@@ -518,6 +518,310 @@ export default defineConfig({
       },
 
       // ======================================================================
+      // 15. GIVING SETTINGS  (content/giving.json)
+      // ======================================================================
+      // Singleton document — one giving configuration for the whole site.
+      // Provider-specific sections are conditionally shown based on the
+      // selected provider value so editors only see relevant fields.
+      {
+        name: "giving",
+        label: "Giving",
+        path: "content",
+        format: "json",
+        match: { include: "giving" },
+        ui: {
+          allowedActions: { create: false, delete: false },
+          global: true,
+        },
+        fields: [
+          {
+            type: "string",
+            name: "provider",
+            label: "Giving Provider",
+            options: [
+              { label: "Offline Only (no online giving)", value: "offline_only" },
+              { label: "Planning Center Giving", value: "planning_center" },
+              { label: "Tithe.ly", value: "tithely" },
+              { label: "Pushpay", value: "pushpay" },
+              { label: "Subsplash Giving", value: "subsplash" },
+              { label: "Stripe Payment Link", value: "stripe" },
+              { label: "Custom URL", value: "custom_url" },
+            ],
+            ui: {
+              description:
+                'Which platform do you use for online donations? If you don\'t have online giving yet, choose "Offline Only" — the /give page will display your mailing address and in-person instructions instead of a button.',
+            },
+          },
+          {
+            type: "string",
+            name: "displayMode",
+            label: "How should the Give button open?",
+            options: [
+              { label: "New tab (recommended for most providers)", value: "newTab" },
+              { label: "Same page / redirect", value: "redirect" },
+              { label: "Modal overlay (Planning Center only)", value: "modal" },
+            ],
+            ui: {
+              description:
+                '"Modal overlay" only works with Planning Center. For all other providers, use "New tab" or "Same page".',
+            },
+          },
+          {
+            type: "string",
+            name: "callToAction",
+            label: "Button Label",
+            ui: {
+              description:
+                'Text shown on the Give button across the site. Short labels work best: "Give", "Donate", "Give Now".',
+            },
+          },
+          {
+            type: "string",
+            name: "supportingMessage",
+            label: "Supporting Message",
+            ui: {
+              component: "textarea",
+              description:
+                "One sentence shown on the /give page below the headline. Tell donors what their gift accomplishes.",
+            },
+          },
+
+          // ── Planning Center ──────────────────────────────────────────────
+          {
+            type: "object",
+            name: "planningCenter",
+            label: "Planning Center Settings",
+            // Shown when provider === "planning_center"
+            ui: {
+              description:
+                'Fill in these fields when your provider is set to "Planning Center Giving".',
+            } as object,
+            fields: [
+              {
+                type: "string",
+                name: "subdomain",
+                label: "Planning Center Subdomain",
+                ui: {
+                  description:
+                    'The part before .churchcenter.com in your giving URL. If donors give at mychurch.churchcenter.com/giving, your subdomain is "mychurch". Find it at the top of your Planning Center Giving admin page.',
+                },
+              },
+            ],
+          },
+
+          // ── Tithe.ly ─────────────────────────────────────────────────────
+          {
+            type: "object",
+            name: "tithely",
+            label: "Tithe.ly Settings",
+            ui: {
+              description:
+                'Fill in these fields when your provider is set to "Tithe.ly". Use formUrl if Tithe.ly gave you a custom link; otherwise enter your Organization ID.',
+            } as object,
+            fields: [
+              {
+                type: "string",
+                name: "organizationId",
+                label: "Organization ID",
+                ui: {
+                  description:
+                    "Found in your Tithe.ly admin under Settings → Organization. It looks like a short number.",
+                },
+              },
+              {
+                type: "string",
+                name: "formUrl",
+                label: "Custom Form URL (optional)",
+                ui: {
+                  description:
+                    "If Tithe.ly gave you a direct link to your giving form, paste it here. Leave blank to use the Organization ID.",
+                },
+              },
+            ],
+          },
+
+          // ── Pushpay ───────────────────────────────────────────────────────
+          {
+            type: "object",
+            name: "pushpay",
+            label: "Pushpay Settings",
+            ui: {
+              description:
+                'Fill in this field when your provider is set to "Pushpay".',
+            } as object,
+            fields: [
+              {
+                type: "string",
+                name: "merchantHandle",
+                label: "Merchant Handle",
+                ui: {
+                  description:
+                    "Your Pushpay merchant handle — the part after pushpay.com/g/ in your giving link. Found in your Pushpay admin under Settings → Giving Links.",
+                },
+              },
+            ],
+          },
+
+          // ── Subsplash ─────────────────────────────────────────────────────
+          {
+            type: "object",
+            name: "subsplash",
+            label: "Subsplash Giving Settings",
+            ui: {
+              description:
+                'Fill in this field when your provider is set to "Subsplash Giving".',
+            } as object,
+            fields: [
+              {
+                type: "string",
+                name: "embedCode",
+                label: "Embed Code",
+                ui: {
+                  component: "textarea",
+                  description:
+                    "The embed snippet Subsplash provided (usually a <script> tag). Paste the full code here — it will be injected on your /give page.",
+                },
+              },
+            ],
+          },
+
+          // ── Stripe ────────────────────────────────────────────────────────
+          {
+            type: "object",
+            name: "stripe",
+            label: "Stripe Payment Link Settings",
+            ui: {
+              description:
+                'Fill in this field when your provider is set to "Stripe Payment Link".',
+            } as object,
+            fields: [
+              {
+                type: "string",
+                name: "paymentLinkUrl",
+                label: "Stripe Payment Link URL",
+                ui: {
+                  description:
+                    'Your Stripe Payment Link URL — starts with https://buy.stripe.com/. Create one in the Stripe dashboard under "Payment Links".',
+                },
+              },
+            ],
+          },
+
+          // ── Custom URL ────────────────────────────────────────────────────
+          {
+            type: "object",
+            name: "customUrl",
+            label: "Custom URL Settings",
+            ui: {
+              description:
+                'Fill in these fields when your provider is set to "Custom URL".',
+            } as object,
+            fields: [
+              {
+                type: "string",
+                name: "url",
+                label: "Giving URL",
+                ui: { description: "Full URL of your hosted donation page." },
+              },
+              {
+                type: "string",
+                name: "linkText",
+                label: "Link Text",
+                ui: {
+                  description:
+                    'Shown in the "Powered by" attribution on the /give page. Example: "Kindrid", "Vanco", "Church Community Builder".',
+                },
+              },
+            ],
+          },
+
+          // ── Offline giving (shown for all providers) ───────────────────────
+          {
+            type: "object",
+            name: "offlineGiving",
+            label: "Offline Giving Options",
+            ui: {
+              description:
+                "These appear as supplemental methods on the /give page for any provider. For offline-only churches they are the primary content.",
+            } as object,
+            fields: [
+              { type: "boolean", name: "enabled", label: "Show offline giving methods?" },
+              {
+                type: "string",
+                name: "mailingAddress",
+                label: "Mailing Address",
+                ui: {
+                  component: "textarea",
+                  description:
+                    "Full address to mail checks, including any make-payable-to instructions. Leave blank to hide this option.",
+                },
+              },
+              {
+                type: "string",
+                name: "inPersonInstructions",
+                label: "In-Person Giving Instructions",
+                ui: {
+                  component: "textarea",
+                  description:
+                    "Where to find the giving box or plate during services. Leave blank to hide.",
+                },
+              },
+              {
+                type: "object",
+                name: "textToGive",
+                label: "Text-to-Give",
+                fields: [
+                  { type: "boolean", name: "enabled", label: "Enable text-to-give?" },
+                  {
+                    type: "string",
+                    name: "number",
+                    label: "Phone Number",
+                    ui: { description: "The number donors text. Provided by your text-to-give service." },
+                  },
+                  {
+                    type: "string",
+                    name: "keyword",
+                    label: "Keyword",
+                    ui: { description: 'The word donors text (e.g. "GIVE"). Leave blank if your service uses the dollar amount directly.' },
+                  },
+                ],
+              },
+            ],
+          },
+
+          // ── FAQ ───────────────────────────────────────────────────────────
+          {
+            type: "object",
+            name: "faq",
+            label: "Giving FAQ",
+            list: true,
+            ui: {
+              itemProps: (item: Record<string, unknown>) => ({
+                label: (item?.question as string) ?? "Question",
+              }),
+              description:
+                "Questions shown in the accordion at the bottom of the /give page. Add, remove, or reorder as needed.",
+            },
+            fields: [
+              {
+                type: "string",
+                name: "question",
+                label: "Question",
+                isTitle: true,
+                required: true,
+              },
+              {
+                type: "string",
+                name: "answer",
+                label: "Answer",
+                ui: { component: "textarea" },
+              },
+            ],
+          },
+        ],
+      },
+
+      // ======================================================================
       // 14. PRAYER REQUESTS  (content/prayer-requests/*.md)
       // ======================================================================
       {

@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, MapPin, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { GiveButton } from "@/components/GiveButton";
 import { churchInfo, type Service } from "@/lib/church-info";
 import { siteContent } from "@/content/site";
 
@@ -89,6 +90,10 @@ export function Hero() {
               Get Directions
             </a>
           </Button>
+          <GiveButton
+            variant="secondary"
+            className="border-background/40 bg-transparent text-background hover:bg-background/10 hover:text-background"
+          />
         </div>
       </div>
     </section>

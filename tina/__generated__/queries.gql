@@ -713,6 +713,61 @@ query serve_rolesConnection($before: String, $after: String, $first: Float, $las
   }
 }
 
+query giving($relativePath: String!) {
+  giving(relativePath: $relativePath) {
+    ... on Document {
+      _sys {
+        filename
+        basename
+        hasReferences
+        breadcrumbs
+        path
+        relativePath
+        extension
+      }
+      id
+    }
+    ...GivingParts
+  }
+}
+
+query givingConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: GivingFilter) {
+  givingConnection(
+    before: $before
+    after: $after
+    first: $first
+    last: $last
+    sort: $sort
+    filter: $filter
+  ) {
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    totalCount
+    edges {
+      cursor
+      node {
+        ... on Document {
+          _sys {
+            filename
+            basename
+            hasReferences
+            breadcrumbs
+            path
+            relativePath
+            extension
+          }
+          id
+        }
+        ...GivingParts
+      }
+    }
+  }
+}
+
 query prayer_requests($relativePath: String!) {
   prayer_requests(relativePath: $relativePath) {
     ... on Document {

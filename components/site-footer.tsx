@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Facebook, Youtube, MapPin, Phone, Mail } from "lucide-react";
 import { churchInfo } from "@/lib/church-info";
+import { GiveButton } from "@/components/GiveButton";
 
 const secondaryLinks = [
   { label: "About Us", href: "/about" },
@@ -52,7 +53,10 @@ export function SiteFooter() {
               : ""}{" "}
             — we&apos;d love to meet you.
           </p>
-          <div className="mt-5 flex gap-2">
+          <div className="mt-5">
+            <GiveButton variant="secondary" />
+          </div>
+          <div className="mt-4 flex gap-2">
             <a
               href={churchInfo.social.facebook}
               target="_blank"

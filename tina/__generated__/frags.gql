@@ -194,6 +194,57 @@ fragment Serve_rolesParts on Serve_roles {
   order
 }
 
+fragment GivingParts on Giving {
+  __typename
+  provider
+  displayMode
+  callToAction
+  supportingMessage
+  planningCenter {
+    __typename
+    subdomain
+  }
+  tithely {
+    __typename
+    organizationId
+    formUrl
+  }
+  pushpay {
+    __typename
+    merchantHandle
+  }
+  subsplash {
+    __typename
+    embedCode
+  }
+  stripe {
+    __typename
+    paymentLinkUrl
+  }
+  customUrl {
+    __typename
+    url
+    linkText
+  }
+  offlineGiving {
+    __typename
+    enabled
+    mailingAddress
+    inPersonInstructions
+    textToGive {
+      __typename
+      enabled
+      number
+      keyword
+    }
+  }
+  faq {
+    __typename
+    question
+    answer
+  }
+}
+
 fragment Prayer_requestsParts on Prayer_requests {
   __typename
   initials

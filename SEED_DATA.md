@@ -191,7 +191,31 @@ Stock-photo licensing on church websites is messy — even Unsplash's license ha
 
 ---
 
-## 11. CMS configuration
+## 11. Online Giving
+
+The giving system defaults to **Offline Only** so new adopters don't accidentally point donors at a placeholder account.
+
+**Required before launch:** open the CMS → **Giving** and either:
+
+- Configure your giving provider (Planning Center, Tithe.ly, Pushpay, Subsplash, Stripe, or Custom URL), **or**
+- Keep it set to Offline Only and fill in your **Mailing Address** and **In-Person Giving Instructions**.
+
+Also replace the bracketed placeholders in the **Giving FAQ** section with your church's real answers (especially the tax-deductibility and giving statement questions).
+
+See [docs/for-editors/setup-online-giving.md](docs/for-editors/setup-online-giving.md) for a step-by-step walkthrough for each provider.
+
+| What | CMS location | Direct path |
+|---|---|---|
+| Provider selection | Giving → Giving Provider | `content/giving.json` `provider` |
+| Button label | Giving → Button Label | `content/giving.json` `callToAction` |
+| Supporting message | Giving → Supporting Message | `content/giving.json` `supportingMessage` |
+| Mailing address | Giving → Offline Giving → Mailing Address | `content/giving.json` `offlineGiving.mailingAddress` |
+| In-person instructions | Giving → Offline Giving → In-Person Instructions | `content/giving.json` `offlineGiving.inPersonInstructions` |
+| FAQ answers | Giving → Giving FAQ | `content/giving.json` `faq[]` |
+
+---
+
+## 12. CMS configuration
 
 `/public/admin/config.yml` has a `backend.repo: kbennett2000/church-site-template` line that **must** be updated to point at your real GitHub repo before the production CMS will work. The local CMS (`npm run cms`) ignores this.
 

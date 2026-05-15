@@ -108,6 +108,8 @@ export type Query = {
   groupsConnection: GroupsConnection;
   serve_roles: Serve_Roles;
   serve_rolesConnection: Serve_RolesConnection;
+  giving: Giving;
+  givingConnection: GivingConnection;
   prayer_requests: Prayer_Requests;
   prayer_requestsConnection: Prayer_RequestsConnection;
 };
@@ -329,6 +331,21 @@ export type QueryServe_RolesConnectionArgs = {
 };
 
 
+export type QueryGivingArgs = {
+  relativePath?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type QueryGivingConnectionArgs = {
+  before?: InputMaybe<Scalars['String']['input']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Float']['input']>;
+  last?: InputMaybe<Scalars['Float']['input']>;
+  sort?: InputMaybe<Scalars['String']['input']>;
+  filter?: InputMaybe<GivingFilter>;
+};
+
+
 export type QueryPrayer_RequestsArgs = {
   relativePath?: InputMaybe<Scalars['String']['input']>;
 };
@@ -357,6 +374,7 @@ export type DocumentFilter = {
   announcements?: InputMaybe<AnnouncementsFilter>;
   groups?: InputMaybe<GroupsFilter>;
   serve_roles?: InputMaybe<Serve_RolesFilter>;
+  giving?: InputMaybe<GivingFilter>;
   prayer_requests?: InputMaybe<Prayer_RequestsFilter>;
 };
 
@@ -397,7 +415,7 @@ export type CollectionDocumentsArgs = {
   folder?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type DocumentNode = Site | Navigation | Story | Beliefs | Events | Pages | Staff | Elders | Ministries | Sermons | Announcements | Groups | Serve_Roles | Prayer_Requests | Folder;
+export type DocumentNode = Site | Navigation | Story | Beliefs | Events | Pages | Staff | Elders | Ministries | Sermons | Announcements | Groups | Serve_Roles | Giving | Prayer_Requests | Folder;
 
 export type SiteChurchAddress = {
   __typename?: 'SiteChurchAddress';
@@ -1074,6 +1092,150 @@ export type Serve_RolesConnection = Connection & {
   edges?: Maybe<Array<Maybe<Serve_RolesConnectionEdges>>>;
 };
 
+export type GivingPlanningCenter = {
+  __typename?: 'GivingPlanningCenter';
+  subdomain?: Maybe<Scalars['String']['output']>;
+};
+
+export type GivingTithely = {
+  __typename?: 'GivingTithely';
+  organizationId?: Maybe<Scalars['String']['output']>;
+  formUrl?: Maybe<Scalars['String']['output']>;
+};
+
+export type GivingPushpay = {
+  __typename?: 'GivingPushpay';
+  merchantHandle?: Maybe<Scalars['String']['output']>;
+};
+
+export type GivingSubsplash = {
+  __typename?: 'GivingSubsplash';
+  embedCode?: Maybe<Scalars['String']['output']>;
+};
+
+export type GivingStripe = {
+  __typename?: 'GivingStripe';
+  paymentLinkUrl?: Maybe<Scalars['String']['output']>;
+};
+
+export type GivingCustomUrl = {
+  __typename?: 'GivingCustomUrl';
+  url?: Maybe<Scalars['String']['output']>;
+  linkText?: Maybe<Scalars['String']['output']>;
+};
+
+export type GivingOfflineGivingTextToGive = {
+  __typename?: 'GivingOfflineGivingTextToGive';
+  enabled?: Maybe<Scalars['Boolean']['output']>;
+  number?: Maybe<Scalars['String']['output']>;
+  keyword?: Maybe<Scalars['String']['output']>;
+};
+
+export type GivingOfflineGiving = {
+  __typename?: 'GivingOfflineGiving';
+  enabled?: Maybe<Scalars['Boolean']['output']>;
+  mailingAddress?: Maybe<Scalars['String']['output']>;
+  inPersonInstructions?: Maybe<Scalars['String']['output']>;
+  textToGive?: Maybe<GivingOfflineGivingTextToGive>;
+};
+
+export type GivingFaq = {
+  __typename?: 'GivingFaq';
+  question: Scalars['String']['output'];
+  answer?: Maybe<Scalars['String']['output']>;
+};
+
+export type Giving = Node & Document & {
+  __typename?: 'Giving';
+  provider?: Maybe<Scalars['String']['output']>;
+  displayMode?: Maybe<Scalars['String']['output']>;
+  callToAction?: Maybe<Scalars['String']['output']>;
+  supportingMessage?: Maybe<Scalars['String']['output']>;
+  planningCenter?: Maybe<GivingPlanningCenter>;
+  tithely?: Maybe<GivingTithely>;
+  pushpay?: Maybe<GivingPushpay>;
+  subsplash?: Maybe<GivingSubsplash>;
+  stripe?: Maybe<GivingStripe>;
+  customUrl?: Maybe<GivingCustomUrl>;
+  offlineGiving?: Maybe<GivingOfflineGiving>;
+  faq?: Maybe<Array<Maybe<GivingFaq>>>;
+  id: Scalars['ID']['output'];
+  _sys: SystemInfo;
+  _values: Scalars['JSON']['output'];
+};
+
+export type GivingPlanningCenterFilter = {
+  subdomain?: InputMaybe<StringFilter>;
+};
+
+export type GivingTithelyFilter = {
+  organizationId?: InputMaybe<StringFilter>;
+  formUrl?: InputMaybe<StringFilter>;
+};
+
+export type GivingPushpayFilter = {
+  merchantHandle?: InputMaybe<StringFilter>;
+};
+
+export type GivingSubsplashFilter = {
+  embedCode?: InputMaybe<StringFilter>;
+};
+
+export type GivingStripeFilter = {
+  paymentLinkUrl?: InputMaybe<StringFilter>;
+};
+
+export type GivingCustomUrlFilter = {
+  url?: InputMaybe<StringFilter>;
+  linkText?: InputMaybe<StringFilter>;
+};
+
+export type GivingOfflineGivingTextToGiveFilter = {
+  enabled?: InputMaybe<BooleanFilter>;
+  number?: InputMaybe<StringFilter>;
+  keyword?: InputMaybe<StringFilter>;
+};
+
+export type GivingOfflineGivingFilter = {
+  enabled?: InputMaybe<BooleanFilter>;
+  mailingAddress?: InputMaybe<StringFilter>;
+  inPersonInstructions?: InputMaybe<StringFilter>;
+  textToGive?: InputMaybe<GivingOfflineGivingTextToGiveFilter>;
+};
+
+export type GivingFaqFilter = {
+  question?: InputMaybe<StringFilter>;
+  answer?: InputMaybe<StringFilter>;
+};
+
+export type GivingFilter = {
+  provider?: InputMaybe<StringFilter>;
+  displayMode?: InputMaybe<StringFilter>;
+  callToAction?: InputMaybe<StringFilter>;
+  supportingMessage?: InputMaybe<StringFilter>;
+  planningCenter?: InputMaybe<GivingPlanningCenterFilter>;
+  tithely?: InputMaybe<GivingTithelyFilter>;
+  pushpay?: InputMaybe<GivingPushpayFilter>;
+  subsplash?: InputMaybe<GivingSubsplashFilter>;
+  stripe?: InputMaybe<GivingStripeFilter>;
+  customUrl?: InputMaybe<GivingCustomUrlFilter>;
+  offlineGiving?: InputMaybe<GivingOfflineGivingFilter>;
+  faq?: InputMaybe<GivingFaqFilter>;
+};
+
+export type GivingConnectionEdges = {
+  __typename?: 'GivingConnectionEdges';
+  cursor: Scalars['String']['output'];
+  node?: Maybe<Giving>;
+};
+
+export type GivingConnection = Connection & {
+  __typename?: 'GivingConnection';
+  pageInfo: PageInfo;
+  totalCount: Scalars['Float']['output'];
+  edges?: Maybe<Array<Maybe<GivingConnectionEdges>>>;
+};
+
 export type Prayer_Requests = Node & Document & {
   __typename?: 'Prayer_requests';
   initials?: Maybe<Scalars['String']['output']>;
@@ -1136,6 +1298,8 @@ export type Mutation = {
   createGroups: Groups;
   updateServe_roles: Serve_Roles;
   createServe_roles: Serve_Roles;
+  updateGiving: Giving;
+  createGiving: Giving;
   updatePrayer_requests: Prayer_Requests;
   createPrayer_requests: Prayer_Requests;
 };
@@ -1330,6 +1494,18 @@ export type MutationCreateServe_RolesArgs = {
 };
 
 
+export type MutationUpdateGivingArgs = {
+  relativePath: Scalars['String']['input'];
+  params: GivingMutation;
+};
+
+
+export type MutationCreateGivingArgs = {
+  relativePath: Scalars['String']['input'];
+  params: GivingMutation;
+};
+
+
 export type MutationUpdatePrayer_RequestsArgs = {
   relativePath: Scalars['String']['input'];
   params: Prayer_RequestsMutation;
@@ -1355,6 +1531,7 @@ export type DocumentUpdateMutation = {
   announcements?: InputMaybe<AnnouncementsMutation>;
   groups?: InputMaybe<GroupsMutation>;
   serve_roles?: InputMaybe<Serve_RolesMutation>;
+  giving?: InputMaybe<GivingMutation>;
   prayer_requests?: InputMaybe<Prayer_RequestsMutation>;
   relativePath?: InputMaybe<Scalars['String']['input']>;
 };
@@ -1373,6 +1550,7 @@ export type DocumentMutation = {
   announcements?: InputMaybe<AnnouncementsMutation>;
   groups?: InputMaybe<GroupsMutation>;
   serve_roles?: InputMaybe<Serve_RolesMutation>;
+  giving?: InputMaybe<GivingMutation>;
   prayer_requests?: InputMaybe<Prayer_RequestsMutation>;
 };
 
@@ -1574,6 +1752,65 @@ export type Serve_RolesMutation = {
   order?: InputMaybe<Scalars['Float']['input']>;
 };
 
+export type GivingPlanningCenterMutation = {
+  subdomain?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type GivingTithelyMutation = {
+  organizationId?: InputMaybe<Scalars['String']['input']>;
+  formUrl?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type GivingPushpayMutation = {
+  merchantHandle?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type GivingSubsplashMutation = {
+  embedCode?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type GivingStripeMutation = {
+  paymentLinkUrl?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type GivingCustomUrlMutation = {
+  url?: InputMaybe<Scalars['String']['input']>;
+  linkText?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type GivingOfflineGivingTextToGiveMutation = {
+  enabled?: InputMaybe<Scalars['Boolean']['input']>;
+  number?: InputMaybe<Scalars['String']['input']>;
+  keyword?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type GivingOfflineGivingMutation = {
+  enabled?: InputMaybe<Scalars['Boolean']['input']>;
+  mailingAddress?: InputMaybe<Scalars['String']['input']>;
+  inPersonInstructions?: InputMaybe<Scalars['String']['input']>;
+  textToGive?: InputMaybe<GivingOfflineGivingTextToGiveMutation>;
+};
+
+export type GivingFaqMutation = {
+  question?: InputMaybe<Scalars['String']['input']>;
+  answer?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type GivingMutation = {
+  provider?: InputMaybe<Scalars['String']['input']>;
+  displayMode?: InputMaybe<Scalars['String']['input']>;
+  callToAction?: InputMaybe<Scalars['String']['input']>;
+  supportingMessage?: InputMaybe<Scalars['String']['input']>;
+  planningCenter?: InputMaybe<GivingPlanningCenterMutation>;
+  tithely?: InputMaybe<GivingTithelyMutation>;
+  pushpay?: InputMaybe<GivingPushpayMutation>;
+  subsplash?: InputMaybe<GivingSubsplashMutation>;
+  stripe?: InputMaybe<GivingStripeMutation>;
+  customUrl?: InputMaybe<GivingCustomUrlMutation>;
+  offlineGiving?: InputMaybe<GivingOfflineGivingMutation>;
+  faq?: InputMaybe<Array<InputMaybe<GivingFaqMutation>>>;
+};
+
 export type Prayer_RequestsMutation = {
   initials?: InputMaybe<Scalars['String']['input']>;
   date?: InputMaybe<Scalars['String']['input']>;
@@ -1605,6 +1842,8 @@ export type AnnouncementsPartsFragment = { __typename: 'Announcements', title: s
 export type GroupsPartsFragment = { __typename: 'Groups', name: string, day?: string | null, time?: string | null, neighborhood?: string | null, lifeStage?: string | null, leader?: string | null, leaderPhoto?: string | null, description?: string | null, contactEmail?: string | null };
 
 export type Serve_RolesPartsFragment = { __typename: 'Serve_roles', title: string, team?: string | null, commitment?: string | null, training?: string | null, description?: string | null, icon?: string | null, order?: number | null };
+
+export type GivingPartsFragment = { __typename: 'Giving', provider?: string | null, displayMode?: string | null, callToAction?: string | null, supportingMessage?: string | null, planningCenter?: { __typename: 'GivingPlanningCenter', subdomain?: string | null } | null, tithely?: { __typename: 'GivingTithely', organizationId?: string | null, formUrl?: string | null } | null, pushpay?: { __typename: 'GivingPushpay', merchantHandle?: string | null } | null, subsplash?: { __typename: 'GivingSubsplash', embedCode?: string | null } | null, stripe?: { __typename: 'GivingStripe', paymentLinkUrl?: string | null } | null, customUrl?: { __typename: 'GivingCustomUrl', url?: string | null, linkText?: string | null } | null, offlineGiving?: { __typename: 'GivingOfflineGiving', enabled?: boolean | null, mailingAddress?: string | null, inPersonInstructions?: string | null, textToGive?: { __typename: 'GivingOfflineGivingTextToGive', enabled?: boolean | null, number?: string | null, keyword?: string | null } | null } | null, faq?: Array<{ __typename: 'GivingFaq', question: string, answer?: string | null } | null> | null };
 
 export type Prayer_RequestsPartsFragment = { __typename: 'Prayer_requests', initials?: string | null, date?: string | null, body?: any | null };
 
@@ -1855,6 +2094,25 @@ export type Serve_RolesConnectionQueryVariables = Exact<{
 
 export type Serve_RolesConnectionQuery = { __typename?: 'Query', serve_rolesConnection: { __typename?: 'Serve_rolesConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'Serve_rolesConnectionEdges', cursor: string, node?: { __typename: 'Serve_roles', id: string, title: string, team?: string | null, commitment?: string | null, training?: string | null, description?: string | null, icon?: string | null, order?: number | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
 
+export type GivingQueryVariables = Exact<{
+  relativePath: Scalars['String']['input'];
+}>;
+
+
+export type GivingQuery = { __typename?: 'Query', giving: { __typename: 'Giving', id: string, provider?: string | null, displayMode?: string | null, callToAction?: string | null, supportingMessage?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, planningCenter?: { __typename: 'GivingPlanningCenter', subdomain?: string | null } | null, tithely?: { __typename: 'GivingTithely', organizationId?: string | null, formUrl?: string | null } | null, pushpay?: { __typename: 'GivingPushpay', merchantHandle?: string | null } | null, subsplash?: { __typename: 'GivingSubsplash', embedCode?: string | null } | null, stripe?: { __typename: 'GivingStripe', paymentLinkUrl?: string | null } | null, customUrl?: { __typename: 'GivingCustomUrl', url?: string | null, linkText?: string | null } | null, offlineGiving?: { __typename: 'GivingOfflineGiving', enabled?: boolean | null, mailingAddress?: string | null, inPersonInstructions?: string | null, textToGive?: { __typename: 'GivingOfflineGivingTextToGive', enabled?: boolean | null, number?: string | null, keyword?: string | null } | null } | null, faq?: Array<{ __typename: 'GivingFaq', question: string, answer?: string | null } | null> | null } };
+
+export type GivingConnectionQueryVariables = Exact<{
+  before?: InputMaybe<Scalars['String']['input']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Float']['input']>;
+  last?: InputMaybe<Scalars['Float']['input']>;
+  sort?: InputMaybe<Scalars['String']['input']>;
+  filter?: InputMaybe<GivingFilter>;
+}>;
+
+
+export type GivingConnectionQuery = { __typename?: 'Query', givingConnection: { __typename?: 'GivingConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'GivingConnectionEdges', cursor: string, node?: { __typename: 'Giving', id: string, provider?: string | null, displayMode?: string | null, callToAction?: string | null, supportingMessage?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, planningCenter?: { __typename: 'GivingPlanningCenter', subdomain?: string | null } | null, tithely?: { __typename: 'GivingTithely', organizationId?: string | null, formUrl?: string | null } | null, pushpay?: { __typename: 'GivingPushpay', merchantHandle?: string | null } | null, subsplash?: { __typename: 'GivingSubsplash', embedCode?: string | null } | null, stripe?: { __typename: 'GivingStripe', paymentLinkUrl?: string | null } | null, customUrl?: { __typename: 'GivingCustomUrl', url?: string | null, linkText?: string | null } | null, offlineGiving?: { __typename: 'GivingOfflineGiving', enabled?: boolean | null, mailingAddress?: string | null, inPersonInstructions?: string | null, textToGive?: { __typename: 'GivingOfflineGivingTextToGive', enabled?: boolean | null, number?: string | null, keyword?: string | null } | null } | null, faq?: Array<{ __typename: 'GivingFaq', question: string, answer?: string | null } | null> | null } | null } | null> | null } };
+
 export type Prayer_RequestsQueryVariables = Exact<{
   relativePath: Scalars['String']['input'];
 }>;
@@ -2081,6 +2339,58 @@ export const Serve_RolesPartsFragmentDoc = gql`
   description
   icon
   order
+}
+    `;
+export const GivingPartsFragmentDoc = gql`
+    fragment GivingParts on Giving {
+  __typename
+  provider
+  displayMode
+  callToAction
+  supportingMessage
+  planningCenter {
+    __typename
+    subdomain
+  }
+  tithely {
+    __typename
+    organizationId
+    formUrl
+  }
+  pushpay {
+    __typename
+    merchantHandle
+  }
+  subsplash {
+    __typename
+    embedCode
+  }
+  stripe {
+    __typename
+    paymentLinkUrl
+  }
+  customUrl {
+    __typename
+    url
+    linkText
+  }
+  offlineGiving {
+    __typename
+    enabled
+    mailingAddress
+    inPersonInstructions
+    textToGive {
+      __typename
+      enabled
+      number
+      keyword
+    }
+  }
+  faq {
+    __typename
+    question
+    answer
+  }
 }
     `;
 export const Prayer_RequestsPartsFragmentDoc = gql`
@@ -2832,6 +3142,63 @@ export const Serve_RolesConnectionDocument = gql`
   }
 }
     ${Serve_RolesPartsFragmentDoc}`;
+export const GivingDocument = gql`
+    query giving($relativePath: String!) {
+  giving(relativePath: $relativePath) {
+    ... on Document {
+      _sys {
+        filename
+        basename
+        hasReferences
+        breadcrumbs
+        path
+        relativePath
+        extension
+      }
+      id
+    }
+    ...GivingParts
+  }
+}
+    ${GivingPartsFragmentDoc}`;
+export const GivingConnectionDocument = gql`
+    query givingConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: GivingFilter) {
+  givingConnection(
+    before: $before
+    after: $after
+    first: $first
+    last: $last
+    sort: $sort
+    filter: $filter
+  ) {
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    totalCount
+    edges {
+      cursor
+      node {
+        ... on Document {
+          _sys {
+            filename
+            basename
+            hasReferences
+            breadcrumbs
+            path
+            relativePath
+            extension
+          }
+          id
+        }
+        ...GivingParts
+      }
+    }
+  }
+}
+    ${GivingPartsFragmentDoc}`;
 export const Prayer_RequestsDocument = gql`
     query prayer_requests($relativePath: String!) {
   prayer_requests(relativePath: $relativePath) {
@@ -2969,6 +3336,12 @@ export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) 
       },
     serve_rolesConnection(variables?: Serve_RolesConnectionQueryVariables, options?: C): Promise<{data: Serve_RolesConnectionQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: Serve_RolesConnectionQueryVariables, query: string}> {
         return requester<{data: Serve_RolesConnectionQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: Serve_RolesConnectionQueryVariables, query: string}, Serve_RolesConnectionQueryVariables>(Serve_RolesConnectionDocument, variables, options);
+      },
+    giving(variables: GivingQueryVariables, options?: C): Promise<{data: GivingQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: GivingQueryVariables, query: string}> {
+        return requester<{data: GivingQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: GivingQueryVariables, query: string}, GivingQueryVariables>(GivingDocument, variables, options);
+      },
+    givingConnection(variables?: GivingConnectionQueryVariables, options?: C): Promise<{data: GivingConnectionQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: GivingConnectionQueryVariables, query: string}> {
+        return requester<{data: GivingConnectionQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: GivingConnectionQueryVariables, query: string}, GivingConnectionQueryVariables>(GivingConnectionDocument, variables, options);
       },
     prayer_requests(variables: Prayer_RequestsQueryVariables, options?: C): Promise<{data: Prayer_RequestsQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: Prayer_RequestsQueryVariables, query: string}> {
         return requester<{data: Prayer_RequestsQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: Prayer_RequestsQueryVariables, query: string}, Prayer_RequestsQueryVariables>(Prayer_RequestsDocument, variables, options);

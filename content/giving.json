@@ -1,0 +1,54 @@
+{
+  "provider": "offline_only",
+  "displayMode": "newTab",
+  "callToAction": "Give",
+  "supportingMessage": "Your generosity funds the day-to-day work of this church — staff, kids ministry, missions, and the family in crisis three blocks away.",
+  "planningCenter": {
+    "subdomain": ""
+  },
+  "tithely": {
+    "organizationId": "",
+    "formUrl": ""
+  },
+  "pushpay": {
+    "merchantHandle": ""
+  },
+  "subsplash": {
+    "embedCode": ""
+  },
+  "stripe": {
+    "paymentLinkUrl": ""
+  },
+  "customUrl": {
+    "url": "",
+    "linkText": "Donate"
+  },
+  "offlineGiving": {
+    "enabled": true,
+    "mailingAddress": "Grace Community Church\n123 Main Street\nYour Town, ST 12345\n\nMake checks payable to Grace Community Church.",
+    "inPersonInstructions": "Giving boxes are available at the entrance to the sanctuary. We don't pass an offering plate — give whenever and however you'd like.",
+    "textToGive": {
+      "enabled": false,
+      "number": "",
+      "keyword": "GIVE"
+    }
+  },
+  "faq": [
+    {
+      "question": "Is my gift tax-deductible?",
+      "answer": "[Replace with your church name] is a registered 501(c)(3) nonprofit organization. Your gift is tax-deductible to the extent provided by law. We send annual giving statements every January."
+    },
+    {
+      "question": "Where does my giving go?",
+      "answer": "[Replace with a summary of how your church allocates giving — for example: staff and ministry programming, building and operations, missions and community care.]"
+    },
+    {
+      "question": "Do I have to be a member to give?",
+      "answer": "Not at all. You're welcome to give whether you've been coming for years or this is your first Sunday. Giving is a response to grace, not a requirement for belonging."
+    },
+    {
+      "question": "How do I get a record of my giving?",
+      "answer": "[Replace with your process — for example: we email annual giving statements every January, or contact us at hello@example.church and we'll send you a summary.]"
+    }
+  ]
+}

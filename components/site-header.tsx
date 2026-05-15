@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { nav, churchInfo } from "@/lib/church-info";
 import { MobileNav } from "@/components/mobile-nav";
+import { GiveButton } from "@/components/GiveButton";
 
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
@@ -102,6 +103,7 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <GiveButton variant="nav" className="hidden sm:inline-flex" />
           <Button asChild variant="accent" size="sm" className="hidden sm:inline-flex">
             <Link href="/visit">Plan a Visit</Link>
           </Button>

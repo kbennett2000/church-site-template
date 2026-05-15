@@ -5,6 +5,7 @@ import { SoapEmail } from "@/emails/devotional/SoapEmail";
 import { SimpleEmail } from "@/emails/devotional/SimpleEmail";
 import { LectioEmail } from "@/emails/devotional/LectioEmail";
 import { getDevotionalEmailSettings } from "@/lib/devotionals/email-settings";
+import { forceLightModePreview } from "@/lib/admin/email-preview";
 import { churchData } from "@/content/site";
 import Link from "next/link";
 
@@ -70,7 +71,7 @@ export default async function PreviewPage({
   const Component =
     style === "soap" ? SoapEmail : style === "lectio_divina" ? LectioEmail : SimpleEmail;
 
-  const html = await render(Component(props));
+  const html = forceLightModePreview(await render(Component(props)));
 
   const styleLabels: Record<string, string> = {
     soap: "SOAP",
@@ -117,12 +118,13 @@ export default async function PreviewPage({
       </div>
 
       {/* Email rendered in an iframe for accurate email-client isolation */}
-      <iframe
-        srcDoc={html}
-        title={`${styleLabels[style]} email preview`}
-        className="w-full border-0"
-        style={{ height: "calc(100vh - 100px)" }}
-      />
+      <div className="bg-zinc-100 p-4 sm:p-6 lg:h-[calc(100vh-100px)] lg:overflow-hidden">
+        <iframe
+          srcDoc={html}
+          title={`${styleLabels[style]} email preview`}
+          className="block w-full max-w-[700px] mx-auto bg-white border border-zinc-200 rounded-md shadow-sm h-[1200px] lg:h-full"
+        />
+      </div>
     </main>
   );
 }

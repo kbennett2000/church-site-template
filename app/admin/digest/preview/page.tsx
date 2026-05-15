@@ -8,6 +8,7 @@ import { DigestEmail } from "@/emails/digest/DigestEmail";
 import { findActiveSubscribersForDigest, getDigestSendLog } from "@/lib/db/queries";
 import { isEmptyPayload } from "@/lib/digest/types";
 import { features } from "@/content/site";
+import { forceLightModePreview } from "@/lib/admin/email-preview";
 import { SendTestForm } from "./SendTestForm";
 
 export const dynamic = "force-dynamic";
@@ -50,7 +51,7 @@ export default async function DigestPreviewPage({
     },
   };
 
-  const html = await render(DigestEmail(previewProps));
+  const html = forceLightModePreview(await render(DigestEmail(previewProps)));
   const description = describePayload(payload);
   const empty = isEmptyPayload(payload);
 
@@ -95,16 +96,19 @@ export default async function DigestPreviewPage({
         )}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px]" style={{ height: "calc(100vh - 100px)" }}>
-        {/* Email render */}
-        <iframe
-          srcDoc={html}
-          title="Digest email preview"
-          className="w-full border-0 bg-zinc-100"
-        />
+      <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] lg:h-[calc(100vh-100px)]">
+        {/* Email render — isolated in an iframe so the email's CSS can't
+            collide with the admin shell's Tailwind reset. */}
+        <div className="bg-zinc-100 p-4 sm:p-6 lg:overflow-hidden">
+          <iframe
+            srcDoc={html}
+            title="Digest email preview"
+            className="block w-full max-w-[700px] mx-auto bg-white border border-zinc-200 rounded-md shadow-sm h-[1200px] lg:h-full"
+          />
+        </div>
 
         {/* Sidebar */}
-        <aside className="border-l border-border bg-card overflow-y-auto p-5 space-y-6 text-sm">
+        <aside className="border-t lg:border-t-0 lg:border-l border-border bg-card lg:overflow-y-auto p-5 space-y-6 text-sm">
           <section>
             <h2 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">
               Send window

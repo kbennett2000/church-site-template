@@ -47,6 +47,7 @@ fragment SiteParts on Site {
   features {
     __typename
     devotionals
+    digest
   }
 }
 
@@ -300,4 +301,30 @@ fragment DevotionalEmailSettingsParts on DevotionalEmailSettings {
     intro
     outro
   }
+}
+
+fragment DigestSettingsParts on DigestSettings {
+  __typename
+  isEnabled
+  senderName
+  senderEmail
+  subjectTemplate
+  sendDay
+  sendHour
+  sendTimezone
+  eventsLookaheadDays
+  sermonsLookbackCount
+  brandColor
+  logoUrl
+  footerText
+  introHtml
+}
+
+fragment DigestNotesParts on DigestNotes {
+  __typename
+  weekOf
+  title
+  signedBy
+  status
+  body
 }

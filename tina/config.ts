@@ -128,6 +128,26 @@ export default defineConfig({
               },
             ],
           },
+          {
+            type: "object",
+            name: "features",
+            label: "Feature Flags",
+            ui: {
+              description:
+                "Enable or disable optional site features. Tech volunteers set these; editors generally don't need to change them.",
+            } as object,
+            fields: [
+              {
+                type: "boolean",
+                name: "devotionals",
+                label: "Daily Devotionals",
+                ui: {
+                  description:
+                    "Enables the /devotionals section — reading plans, daily scripture pages, and the email subscriber system. Requires additional setup; see docs/for-tech-volunteers/ before enabling.",
+                },
+              },
+            ],
+          },
         ],
       },
 
@@ -842,6 +862,345 @@ export default defineConfig({
           { type: "string", name: "initials", label: "Initials (shown on prayer wall, e.g. J. D.)" },
           { type: "datetime", name: "date", label: "Date Received", ui: { dateFormat: "YYYY-MM-DD" } },
           { type: "rich-text", name: "body", label: "Prayer Request", isBody: true },
+        ],
+      },
+
+      // ======================================================================
+      // 16. READING PLANS  (content/reading-plans/*.md)
+      // ======================================================================
+      // One markdown file per plan. Frontmatter holds all metadata and the
+      // full entries list. The markdown body is the plan description.
+      //
+      // Files in content/reading-plans/_examples/ are starter templates for
+      // adopting churches; they are NOT shown in this collection (path only
+      // matches direct children, not subdirectories).
+      //
+      // Feature flag: Site Settings → Feature Flags → Daily Devotionals must
+      // be enabled before the /devotionals pages are publicly accessible.
+      {
+        name: "readingPlans",
+        label: "Reading Plans",
+        path: "content/reading-plans",
+        format: "md",
+        ui: {
+          filename: {
+            slugify: (values) =>
+              (values?.slug ?? "reading-plan")
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, "-")
+                .replace(/(^-|-$)/g, ""),
+          },
+        },
+        fields: [
+          {
+            type: "string",
+            name: "title",
+            label: "Plan Title",
+            isTitle: true,
+            required: true,
+            ui: { description: 'Shown on the /devotionals index and on the plan page. Example: "Psalms in 30 Days".' },
+          },
+          {
+            type: "string",
+            name: "slug",
+            label: "Slug (URL path)",
+            required: true,
+            ui: {
+              description:
+                "URL-safe identifier used in the web address. Use lowercase letters, numbers, and hyphens only. Example: psalms-in-30-days → /devotionals/psalms-in-30-days",
+            },
+          },
+          {
+            type: "string",
+            name: "style",
+            label: "Email & Reading Style",
+            options: [
+              { label: "Simple (verse of the day, no extra prompts)", value: "simple" },
+              { label: "SOAP (Scripture / Observation / Application / Prayer)", value: "soap" },
+              { label: "Lectio Divina (Read / Meditate / Pray / Contemplate)", value: "lectio_divina" },
+            ],
+            ui: {
+              description:
+                "Controls how the devotional email is formatted and what journaling prompts appear on the website entry page. 'Simple' works well for broad audiences; 'SOAP' and 'Lectio Divina' suit churches that already teach those methods.",
+            },
+          },
+          {
+            type: "string",
+            name: "defaultTranslation",
+            label: "Bible Translation",
+            options: [
+              { label: "WEB — World English Bible (public domain, modern)", value: "WEB" },
+              { label: "KJV — King James Version (public domain)", value: "KJV" },
+              { label: "ASV — American Standard Version (public domain)", value: "ASV" },
+              { label: "BBE — Bible in Basic English (public domain)", value: "BBE" },
+              { label: "ESV — requires NEXT_PUBLIC_ESV_API_KEY", value: "ESV" },
+              { label: "NIV — requires BIBLIA_API_KEY", value: "NIV" },
+              { label: "NLT — requires BIBLIA_API_KEY", value: "NLT" },
+              { label: "CSB — requires BIBLIA_API_KEY", value: "CSB" },
+              { label: "NKJV — requires BIBLIA_API_KEY", value: "NKJV" },
+              { label: "NRSV — requires BIBLIA_API_KEY", value: "NRSV" },
+            ],
+            ui: {
+              description:
+                "The translation used when fetching verse text for this plan. WEB, KJV, ASV, and BBE work immediately — no API key needed. Licensed translations (ESV, NIV, etc.) require an API key in .env; see docs/for-developers/devotional-architecture.md.",
+            },
+          },
+          {
+            type: "datetime",
+            name: "startDate",
+            label: "Start Date",
+            ui: {
+              dateFormat: "YYYY-MM-DD",
+              description: "The date of the first entry. Used to display the plan's duration and progress bar.",
+            },
+          },
+          {
+            type: "datetime",
+            name: "endDate",
+            label: "End Date",
+            ui: {
+              dateFormat: "YYYY-MM-DD",
+              description: "The date of the last entry. Must be on or after the start date.",
+            },
+          },
+          {
+            type: "boolean",
+            name: "isActive",
+            label: "Active — send emails to subscribers?",
+            ui: {
+              description:
+                "When enabled, the email scheduler sends today's entry to all subscribers of this plan. Set to false while you're building the plan. Only flip to true after verifying entries look correct and the Devotional Email Settings are configured.",
+            },
+          },
+          {
+            type: "object",
+            name: "entries",
+            label: "Daily Readings",
+            list: true,
+            ui: {
+              itemProps: (item) => ({
+                label: item?.date
+                  ? `${item.date}: ${item?.scriptureReference ?? "(no reference)"}`
+                  : (item?.scriptureReference ?? "Entry"),
+              }),
+              description:
+                "One entry per day. Dates within this plan must be unique and fall between the start and end dates above. The system fetches verse text automatically — store only the reference, not the verses themselves.",
+            },
+            fields: [
+              {
+                type: "datetime",
+                name: "date",
+                label: "Date",
+                ui: {
+                  dateFormat: "YYYY-MM-DD",
+                  description: "The date this entry is sent and displayed. Must be unique within this plan.",
+                },
+              },
+              {
+                type: "string",
+                name: "scriptureReference",
+                label: "Scripture Reference",
+                required: true,
+                ui: {
+                  description:
+                    "Standard Bible reference — book, chapter, and optional verse range. The system fetches the verse text automatically at display time. Examples: 'Psalm 23', 'John 3:16-21', 'Romans 8:1-17', 'Matthew 5'. Do not paste the verse text here.",
+                },
+              },
+              {
+                type: "string",
+                name: "title",
+                label: "Day Title (optional)",
+                ui: {
+                  description:
+                    "A short name for the day's reading, e.g. 'The Lord Is My Shepherd'. Shown on the website and in the email subject when {{title}} is used in the subject template.",
+                },
+              },
+              {
+                type: "string",
+                name: "leaderNotes",
+                label: "Leader Notes (optional)",
+                ui: {
+                  component: "textarea",
+                  description:
+                    "Optional note from the pastor or plan author, shown below the scripture on the website and in the email. A question to ponder, a brief application point, or context about the passage. Markdown is supported.",
+                },
+              },
+            ],
+          },
+          {
+            type: "rich-text",
+            name: "body",
+            label: "Plan Description",
+            isBody: true,
+            ui: {
+              description:
+                "A paragraph or two describing what this plan covers and how to use it. Shown on the plan detail page and the devotionals index.",
+            },
+          },
+        ],
+      },
+
+      // ======================================================================
+      // 17. DEVOTIONAL EMAIL SETTINGS  (content/devotional-email-settings.json)
+      // ======================================================================
+      // Singleton document — one email configuration for all devotional plans.
+      // Per-style overrides let you customize the intro/outro for SOAP vs.
+      // Simple emails while sharing the rest of the settings.
+      {
+        name: "devotionalEmailSettings",
+        label: "Devotional Email Settings",
+        path: "content",
+        format: "json",
+        match: { include: "devotional-email-settings" },
+        ui: {
+          allowedActions: { create: false, delete: false },
+          global: true,
+        },
+        fields: [
+          {
+            type: "string",
+            name: "senderName",
+            label: "Sender Name",
+            ui: {
+              description:
+                'The name shown in the "From:" field of every devotional email. Usually your church name.',
+            },
+          },
+          {
+            type: "string",
+            name: "senderEmail",
+            label: "Sender Email Address",
+            ui: {
+              description:
+                "Must be an address on a domain you have verified in your Resend account. Example: devotionals@yourchurch.org. See docs/for-tech-volunteers/ for domain verification steps.",
+            },
+          },
+          {
+            type: "string",
+            name: "subjectTemplate",
+            label: "Subject Line Template",
+            ui: {
+              description:
+                "Template for the email subject line. Available variables: {{date}} (e.g. June 1), {{title}} (the entry's optional title), {{reference}} (e.g. Psalm 23), {{planTitle}} (the reading plan name). Example: 'Your daily reading: {{reference}} — {{date}}'",
+            },
+          },
+          {
+            type: "string",
+            name: "intro",
+            label: "Intro (above scripture)",
+            ui: {
+              component: "textarea",
+              description:
+                "HTML block shown above the scripture text in every email. A short greeting or one-sentence context works well. HTML tags like <p> and <em> are supported.",
+            },
+          },
+          {
+            type: "string",
+            name: "outro",
+            label: "Outro (below scripture and notes)",
+            ui: {
+              component: "textarea",
+              description:
+                "HTML block shown below the scripture and any leader notes. Closing thoughts, a blessing, or a signature belong here.",
+            },
+          },
+          {
+            type: "string",
+            name: "brandColor",
+            label: "Brand Color (hex)",
+            ui: {
+              description:
+                "Hex color for the email header bar and button. Should match your church's primary color. Example: #1a3c5e",
+            },
+          },
+          {
+            type: "image",
+            name: "logoUrl",
+            label: "Logo (optional)",
+            ui: {
+              description:
+                "Church logo shown at the top of each email. Leave blank to display the sender name as text instead.",
+            },
+          },
+          {
+            type: "string",
+            name: "footerText",
+            label: "Footer / Unsubscribe Text",
+            ui: {
+              component: "textarea",
+              description:
+                "Required for CAN-SPAM compliance. Must include your church's physical mailing address and instructions for unsubscribing. This text appears at the bottom of every devotional email.",
+            },
+          },
+          {
+            type: "object",
+            name: "soapOverride",
+            label: "SOAP Style Override (optional)",
+            fields: [
+              {
+                type: "string",
+                name: "intro",
+                label: "Intro (overrides shared intro for SOAP emails)",
+                ui: { component: "textarea" },
+              },
+              {
+                type: "string",
+                name: "outro",
+                label: "Outro (overrides shared outro for SOAP emails)",
+                ui: { component: "textarea" },
+              },
+            ],
+            ui: {
+              description:
+                "When set, these replace the shared intro/outro for plans using the SOAP style. Useful for adding SOAP-specific prompts (S / O / A / P) above the scripture block.",
+            } as object,
+          },
+          {
+            type: "object",
+            name: "simpleOverride",
+            label: "Simple Style Override (optional)",
+            fields: [
+              {
+                type: "string",
+                name: "intro",
+                label: "Intro",
+                ui: { component: "textarea" },
+              },
+              {
+                type: "string",
+                name: "outro",
+                label: "Outro",
+                ui: { component: "textarea" },
+              },
+            ],
+            ui: {
+              description:
+                "When set, these replace the shared intro/outro for plans using the Simple style.",
+            } as object,
+          },
+          {
+            type: "object",
+            name: "lectioOverride",
+            label: "Lectio Divina Style Override (optional)",
+            fields: [
+              {
+                type: "string",
+                name: "intro",
+                label: "Intro",
+                ui: { component: "textarea" },
+              },
+              {
+                type: "string",
+                name: "outro",
+                label: "Outro",
+                ui: { component: "textarea" },
+              },
+            ],
+            ui: {
+              description:
+                "When set, these replace the shared intro/outro for plans using the Lectio Divina style.",
+            } as object,
+          },
         ],
       },
 

@@ -44,6 +44,10 @@ fragment SiteParts on Site {
       headline
     }
   }
+  features {
+    __typename
+    devotionals
+  }
 }
 
 fragment NavigationParts on Navigation {
@@ -250,4 +254,50 @@ fragment Prayer_requestsParts on Prayer_requests {
   initials
   date
   body
+}
+
+fragment ReadingPlansParts on ReadingPlans {
+  __typename
+  title
+  slug
+  style
+  defaultTranslation
+  startDate
+  endDate
+  isActive
+  entries {
+    __typename
+    date
+    scriptureReference
+    title
+    leaderNotes
+  }
+  body
+}
+
+fragment DevotionalEmailSettingsParts on DevotionalEmailSettings {
+  __typename
+  senderName
+  senderEmail
+  subjectTemplate
+  intro
+  outro
+  brandColor
+  logoUrl
+  footerText
+  soapOverride {
+    __typename
+    intro
+    outro
+  }
+  simpleOverride {
+    __typename
+    intro
+    outro
+  }
+  lectioOverride {
+    __typename
+    intro
+    outro
+  }
 }

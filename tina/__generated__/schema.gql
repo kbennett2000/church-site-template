@@ -84,6 +84,10 @@ type Query {
   givingConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: GivingFilter): GivingConnection!
   prayer_requests(relativePath: String): Prayer_requests!
   prayer_requestsConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: Prayer_requestsFilter): Prayer_requestsConnection!
+  readingPlans(relativePath: String): ReadingPlans!
+  readingPlansConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: ReadingPlansFilter): ReadingPlansConnection!
+  devotionalEmailSettings(relativePath: String): DevotionalEmailSettings!
+  devotionalEmailSettingsConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: DevotionalEmailSettingsFilter): DevotionalEmailSettingsConnection!
 }
 
 input DocumentFilter {
@@ -102,6 +106,8 @@ input DocumentFilter {
   serve_roles: Serve_rolesFilter
   giving: GivingFilter
   prayer_requests: Prayer_requestsFilter
+  readingPlans: ReadingPlansFilter
+  devotionalEmailSettings: DevotionalEmailSettingsFilter
 }
 
 type DocumentConnectionEdges {
@@ -127,7 +133,7 @@ type Collection {
   documents(before: String, after: String, first: Float, last: Float, sort: String, filter: DocumentFilter, folder: String): DocumentConnection!
 }
 
-union DocumentNode = Site | Navigation | Story | Beliefs | Events | Pages | Staff | Elders | Ministries | Sermons | Announcements | Groups | Serve_roles | Giving | Prayer_requests | Folder
+union DocumentNode = Site | Navigation | Story | Beliefs | Events | Pages | Staff | Elders | Ministries | Sermons | Announcements | Groups | Serve_roles | Giving | Prayer_requests | ReadingPlans | DevotionalEmailSettings | Folder
 
 type SiteChurchAddress {
   street: String
@@ -178,10 +184,15 @@ type SiteAbout {
   hero: SiteAboutHero
 }
 
+type SiteFeatures {
+  devotionals: Boolean
+}
+
 type Site implements Node & Document {
   church: SiteChurch
   home: SiteHome
   about: SiteAbout
+  features: SiteFeatures
   id: ID!
   _sys: SystemInfo!
   _values: JSON!
@@ -255,10 +266,15 @@ input SiteAboutFilter {
   hero: SiteAboutHeroFilter
 }
 
+input SiteFeaturesFilter {
+  devotionals: BooleanFilter
+}
+
 input SiteFilter {
   church: SiteChurchFilter
   home: SiteHomeFilter
   about: SiteAboutFilter
+  features: SiteFeaturesFilter
 }
 
 type SiteConnectionEdges {
@@ -908,6 +924,130 @@ type Prayer_requestsConnection implements Connection {
   edges: [Prayer_requestsConnectionEdges]
 }
 
+type ReadingPlansEntries {
+  date: String
+  scriptureReference: String!
+  title: String
+  leaderNotes: String
+}
+
+type ReadingPlans implements Node & Document {
+  title: String!
+  slug: String!
+  style: String
+  defaultTranslation: String
+  startDate: String
+  endDate: String
+  isActive: Boolean
+  entries: [ReadingPlansEntries]
+  body: JSON
+  id: ID!
+  _sys: SystemInfo!
+  _values: JSON!
+}
+
+input ReadingPlansEntriesFilter {
+  date: DatetimeFilter
+  scriptureReference: StringFilter
+  title: StringFilter
+  leaderNotes: StringFilter
+}
+
+input ReadingPlansFilter {
+  title: StringFilter
+  slug: StringFilter
+  style: StringFilter
+  defaultTranslation: StringFilter
+  startDate: DatetimeFilter
+  endDate: DatetimeFilter
+  isActive: BooleanFilter
+  entries: ReadingPlansEntriesFilter
+  body: RichTextFilter
+}
+
+type ReadingPlansConnectionEdges {
+  cursor: String!
+  node: ReadingPlans
+}
+
+type ReadingPlansConnection implements Connection {
+  pageInfo: PageInfo!
+  totalCount: Float!
+  edges: [ReadingPlansConnectionEdges]
+}
+
+type DevotionalEmailSettingsSoapOverride {
+  intro: String
+  outro: String
+}
+
+type DevotionalEmailSettingsSimpleOverride {
+  intro: String
+  outro: String
+}
+
+type DevotionalEmailSettingsLectioOverride {
+  intro: String
+  outro: String
+}
+
+type DevotionalEmailSettings implements Node & Document {
+  senderName: String
+  senderEmail: String
+  subjectTemplate: String
+  intro: String
+  outro: String
+  brandColor: String
+  logoUrl: String
+  footerText: String
+  soapOverride: DevotionalEmailSettingsSoapOverride
+  simpleOverride: DevotionalEmailSettingsSimpleOverride
+  lectioOverride: DevotionalEmailSettingsLectioOverride
+  id: ID!
+  _sys: SystemInfo!
+  _values: JSON!
+}
+
+input DevotionalEmailSettingsSoapOverrideFilter {
+  intro: StringFilter
+  outro: StringFilter
+}
+
+input DevotionalEmailSettingsSimpleOverrideFilter {
+  intro: StringFilter
+  outro: StringFilter
+}
+
+input DevotionalEmailSettingsLectioOverrideFilter {
+  intro: StringFilter
+  outro: StringFilter
+}
+
+input DevotionalEmailSettingsFilter {
+  senderName: StringFilter
+  senderEmail: StringFilter
+  subjectTemplate: StringFilter
+  intro: StringFilter
+  outro: StringFilter
+  brandColor: StringFilter
+  logoUrl: ImageFilter
+  footerText: StringFilter
+  soapOverride: DevotionalEmailSettingsSoapOverrideFilter
+  simpleOverride: DevotionalEmailSettingsSimpleOverrideFilter
+  lectioOverride: DevotionalEmailSettingsLectioOverrideFilter
+}
+
+type DevotionalEmailSettingsConnectionEdges {
+  cursor: String!
+  node: DevotionalEmailSettings
+}
+
+type DevotionalEmailSettingsConnection implements Connection {
+  pageInfo: PageInfo!
+  totalCount: Float!
+  edges: [DevotionalEmailSettingsConnectionEdges]
+}
+
 type Mutation {
   addPendingDocument(collection: String!, relativePath: String!, template: String): DocumentNode!
   updateDocument(collection: String, relativePath: String!, params: DocumentUpdateMutation!): DocumentNode!
@@ -944,6 +1084,10 @@ type Mutation {
   createGiving(relativePath: String!, params: GivingMutation!): Giving!
   updatePrayer_requests(relativePath: String!, params: Prayer_requestsMutation!): Prayer_requests!
   createPrayer_requests(relativePath: String!, params: Prayer_requestsMutation!): Prayer_requests!
+  updateReadingPlans(relativePath: String!, params: ReadingPlansMutation!): ReadingPlans!
+  createReadingPlans(relativePath: String!, params: ReadingPlansMutation!): ReadingPlans!
+  updateDevotionalEmailSettings(relativePath: String!, params: DevotionalEmailSettingsMutation!): DevotionalEmailSettings!
+  createDevotionalEmailSettings(relativePath: String!, params: DevotionalEmailSettingsMutation!): DevotionalEmailSettings!
 }
 
 input DocumentUpdateMutation {
@@ -962,6 +1106,8 @@ input DocumentUpdateMutation {
   serve_roles: Serve_rolesMutation
   giving: GivingMutation
   prayer_requests: Prayer_requestsMutation
+  readingPlans: ReadingPlansMutation
+  devotionalEmailSettings: DevotionalEmailSettingsMutation
   relativePath: String
 }
 
@@ -981,6 +1127,8 @@ input DocumentMutation {
   serve_roles: Serve_rolesMutation
   giving: GivingMutation
   prayer_requests: Prayer_requestsMutation
+  readingPlans: ReadingPlansMutation
+  devotionalEmailSettings: DevotionalEmailSettingsMutation
 }
 
 input SiteChurchAddressMutation {
@@ -1032,10 +1180,15 @@ input SiteAboutMutation {
   hero: SiteAboutHeroMutation
 }
 
+input SiteFeaturesMutation {
+  devotionals: Boolean
+}
+
 input SiteMutation {
   church: SiteChurchMutation
   home: SiteHomeMutation
   about: SiteAboutMutation
+  features: SiteFeaturesMutation
 }
 
 input NavigationItemsChildrenMutation {
@@ -1244,6 +1397,54 @@ input Prayer_requestsMutation {
   initials: String
   date: String
   body: JSON
+}
+
+input ReadingPlansEntriesMutation {
+  date: String
+  scriptureReference: String
+  title: String
+  leaderNotes: String
+}
+
+input ReadingPlansMutation {
+  title: String
+  slug: String
+  style: String
+  defaultTranslation: String
+  startDate: String
+  endDate: String
+  isActive: Boolean
+  entries: [ReadingPlansEntriesMutation]
+  body: JSON
+}
+
+input DevotionalEmailSettingsSoapOverrideMutation {
+  intro: String
+  outro: String
+}
+
+input DevotionalEmailSettingsSimpleOverrideMutation {
+  intro: String
+  outro: String
+}
+
+input DevotionalEmailSettingsLectioOverrideMutation {
+  intro: String
+  outro: String
+}
+
+input DevotionalEmailSettingsMutation {
+  senderName: String
+  senderEmail: String
+  subjectTemplate: String
+  intro: String
+  outro: String
+  brandColor: String
+  logoUrl: String
+  footerText: String
+  soapOverride: DevotionalEmailSettingsSoapOverrideMutation
+  simpleOverride: DevotionalEmailSettingsSimpleOverrideMutation
+  lectioOverride: DevotionalEmailSettingsLectioOverrideMutation
 }
 
 schema {

@@ -1,0 +1,14 @@
+{
+  "senderName": "[Replace with your church name]",
+  "senderEmail": "[Replace with devotionals@yourchurch.org]",
+  "subjectTemplate": "Your daily reading: {{reference}} — {{date}}",
+  "intro": "Good morning! Here is your reading for today. Take a few minutes to sit with this passage before the day begins.",
+  "outro": "May this word take root in your heart today. Blessings, The pastoral team",
+  "brandColor": "#1a3c5e",
+  "logoUrl": "",
+  "footerText": "[Replace with your church name] · [Replace with your address]\nYou're receiving this because you subscribed to daily devotionals at [your site].\nTo unsubscribe, reply with 'unsubscribe' in the subject line.",
+  "soapOverride": {
+    "intro": "Good morning! Today's SOAP reading is below. Work through each section at your own pace — Scripture, Observation, Application, and Prayer.",
+    "outro": "Whatever you wrote in the Application or Prayer sections — carry it with you today. Blessings, The pastoral team"
+  }
+}

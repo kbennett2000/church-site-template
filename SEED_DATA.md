@@ -215,7 +215,57 @@ See [docs/for-editors/setup-online-giving.md](docs/for-editors/setup-online-givi
 
 ---
 
-## 12. CMS configuration
+## 12. Devotionals (optional feature)
+
+The daily devotionals system is **off by default**. It requires setup before content appears on the site.
+
+### Enable the feature
+
+In the CMS: **Site Settings → Feature Flags → Daily Devotionals → toggle on**, then rebuild.
+
+Or directly: set `"devotionals": true` in `content/site.json` under `"features"`.
+
+Until enabled, `/devotionals` returns 404. The CMS "Reading Plans" collection is visible regardless — you can pre-populate plans before going live.
+
+### Create your first plan
+
+Two starter plans are in `content/reading-plans/_examples/`:
+
+| File | Plan | Style | Length |
+|---|---|---|---|
+| `psalms-in-30-days.md` | Psalms 1–30 | Simple | 30 days |
+| `gospels-in-90-days.md` | Matthew–John | SOAP | 90 days |
+
+To use a starter plan:
+1. Copy the file from `content/reading-plans/_examples/` to `content/reading-plans/`.
+2. Update `startDate` and `endDate` to your intended schedule.
+3. Open the plan in the CMS and verify the entries look correct.
+4. Set `isActive: true` when ready to send emails.
+
+### Configure the email sender
+
+Before the email scheduler can send, fill in **Devotional Email Settings** in the CMS:
+
+| Field | Placeholder in the template | What to replace with |
+|---|---|---|
+| Sender Name | `[Replace with your church name]` | Your church's full name |
+| Sender Email | `[Replace with devotionals@yourchurch.org]` | A verified Resend sender address |
+| Footer Text | `[Replace with your church name] · [Replace with your address] ...` | Your full mailing address + unsubscribe instructions |
+
+The footer text is **required by CAN-SPAM law** — it must include your physical address.
+
+### Bible translations
+
+The example plans default to **WEB** (World English Bible — public domain, modern English). No API key needed.
+
+To use ESV: add `NEXT_PUBLIC_ESV_API_KEY=your_key` to `.env.local` and change `defaultTranslation` in the plan frontmatter to `ESV`.
+To use NIV/NLT/CSB/NKJV/NRSV: add `BIBLIA_API_KEY=your_key` to `.env.local`.
+
+See `docs/for-developers/devotional-architecture.md` for the full translation table.
+
+---
+
+## 13. CMS configuration
 
 `/public/admin/config.yml` has a `backend.repo: kbennett2000/church-site-template` line that **must** be updated to point at your real GitHub repo before the production CMS will work. The local CMS (`npm run cms`) ignores this.
 
@@ -225,7 +275,7 @@ Also update:
 
 ---
 
-## 12. The Sweep — find anything you missed
+## 14. The Sweep — find anything you missed
 
 Before launching, run this from your project root:
 

@@ -822,3 +822,113 @@ query prayer_requestsConnection($before: String, $after: String, $first: Float, 
     }
   }
 }
+
+query readingPlans($relativePath: String!) {
+  readingPlans(relativePath: $relativePath) {
+    ... on Document {
+      _sys {
+        filename
+        basename
+        hasReferences
+        breadcrumbs
+        path
+        relativePath
+        extension
+      }
+      id
+    }
+    ...ReadingPlansParts
+  }
+}
+
+query readingPlansConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: ReadingPlansFilter) {
+  readingPlansConnection(
+    before: $before
+    after: $after
+    first: $first
+    last: $last
+    sort: $sort
+    filter: $filter
+  ) {
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    totalCount
+    edges {
+      cursor
+      node {
+        ... on Document {
+          _sys {
+            filename
+            basename
+            hasReferences
+            breadcrumbs
+            path
+            relativePath
+            extension
+          }
+          id
+        }
+        ...ReadingPlansParts
+      }
+    }
+  }
+}
+
+query devotionalEmailSettings($relativePath: String!) {
+  devotionalEmailSettings(relativePath: $relativePath) {
+    ... on Document {
+      _sys {
+        filename
+        basename
+        hasReferences
+        breadcrumbs
+        path
+        relativePath
+        extension
+      }
+      id
+    }
+    ...DevotionalEmailSettingsParts
+  }
+}
+
+query devotionalEmailSettingsConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: DevotionalEmailSettingsFilter) {
+  devotionalEmailSettingsConnection(
+    before: $before
+    after: $after
+    first: $first
+    last: $last
+    sort: $sort
+    filter: $filter
+  ) {
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    totalCount
+    edges {
+      cursor
+      node {
+        ... on Document {
+          _sys {
+            filename
+            basename
+            hasReferences
+            breadcrumbs
+            path
+            relativePath
+            extension
+          }
+          id
+        }
+        ...DevotionalEmailSettingsParts
+      }
+    }
+  }
+}

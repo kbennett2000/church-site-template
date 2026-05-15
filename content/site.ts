@@ -114,3 +114,14 @@ export const siteContent = {
 // /public/admin/config.yml's "social" object, and render it in
 // /components/site-footer.tsx alongside Facebook and YouTube.
 export const churchData = data.church;
+
+// `features` controls optional site sections. Defaults to all-off so
+// the template ships inert — churches enable features as they set them up.
+//
+//   features.devotionals  →  Enables /devotionals: reading plans, daily
+//                             scripture, and the email subscriber system.
+//                             Requires devotional-email-settings.json to be
+//                             configured and Resend credentials to be set
+//                             before the email phase is wired up.
+//                             Toggle in CMS: Site Settings → Feature Flags.
+export const features = data.features ?? { devotionals: false };

@@ -50,5 +50,8 @@
     "hero": {
       "headline": "Following Jesus together — open to everyone."
     }
+  },
+  "features": {
+    "devotionals": false
   }
 }

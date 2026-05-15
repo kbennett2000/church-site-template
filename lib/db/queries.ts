@@ -4,8 +4,8 @@
 
 import { and, count, desc, eq, gt, sql } from "drizzle-orm";
 import { db } from "./index";
-import { subscribers, subscriberPlans } from "./schema";
-import type { Subscriber, SubscriberPlan } from "./schema";
+import { subscribers, subscriberPlans, devotionalSendLog } from "./schema";
+import type { Subscriber, SubscriberPlan, DevotionalSendLog } from "./schema";
 
 // ---------------------------------------------------------------------------
 // Subscriber lookups
@@ -143,6 +143,119 @@ export async function getRecentActivity(limit = 20): Promise<Subscriber[]> {
     .orderBy(desc(subscribers.createdAt))
     .limit(limit);
 }
+
+// ---------------------------------------------------------------------------
+// Send-daily queries
+// ---------------------------------------------------------------------------
+
+export interface SubscriberWithPlans {
+  id: string;
+  email: string;
+  name: string | null;
+  timezone: string;
+  sendHour: number;
+  unsubscribeToken: string;
+  plans: Array<{ planSlug: string; lastSentDate: string | null }>;
+}
+
+/** Returns every active subscriber along with their plan enrollments. One query. */
+export async function getActiveSubscribersWithPlans(): Promise<SubscriberWithPlans[]> {
+  const rows = await db
+    .select({
+      subscriberId: subscribers.id,
+      email: subscribers.email,
+      name: subscribers.name,
+      timezone: subscribers.timezone,
+      sendHour: subscribers.sendHour,
+      unsubscribeToken: subscribers.unsubscribeToken,
+      planSlug: subscriberPlans.planSlug,
+      lastSentDate: subscriberPlans.lastSentDate,
+    })
+    .from(subscribers)
+    .innerJoin(subscriberPlans, eq(subscriberPlans.subscriberId, subscribers.id))
+    .where(eq(subscribers.status, "active"));
+
+  const map = new Map<string, SubscriberWithPlans>();
+  for (const row of rows) {
+    if (!map.has(row.subscriberId)) {
+      map.set(row.subscriberId, {
+        id: row.subscriberId,
+        email: row.email,
+        name: row.name,
+        timezone: row.timezone,
+        sendHour: row.sendHour,
+        unsubscribeToken: row.unsubscribeToken,
+        plans: [],
+      });
+    }
+    map.get(row.subscriberId)!.plans.push({
+      planSlug: row.planSlug,
+      lastSentDate: row.lastSentDate ?? null,
+    });
+  }
+  return Array.from(map.values());
+}
+
+export async function updateLastSentDate(
+  subscriberId: string,
+  planSlug: string,
+  date: string
+): Promise<void> {
+  await db
+    .update(subscriberPlans)
+    .set({ lastSentDate: date })
+    .where(
+      and(
+        eq(subscriberPlans.subscriberId, subscriberId),
+        eq(subscriberPlans.planSlug, planSlug)
+      )
+    );
+}
+
+export async function markSubscriberBounced(email: string): Promise<void> {
+  await db
+    .update(subscribers)
+    .set({ status: "bounced" })
+    .where(eq(subscribers.email, email.toLowerCase().trim()));
+}
+
+export async function markSubscriberUnsubscribed(email: string): Promise<void> {
+  await db
+    .update(subscribers)
+    .set({ status: "unsubscribed", unsubscribedAt: new Date() })
+    .where(eq(subscribers.email, email.toLowerCase().trim()));
+}
+
+// ---------------------------------------------------------------------------
+// Send log queries
+// ---------------------------------------------------------------------------
+
+export async function logDevotionalSend(
+  date: string,
+  stats: { attempted: number; sent: number; skipped: number; failed: number },
+  errors: Array<{ subscriberId: string; planSlug: string; message: string }>
+): Promise<void> {
+  await db.insert(devotionalSendLog).values({
+    date,
+    attempted: stats.attempted,
+    sent: stats.sent,
+    skipped: stats.skipped,
+    failed: stats.failed,
+    errors: errors.length > 0 ? JSON.stringify(errors) : null,
+  });
+}
+
+export async function getRecentSendLogs(limit = 30): Promise<DevotionalSendLog[]> {
+  return db
+    .select()
+    .from(devotionalSendLog)
+    .orderBy(desc(devotionalSendLog.runAt))
+    .limit(limit);
+}
+
+// ---------------------------------------------------------------------------
+// Export query
+// ---------------------------------------------------------------------------
 
 export async function getActiveSubscribersForExport(): Promise<
   Pick<Subscriber, "email" | "name" | "timezone" | "sendHour" | "createdAt" | "verifiedAt">[]

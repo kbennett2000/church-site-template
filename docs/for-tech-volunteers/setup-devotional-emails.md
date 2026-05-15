@@ -144,6 +144,83 @@ Visit `/admin/devotionals` (you'll be prompted for the admin password). This pag
 
 ---
 
-## What's not set up yet
+## Step 9 — Configure the cron job
 
-The **daily email send** (cron job that delivers today's reading each morning) is not part of this guide. See [devotional-architecture.md](../for-developers/devotional-architecture.md) for the cron architecture and how to wire it up via Vercel Cron Jobs.
+The daily send runs via Vercel Cron, which fires the `/api/cron/devotionals` endpoint once per hour. The send function checks each subscriber's local timezone and preferred send hour, so one hourly trigger covers all time zones correctly.
+
+**The cron schedule is already in `vercel.json`** in the repo root — no extra configuration needed in the Vercel dashboard. Vercel reads this file automatically on deploy.
+
+You do need to set `CRON_SECRET` before the cron will actually run:
+
+1. Generate a secret: `openssl rand -hex 32`
+2. Add `CRON_SECRET=<generated-value>` in Vercel → Settings → Environment Variables.
+3. Redeploy.
+
+To verify the cron is wired up, go to Vercel → your project → **Cron Jobs** tab. You should see `/api/cron/devotionals` listed with an hourly schedule.
+
+---
+
+## Step 10 — Test the full send flow
+
+Before your first subscribers get a real email, verify the send pipeline works end to end:
+
+1. Make sure at least one reading plan is active and has an entry for today's date.
+2. Subscribe yourself (see Step 6).
+3. Go to **Admin → Devotionals → Send test email** and send a test to your address.
+4. Check your inbox — the email should arrive within a minute or two.
+5. Check Resend's **Logs** tab to confirm `delivered` status.
+
+If you want to manually trigger the cron for testing:
+
+```bash
+curl -X GET https://yourchurch.org/api/cron/devotionals \
+  -H "Authorization: Bearer <your-CRON_SECRET>"
+```
+
+The response is a JSON summary: `{ "sent": 1, "skipped": 0, "failed": 0, … }`.
+
+---
+
+## Step 11 — Set up the Resend webhook (recommended)
+
+The Resend webhook at `/api/webhooks/resend` automatically:
+- Marks subscribers as **bounced** when a hard bounce occurs (permanently invalid email)
+- Marks subscribers as **unsubscribed** when they file a spam complaint
+
+To enable:
+
+1. In Resend → **Webhooks** → Add Endpoint: `https://yourchurch.org/api/webhooks/resend`
+2. Select events: `email.bounced`, `email.complained`, `email.delivered` (optional)
+3. Copy the **Signing Secret** (starts with `whsec_`)
+4. Add `RESEND_WEBHOOK_SECRET=<signing-secret>` to Vercel environment variables.
+5. Redeploy.
+
+Without the webhook, bounces and complaints are not automatically handled — you'd need to clean your list manually via the CSV export.
+
+---
+
+## Admin page
+
+Visit `/admin/devotionals` (you'll be prompted for the admin password). This page shows:
+
+- Total, active, pending, unsubscribed, and bounced counts
+- Active subscribers per reading plan
+- The 20 most recent sign-ups
+- Recent send run history (date, how many sent/skipped/failed)
+- Links to: **Send test email**, **Backfill missed sends**, **Preview email templates**
+- A **Export CSV** button that downloads all active subscribers
+
+---
+
+## Environment variables summary
+
+See [environment-variables.md](environment-variables.md) for the full reference. The variables you need for devotionals:
+
+| Variable | Required? |
+|---|---|
+| `DATABASE_URL` | Yes |
+| `ADMIN_PASSWORD` | Yes |
+| `CRON_SECRET` | Yes (cron won't run without it) |
+| `RESEND_WEBHOOK_SECRET` | Recommended |
+| `NEXT_PUBLIC_ESV_API_KEY` | Only if using ESV translation |
+| `BIBLIA_API_KEY` | Only if using NIV/NLT/CSB/NKJV/NRSV |

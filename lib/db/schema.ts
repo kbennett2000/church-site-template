@@ -4,6 +4,7 @@ import {
   uuid,
   varchar,
   integer,
+  text,
   timestamp,
   primaryKey,
 } from "drizzle-orm/pg-core";
@@ -95,9 +96,33 @@ export const subscriberPlans = pgTable(
 );
 
 // ---------------------------------------------------------------------------
+// devotional_send_log
+// ---------------------------------------------------------------------------
+// One row per cron run. Records stats so the admin dashboard can show
+// send history and diagnose failures without tailing server logs.
+
+export const devotionalSendLog = pgTable("devotional_send_log", {
+  id: uuid("id").primaryKey().defaultRandom(),
+
+  /** YYYY-MM-DD the entries were for (not necessarily the wall-clock date of the run). */
+  date: varchar("date", { length: 10 }).notNull(),
+
+  runAt: timestamp("run_at", { withTimezone: true }).notNull().defaultNow(),
+
+  attempted: integer("attempted").notNull().default(0),
+  sent: integer("sent").notNull().default(0),
+  skipped: integer("skipped").notNull().default(0),
+  failed: integer("failed").notNull().default(0),
+
+  /** JSON-stringified array of { subscriberId, planSlug, message } objects. */
+  errors: text("errors"),
+});
+
+// ---------------------------------------------------------------------------
 // Inferred TypeScript types
 // ---------------------------------------------------------------------------
 
 export type Subscriber = typeof subscribers.$inferSelect;
 export type NewSubscriber = typeof subscribers.$inferInsert;
 export type SubscriberPlan = typeof subscriberPlans.$inferSelect;
+export type DevotionalSendLog = typeof devotionalSendLog.$inferSelect;

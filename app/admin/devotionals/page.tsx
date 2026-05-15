@@ -4,6 +4,7 @@ import {
   getSubscriberStats,
   getPlanSubscriberCounts,
   getRecentActivity,
+  getRecentSendLogs,
 } from "@/lib/db/queries";
 import { getAllReadingPlans } from "@/content/devotionals";
 
@@ -23,11 +24,12 @@ function StatCard({ label, value }: { label: string; value: number }) {
 }
 
 export default async function AdminDevotionalsPage() {
-  const [stats, planCounts, recent, allPlans] = await Promise.all([
+  const [stats, planCounts, recent, allPlans, sendLogs] = await Promise.all([
     getSubscriberStats(),
     getPlanSubscriberCounts(),
     getRecentActivity(20),
     Promise.resolve(getAllReadingPlans()),
+    getRecentSendLogs(10),
   ]);
 
   const planTitleMap = Object.fromEntries(allPlans.map((p) => [p.slug, p.title]));
@@ -126,6 +128,68 @@ export default async function AdminDevotionalsPage() {
               )}
             </tbody>
           </table>
+        </div>
+      </section>
+
+      {/* Send log */}
+      {sendLogs.length > 0 && (
+        <section>
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground mb-3">
+            Recent send runs (last 10)
+          </h2>
+          <div className="rounded-lg border overflow-hidden">
+            <table className="w-full text-sm">
+              <thead className="bg-muted/50">
+                <tr>
+                  <th className="text-left px-4 py-2 font-medium text-muted-foreground">Date</th>
+                  <th className="text-left px-4 py-2 font-medium text-muted-foreground">Run at (UTC)</th>
+                  <th className="text-right px-4 py-2 font-medium text-muted-foreground">Sent</th>
+                  <th className="text-right px-4 py-2 font-medium text-muted-foreground">Skipped</th>
+                  <th className="text-right px-4 py-2 font-medium text-muted-foreground">Failed</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y bg-card">
+                {sendLogs.map((log) => (
+                  <tr key={log.id}>
+                    <td className="px-4 py-2 tabular-nums font-mono text-xs">{log.date}</td>
+                    <td className="px-4 py-2 tabular-nums text-xs text-muted-foreground">
+                      {log.runAt.toISOString().replace("T", " ").slice(0, 16)}
+                    </td>
+                    <td className="px-4 py-2 text-right tabular-nums text-green-700 font-medium">{log.sent}</td>
+                    <td className="px-4 py-2 text-right tabular-nums text-muted-foreground">{log.skipped}</td>
+                    <td className="px-4 py-2 text-right tabular-nums text-red-600 font-medium">{log.failed}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      )}
+
+      {/* Quick links */}
+      <section>
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground mb-3">
+          Tools
+        </h2>
+        <div className="flex flex-wrap gap-3">
+          <Link
+            href="/admin/devotionals/test"
+            className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium hover:bg-muted transition-colors"
+          >
+            Send test email
+          </Link>
+          <Link
+            href="/admin/devotionals/backfill"
+            className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium hover:bg-muted transition-colors"
+          >
+            Backfill missed sends
+          </Link>
+          <Link
+            href="/admin/devotionals/preview/simple"
+            className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium hover:bg-muted transition-colors"
+          >
+            Preview email templates
+          </Link>
         </div>
       </section>
 

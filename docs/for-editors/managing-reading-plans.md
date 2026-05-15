@@ -157,6 +157,46 @@ All plans share a single set of email settings, edited under **Devotional Email 
 
 ---
 
+## What subscribers will see
+
+Before activating a plan and sending it to subscribers, you can preview the email at:
+
+- `/admin/devotionals/preview/simple` — Simple style (verse + reflection prompt)
+- `/admin/devotionals/preview/soap` — SOAP style (four journaling sections)
+- `/admin/devotionals/preview/lectio_divina` — Lectio Divina style (four movements)
+
+The preview renders a sample Psalm 23 entry using your real church name, brand color, and email settings — so it accurately reflects how emails will look in your subscribers' inboxes.
+
+For an exact rendering with real scripture from your plan, use **Admin → Devotionals → Send test email**, which sends a live email to any address you specify.
+
+---
+
+## Testing before activating a plan
+
+Follow this checklist before setting `isActive: true`:
+
+1. **Preview the email template** at `/admin/devotionals/preview/[style]`. Check that your church name, brand color, and footer text look correct.
+2. **Send a test email** via Admin → Devotionals → Send test email. Choose the plan slug and today's date.
+3. **Check it in multiple email clients.** Gmail and Apple Mail are the two most important. Outlook is optional — the template degrades gracefully.
+4. **Check spam folder.** If it lands in spam, ask your tech volunteer to review [email-deliverability.md](../for-tech-volunteers/email-deliverability.md).
+5. **Subscribe yourself** at `/devotionals`, verify your email, and confirm you appear as "active" in `/admin/devotionals`.
+6. **Wait for the cron** (fires at the top of every hour) and confirm the email arrives. Or ask your tech volunteer to trigger it manually.
+7. **Set `isActive: true`** in the CMS once everything looks good.
+
+---
+
+## What happens when you edit a plan that has active subscribers
+
+- **Changing the title** — subscribers get the new title in the subject line on the next send. Already-sent emails are not retroactively updated.
+- **Changing the style** — the new style takes effect for the next send. Subscribers who got a SOAP email yesterday will get a Simple email tomorrow if you switch.
+- **Changing the translation** — takes effect on the next send. The system re-fetches scripture fresh each day.
+- **Editing a future entry's scripture reference** — fine; it hasn't been sent yet.
+- **Editing a past entry's scripture reference** — the change appears on the web entry page immediately, but won't re-send to subscribers (they already got that day's email).
+- **Setting `isActive: false`** — the email scheduler stops sending. Subscribers remain subscribed; they'll resume receiving emails if you flip it back to `true`. Use this to pause a plan during a church break.
+- **Deleting a plan** — see below.
+
+---
+
 ## Common questions
 
 **The scripture text isn't showing on the entry page.**

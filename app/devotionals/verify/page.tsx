@@ -6,8 +6,8 @@ export const metadata: Metadata = {
   title: "Verify Email",
 };
 
-// This page is the landing target after the GET /api/devotionals/verify redirect.
-// The API route does the actual DB update and then redirects here with ?status=.
+// Landing target for GET /api/devotionals/verify — handles devotional AND
+// digest subscription confirmations (the verify API route is shared).
 export default async function VerifyPage({
   searchParams,
 }: {
@@ -22,14 +22,13 @@ export default async function VerifyPage({
           <CheckCircle className="mx-auto h-12 w-12 text-green-500" />
           <h1 className="text-2xl font-bold">You&apos;re subscribed!</h1>
           <p className="text-muted-foreground">
-            Your email has been confirmed and your subscription is active.
-            Your first devotional will arrive tomorrow morning.
+            Your email has been confirmed. Your first email will arrive soon.
           </p>
           <Link
-            href="/devotionals"
+            href="/"
             className="inline-block mt-4 text-sm underline underline-offset-4 hover:text-primary"
           >
-            Browse reading plans
+            Return home
           </Link>
         </div>
       </main>
@@ -47,10 +46,10 @@ export default async function VerifyPage({
             a fresh link{email ? ` for ${email}` : ""}.
           </p>
           <Link
-            href="/devotionals"
+            href="/"
             className="inline-block mt-4 rounded-md bg-primary px-5 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
           >
-            Subscribe again
+            Return home
           </Link>
         </div>
       </main>
@@ -68,10 +67,10 @@ export default async function VerifyPage({
           used or the URL may be incomplete.
         </p>
         <Link
-          href="/devotionals"
+          href="/"
           className="inline-block mt-4 text-sm underline underline-offset-4 hover:text-primary"
         >
-          Return to devotionals
+          Return home
         </Link>
       </div>
     </main>

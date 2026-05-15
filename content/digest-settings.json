@@ -1,0 +1,15 @@
+{
+  "isEnabled": false,
+  "senderName": "Grace Community Church",
+  "senderEmail": "digest@example.church",
+  "subjectTemplate": "{{churchName}} — Week of {{weekStart}}",
+  "sendDay": "Wednesday",
+  "sendHour": 14,
+  "sendTimezone": "America/New_York",
+  "eventsLookaheadDays": 10,
+  "sermonsLookbackCount": 1,
+  "brandColor": "#1a3c5e",
+  "logoUrl": "",
+  "footerText": "[Replace with your church name and mailing address for CAN-SPAM compliance. Unsubscribe links are included automatically in every email.]",
+  "introHtml": ""
+}

@@ -14,6 +14,8 @@ interface SubscribeFormProps {
   plans: Plan[];
   /** If provided, this plan is pre-selected and the plan list is hidden (plan detail page). */
   preselectedSlug?: string;
+  /** Show the "Also send me the weekly digest" opt-in checkbox. */
+  showDigestOption?: boolean;
 }
 
 type State = "idle" | "loading" | "success" | "error";
@@ -27,7 +29,7 @@ function hourLabel(h: number) {
   return `${h - 12}:00 PM`;
 }
 
-export function SubscribeForm({ plans, preselectedSlug }: SubscribeFormProps) {
+export function SubscribeForm({ plans, preselectedSlug, showDigestOption = false }: SubscribeFormProps) {
   const [state, setState] = useState<State>("idle");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -36,6 +38,7 @@ export function SubscribeForm({ plans, preselectedSlug }: SubscribeFormProps) {
   const [selectedSlugs, setSelectedSlugs] = useState<Set<string>>(
     preselectedSlug ? new Set([preselectedSlug]) : new Set()
   );
+  const [includeDigest, setIncludeDigest] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
   // Detect the user's local timezone on mount
@@ -69,6 +72,7 @@ export function SubscribeForm({ plans, preselectedSlug }: SubscribeFormProps) {
     setErrorMsg("");
 
     try {
+      const tags = ["devotionals", ...(includeDigest ? ["digest"] : [])];
       const res = await fetch("/api/devotionals/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -76,6 +80,7 @@ export function SubscribeForm({ plans, preselectedSlug }: SubscribeFormProps) {
           email,
           name: name || null,
           planSlugs: Array.from(selectedSlugs),
+          tags,
           timezone,
           sendHour,
         }),
@@ -190,6 +195,20 @@ export function SubscribeForm({ plans, preselectedSlug }: SubscribeFormProps) {
           </fieldset>
         )}
       </div>
+
+      {showDigestOption && (
+        <label className="flex items-start gap-3 cursor-pointer group">
+          <input
+            type="checkbox"
+            checked={includeDigest}
+            onChange={(e) => setIncludeDigest(e.target.checked)}
+            className="mt-0.5 h-4 w-4 rounded border-input accent-primary"
+          />
+          <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">
+            Also send me the weekly church digest — announcements, upcoming events, and a note from the pastor.
+          </span>
+        </label>
+      )}
 
       {(state === "error" || errorMsg) && (
         <p className="text-sm text-destructive">{errorMsg}</p>

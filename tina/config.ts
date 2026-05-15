@@ -146,6 +146,15 @@ export default defineConfig({
                     "Enables the /devotionals section — reading plans, daily scripture pages, and the email subscriber system. Requires additional setup; see docs/for-tech-volunteers/ before enabling.",
                 },
               },
+              {
+                type: "boolean",
+                name: "digest",
+                label: "Weekly Digest",
+                ui: {
+                  description:
+                    "Enables the /digest section — a weekly email with announcements, upcoming events, recent sermons, and an optional pastor's note. Configure Digest Email Settings before enabling.",
+                },
+              },
             ],
           },
         ],
@@ -1200,6 +1209,171 @@ export default defineConfig({
               description:
                 "When set, these replace the shared intro/outro for plans using the Lectio Divina style.",
             } as object,
+          },
+        ],
+      },
+
+
+      // ======================================================================
+      // 18. DIGEST EMAIL SETTINGS  (content/digest-settings.json)
+      // ======================================================================
+      // Singleton document — configuration for the weekly church digest email.
+      {
+        name: "digestSettings",
+        label: "Digest Email Settings",
+        path: "content",
+        format: "json",
+        match: { include: "digest-settings" },
+        ui: {
+          allowedActions: { create: false, delete: false },
+          global: true,
+        },
+        fields: [
+          {
+            type: "boolean",
+            name: "isEnabled",
+            label: "Enable Weekly Digest",
+            ui: { description: "Turn the digest on or off without disabling the feature flag. Useful for pausing sends during a holiday break." },
+          },
+          {
+            type: "string",
+            name: "senderName",
+            label: "Sender Name",
+            ui: { description: 'Shown in the "From:" field. Usually your church name.' },
+          },
+          {
+            type: "string",
+            name: "senderEmail",
+            label: "Sender Email Address",
+            ui: { description: "Must be on a Resend-verified domain. RESEND_FROM_EMAIL env var overrides this in production." },
+          },
+          {
+            type: "string",
+            name: "subjectTemplate",
+            label: "Subject Line Template",
+            ui: { description: "Variables: {{churchName}}, {{weekStart}}, {{weekEnd}}. Example: {{churchName}} — Week of {{weekStart}}" },
+          },
+          {
+            type: "string",
+            name: "sendDay",
+            label: "Send Day",
+            options: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+            ui: { description: "Day of week the digest goes out." },
+          },
+          {
+            type: "number",
+            name: "sendHour",
+            label: "Send Hour (0–23, church timezone)",
+            ui: { description: "Hour of day to send, in the church's timezone. 14 = 2 PM." },
+          },
+          {
+            type: "string",
+            name: "sendTimezone",
+            label: "Church Timezone (IANA)",
+            ui: { description: "IANA timezone string for send scheduling. Example: America/Denver. Unlike devotionals, the digest sends at one moment for all subscribers." },
+          },
+          {
+            type: "number",
+            name: "eventsLookaheadDays",
+            label: "Events Lookahead (days)",
+            ui: { description: "How many days of upcoming events to include. Default 10." },
+          },
+          {
+            type: "number",
+            name: "sermonsLookbackCount",
+            label: "Recent Sermons to Include",
+            ui: { description: "How many recent sermons to feature. Default 1 (most recent)." },
+          },
+          {
+            type: "string",
+            name: "brandColor",
+            label: "Brand Color (hex)",
+            ui: { description: "Hex color for the email header and buttons. Example: #1a3c5e" },
+          },
+          {
+            type: "image",
+            name: "logoUrl",
+            label: "Logo (optional)",
+            ui: { description: "Church logo shown at the top of each digest email. Leave blank to display sender name as text." },
+          },
+          {
+            type: "string",
+            name: "footerText",
+            label: "Footer / Unsubscribe Text",
+            ui: {
+              component: "textarea",
+              description: "Required for CAN-SPAM compliance. Include your church's physical address and an unsubscribe note.",
+            },
+          },
+          {
+            type: "rich-text",
+            name: "introHtml",
+            label: "Intro (optional)",
+            ui: { description: "Opening block shown above the digest content. A short greeting or seasonal note." },
+          },
+        ],
+      },
+
+      // ======================================================================
+      // 19. DIGEST NOTES  (content/digest-notes/*.md)
+      // ======================================================================
+      // One file per week. The digest send job picks the most recent note
+      // with status="ready" whose weekOf falls within the digest's send week.
+      {
+        name: "digestNotes",
+        label: "Pastor's Notes (Digest)",
+        path: "content/digest-notes",
+        format: "md",
+        ui: {
+          filename: {
+            slugify: (values) => {
+              const date = values?.weekOf
+                ? new Date(values.weekOf).toISOString().slice(0, 10)
+                : new Date().toISOString().slice(0, 10);
+              return date;
+            },
+          },
+        },
+        fields: [
+          {
+            type: "datetime",
+            name: "weekOf",
+            label: "Week Of (Monday of the week)",
+            required: true,
+            ui: {
+              dateFormat: "YYYY-MM-DD",
+              description: "The Monday of the week this note belongs to. Use YYYY-MM-DD format.",
+            },
+          },
+          {
+            type: "string",
+            name: "title",
+            label: "Title (optional)",
+            ui: { description: 'Shown above the note body. Example: "A Note from Pastor Sarah"' },
+          },
+          {
+            type: "string",
+            name: "signedBy",
+            label: "Signed By (optional)",
+            ui: { description: 'Attribution shown below the note. Example: "Pastor Sarah" or "The GCC Staff"' },
+          },
+          {
+            type: "string",
+            name: "status",
+            label: "Status",
+            required: true,
+            options: [
+              { value: "draft", label: "Draft — not included in sends" },
+              { value: "ready", label: "Ready — will be included in the next digest send" },
+              { value: "sent", label: "Sent — already delivered" },
+            ],
+            ui: { description: 'Only "ready" notes are picked up by the send job. Mark as "sent" after delivery to prevent re-inclusion.' },
+          },
+          {
+            type: "rich-text",
+            name: "body",
+            label: "Note",
+            isBody: true,
           },
         ],
       },

@@ -72,7 +72,7 @@ async function sendWelcomeEmail({
     .map((p) => getReadingPlan(p.planSlug)?.title ?? p.planSlug)
     .filter(Boolean) as string[];
 
-  const manageUrl = `${origin}/devotionals/manage?token=${subscriber.unsubscribeToken}`;
+  const manageUrl = `${origin}/preferences?token=${subscriber.unsubscribeToken}`;
 
   const html = await render(
     WelcomeEmail({

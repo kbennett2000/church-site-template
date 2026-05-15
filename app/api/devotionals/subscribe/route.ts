@@ -9,7 +9,7 @@ import { VerificationEmail } from "@/lib/devotionals/emails/verification-email";
 import { getReadingPlan } from "@/content/devotionals";
 import { getResend } from "@/lib/resend";
 import { churchData } from "@/content/site";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 
 const EMAIL_SEND_FAILED =
   "We couldn't send your confirmation email. Please try again or contact the church.";
@@ -22,10 +22,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  const { email, name, planSlugs, timezone, sendHour } = body as {
+  const { email, name, planSlugs, tags, timezone, sendHour } = body as {
     email?: string;
     name?: string;
     planSlugs?: string[];
+    tags?: string[];
     timezone?: string;
     sendHour?: number;
   };
@@ -33,8 +34,14 @@ export async function POST(req: NextRequest) {
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return NextResponse.json({ error: "Valid email required" }, { status: 400 });
   }
-  if (!planSlugs || planSlugs.length === 0) {
-    return NextResponse.json({ error: "Select at least one plan" }, { status: 400 });
+
+  // Normalise tags — default to devotionals-only for backward compatibility.
+  const requestedTags: string[] = tags && tags.length > 0 ? tags : ["devotionals"];
+
+  // planSlugs are required only if subscribing to devotionals.
+  const wantsDevotionals = requestedTags.includes("devotionals");
+  if (wantsDevotionals && (!planSlugs || planSlugs.length === 0)) {
+    return NextResponse.json({ error: "Select at least one reading plan" }, { status: 400 });
   }
 
   const settings = getDevotionalEmailSettings();
@@ -47,7 +54,9 @@ export async function POST(req: NextRequest) {
   const existing = await findByEmail(email);
 
   if (existing) {
-    // Reuse the row: update token + status regardless of prior state.
+    // Merge new tags with any the subscriber already has.
+    const mergedTags = Array.from(new Set([...existing.tags, ...requestedTags]));
+
     await db
       .update(subscribers)
       .set({
@@ -55,6 +64,7 @@ export async function POST(req: NextRequest) {
         status: "pending_verification",
         timezone: timezone ?? existing.timezone,
         sendHour: sendHour ?? existing.sendHour,
+        tags: mergedTags,
         verificationToken: verToken,
         verificationTokenExpiresAt: verExpiry,
         verifiedAt: null,
@@ -62,8 +72,10 @@ export async function POST(req: NextRequest) {
       })
       .where(eq(subscribers.id, existing.id));
 
-    for (const slug of planSlugs) {
-      await upsertPlanSubscription(existing.id, slug);
+    if (wantsDevotionals && planSlugs) {
+      for (const slug of planSlugs) {
+        await upsertPlanSubscription(existing.id, slug);
+      }
     }
 
     let sendError: unknown;
@@ -71,7 +83,8 @@ export async function POST(req: NextRequest) {
       sendError = await sendVerificationEmail({
         to: email,
         name: name ?? existing.name ?? null,
-        planSlugs,
+        requestedTags,
+        planSlugs: planSlugs ?? [],
         verToken,
         churchName,
         settings,
@@ -94,14 +107,17 @@ export async function POST(req: NextRequest) {
         status: "pending_verification",
         timezone: timezone ?? "America/New_York",
         sendHour: sendHour ?? 6,
+        tags: requestedTags,
         verificationToken: verToken,
         verificationTokenExpiresAt: verExpiry,
         unsubscribeToken: unsubToken,
       })
       .returning();
 
-    for (const slug of planSlugs) {
-      await upsertPlanSubscription(row.id, slug);
+    if (wantsDevotionals && planSlugs) {
+      for (const slug of planSlugs) {
+        await upsertPlanSubscription(row.id, slug);
+      }
     }
 
     let sendError: unknown;
@@ -109,7 +125,8 @@ export async function POST(req: NextRequest) {
       sendError = await sendVerificationEmail({
         to: email,
         name: name ?? null,
-        planSlugs,
+        requestedTags,
+        planSlugs: planSlugs ?? [],
         verToken,
         churchName,
         settings,
@@ -120,7 +137,6 @@ export async function POST(req: NextRequest) {
     }
 
     if (sendError) {
-      // Roll back the new row so the user can retry without hitting a duplicate-email error.
       await db.delete(subscribers).where(eq(subscribers.id, row.id)).catch((dbErr) => {
         console.error("[subscribe] Rollback failed after email send failure", dbErr);
       });
@@ -136,6 +152,7 @@ export async function POST(req: NextRequest) {
 async function sendVerificationEmail({
   to,
   name,
+  requestedTags,
   planSlugs,
   verToken,
   churchName,
@@ -144,6 +161,7 @@ async function sendVerificationEmail({
 }: {
   to: string;
   name: string | null;
+  requestedTags: string[];
   planSlugs: string[];
   verToken: string;
   churchName: string;
@@ -171,11 +189,19 @@ async function sendVerificationEmail({
     })
   );
 
+  const wantsDigest = requestedTags.includes("digest");
+  const wantsDevotionals = requestedTags.includes("devotionals");
+  const subject = wantsDevotionals
+    ? `Confirm your devotional subscription — ${churchName}`
+    : wantsDigest
+    ? `Confirm your weekly digest subscription — ${churchName}`
+    : `Confirm your email subscription — ${churchName}`;
+
   const resend = getResend();
   const { error } = await resend.emails.send({
     from: `${settings.senderName} <${settings.senderEmail}>`,
     to,
-    subject: `Confirm your devotional subscription — ${churchName}`,
+    subject,
     html,
   });
 

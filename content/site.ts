@@ -124,4 +124,11 @@ export const churchData = data.church;
 //                             configured and Resend credentials to be set
 //                             before the email phase is wired up.
 //                             Toggle in CMS: Site Settings → Feature Flags.
-export const features = data.features ?? { devotionals: false };
+//
+//   features.digest       →  Enables /digest: weekly church digest emails
+//                             with announcements, events, recent sermons,
+//                             and an optional pastor's note. Requires
+//                             digest-settings.json to be configured and
+//                             Resend credentials set.
+//                             Toggle in CMS: Site Settings → Feature Flags.
+export const features = data.features ?? { devotionals: false, digest: false };

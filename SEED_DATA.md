@@ -265,7 +265,45 @@ See `docs/for-developers/devotional-architecture.md` for the full translation ta
 
 ---
 
-## 13. CMS configuration
+## 13. Weekly Digest (optional feature)
+
+The weekly digest is **off by default**. It requires setup before it will send.
+
+### Enable the feature
+
+In the CMS: **Site Settings → Feature Flags → Weekly Digest → toggle on**, then rebuild.
+
+Or directly: set `"digest": true` in `content/site.json` under `"features"`.
+
+Until enabled, `/digest` returns 404.
+
+### Configure the email sender
+
+Fill in **Digest Email Settings** in the CMS:
+
+| Field | Placeholder in the template | What to replace with |
+|---|---|---|
+| Sender Name | `Grace Community Church` | Your church's full name |
+| Sender Email | `digest@example.church` | A verified Resend sender address |
+| Footer Text | `[Replace with your church name and mailing address …]` | Your full mailing address + unsubscribe instructions |
+
+The footer text is **required by CAN-SPAM law**.
+
+### Writing the pastor's note
+
+One note per week, via **Pastor's Notes (Digest)** in the CMS. Set status to **Ready** before the send time. After sending, mark it **Sent**.
+
+An example note is in `content/digest-notes/_examples/2026-01-06.md` (status: draft — won't be sent).
+
+If no note with status `ready` exists for a given week, the pastor's note section is omitted from that week's digest.
+
+### Send schedule
+
+Configure in **Digest Email Settings**: send day, hour, and timezone. The digest sends at one moment in the church's timezone (unlike devotionals, which send at each subscriber's local time).
+
+---
+
+## 14. CMS configuration
 
 `/public/admin/config.yml` has a `backend.repo: kbennett2000/church-site-template` line that **must** be updated to point at your real GitHub repo before the production CMS will work. The local CMS (`npm run cms`) ignores this.
 

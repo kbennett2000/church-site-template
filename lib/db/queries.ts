@@ -60,6 +60,36 @@ export async function findByUnsubscribeToken(
 }
 
 // ---------------------------------------------------------------------------
+// Tag management
+// ---------------------------------------------------------------------------
+
+/** Returns true if the subscriber already has this tag. */
+export async function addTagToSubscriber(
+  subscriberId: string,
+  tag: string
+): Promise<void> {
+  await db
+    .update(subscribers)
+    .set({ tags: sql`array_append(${subscribers.tags}, ${tag})` })
+    .where(
+      and(
+        eq(subscribers.id, subscriberId),
+        sql`NOT (${tag} = ANY(${subscribers.tags}))`
+      )
+    );
+}
+
+export async function removeTagFromSubscriber(
+  subscriberId: string,
+  tag: string
+): Promise<void> {
+  await db
+    .update(subscribers)
+    .set({ tags: sql`array_remove(${subscribers.tags}, ${tag})` })
+    .where(eq(subscribers.id, subscriberId));
+}
+
+// ---------------------------------------------------------------------------
 // Plan subscriptions
 // ---------------------------------------------------------------------------
 
@@ -158,7 +188,10 @@ export interface SubscriberWithPlans {
   plans: Array<{ planSlug: string; lastSentDate: string | null }>;
 }
 
-/** Returns every active subscriber along with their plan enrollments. One query. */
+/**
+ * Returns active devotional subscribers (status=active, tags contains
+ * "devotionals") with their plan enrollments. Used by the daily cron.
+ */
 export async function getActiveSubscribersWithPlans(): Promise<SubscriberWithPlans[]> {
   const rows = await db
     .select({
@@ -173,7 +206,12 @@ export async function getActiveSubscribersWithPlans(): Promise<SubscriberWithPla
     })
     .from(subscribers)
     .innerJoin(subscriberPlans, eq(subscriberPlans.subscriberId, subscribers.id))
-    .where(eq(subscribers.status, "active"));
+    .where(
+      and(
+        eq(subscribers.status, "active"),
+        sql`'devotionals' = ANY(${subscribers.tags})`
+      )
+    );
 
   const map = new Map<string, SubscriberWithPlans>();
   for (const row of rows) {
@@ -194,6 +232,26 @@ export async function getActiveSubscribersWithPlans(): Promise<SubscriberWithPla
     });
   }
   return Array.from(map.values());
+}
+
+/** Returns active digest subscribers (status=active, tags contains "digest"). */
+export async function findActiveSubscribersForDigest(): Promise<
+  Pick<Subscriber, "id" | "email" | "name" | "unsubscribeToken">[]
+> {
+  return db
+    .select({
+      id: subscribers.id,
+      email: subscribers.email,
+      name: subscribers.name,
+      unsubscribeToken: subscribers.unsubscribeToken,
+    })
+    .from(subscribers)
+    .where(
+      and(
+        eq(subscribers.status, "active"),
+        sql`'digest' = ANY(${subscribers.tags})`
+      )
+    );
 }
 
 export async function updateLastSentDate(
@@ -258,12 +316,13 @@ export async function getRecentSendLogs(limit = 30): Promise<DevotionalSendLog[]
 // ---------------------------------------------------------------------------
 
 export async function getActiveSubscribersForExport(): Promise<
-  Pick<Subscriber, "email" | "name" | "timezone" | "sendHour" | "createdAt" | "verifiedAt">[]
+  Pick<Subscriber, "email" | "name" | "tags" | "timezone" | "sendHour" | "createdAt" | "verifiedAt">[]
 > {
   return db
     .select({
       email: subscribers.email,
       name: subscribers.name,
+      tags: subscribers.tags,
       timezone: subscribers.timezone,
       sendHour: subscribers.sendHour,
       createdAt: subscribers.createdAt,

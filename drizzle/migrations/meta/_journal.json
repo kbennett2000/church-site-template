@@ -8,6 +8,13 @@
       "when": 1778874872292,
       "tag": "0000_nebulous_puff_adder",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1778875416188,
+      "tag": "0001_cool_paper_doll",
+      "breakpoints": true
     }
   ]
 }

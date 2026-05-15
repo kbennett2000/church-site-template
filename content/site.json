@@ -52,6 +52,7 @@
     }
   },
   "features": {
-    "devotionals": false
+    "devotionals": false,
+    "digest": false
   }
 }

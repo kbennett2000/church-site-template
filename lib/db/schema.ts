@@ -8,6 +8,7 @@ import {
   timestamp,
   primaryKey,
 } from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
 
 // ---------------------------------------------------------------------------
 // Enums
@@ -46,6 +47,14 @@ export const subscribers = pgTable("subscribers", {
   sendHour: integer("send_hour").notNull().default(6),
 
   /** 64-char hex token. Expires after 24 hours (see verificationTokenExpiresAt). */
+  /**
+   * Email type tags — controls which emails this subscriber receives.
+   * Values: "devotionals" | "digest"
+   * Existing subscribers backfilled to ["devotionals"] on migration.
+   * New-style digest-only subscribers have ["digest"]; combined have both.
+   */
+  tags: text("tags").array().notNull().default(sql`'{}'::text[]`),
+
   verificationToken: varchar("verification_token", { length: 64 }).unique(),
 
   verificationTokenExpiresAt: timestamp("verification_token_expires_at", {

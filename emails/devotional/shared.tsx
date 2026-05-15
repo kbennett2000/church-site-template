@@ -76,7 +76,8 @@ export function EmailHeader({
         <Img
           src={settings.logoUrl}
           alt={settings.senderName}
-          style={{ maxWidth: 120, marginBottom: 12 }}
+          width="120"
+          style={{ maxWidth: 120, height: "auto", marginBottom: 12, border: 0, display: "block" }}
         />
       ) : (
         <Text style={{ ...churchName, color: settings.brandColor }}>

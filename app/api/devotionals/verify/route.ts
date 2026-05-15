@@ -7,7 +7,7 @@ import {
   findByVerificationTokenAny,
   getSubscriberPlans,
 } from "@/lib/db/queries";
-import { getDevotionalEmailSettings } from "@/lib/devotionals/email-settings";
+import { getDevotionalEmailSettingsForSend } from "@/lib/devotionals/email-settings";
 import { WelcomeEmail } from "@/lib/devotionals/emails/welcome-email";
 import { getReadingPlan } from "@/content/devotionals";
 import { getResend } from "@/lib/resend";
@@ -64,7 +64,8 @@ async function sendWelcomeEmail({
   subscriber: { id: string; email: string; name: string | null; unsubscribeToken: string };
   origin: string;
 }) {
-  const settings = getDevotionalEmailSettings();
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? origin;
+  const settings = getDevotionalEmailSettingsForSend(baseUrl);
   const churchName = churchData?.name ?? settings.senderName;
 
   const plans = await getSubscriberPlans(subscriber.id);

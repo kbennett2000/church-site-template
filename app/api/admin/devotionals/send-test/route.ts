@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { render } from "@react-email/render";
-import { getDevotionalEmailSettings } from "@/lib/devotionals/email-settings";
+import { getDevotionalEmailSettingsForSend } from "@/lib/devotionals/email-settings";
 import { fetchScripture } from "@/lib/devotionals/scripture-api";
 import { getReadingPlan } from "@/content/devotionals";
 import { getResend } from "@/lib/resend";
@@ -48,8 +48,8 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const settings = getDevotionalEmailSettings();
-  const baseUrl = new URL(req.url).origin;
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? new URL(req.url).origin;
+  const settings = getDevotionalEmailSettingsForSend(baseUrl);
   const churchName = churchData?.name ?? settings.senderName;
   const settingsWithUrl = { ...settings, senderName: churchName, siteUrl: baseUrl };
 

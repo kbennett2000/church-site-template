@@ -206,6 +206,67 @@ check(
   "Set DATABASE_URL in .env.local (copy from Vercel → Storage → your database). Then run: npm run db:setup"
 );
 
+// 12a. Email logo URLs render in real inboxes (only relevant when digest or
+//      devotionals are enabled). A site-relative path like /images/uploads/x.png
+//      can't load in an email — it needs the full https:// URL. The template
+//      now normalizes relative paths against NEXT_PUBLIC_SITE_URL at send time,
+//      so this check fires only when both the path is relative AND that env
+//      var is missing.
+function checkEmailLogo(label, settingsRelativePath, featureFlag) {
+  check(
+    label,
+    () => {
+      const sitePath = p("content", "site.json");
+      if (!fs.existsSync(sitePath)) return "site.json not found — skipping";
+      const site = JSON.parse(fs.readFileSync(sitePath, "utf8"));
+      const enabled = site?.features?.[featureFlag] === true;
+      if (!enabled) return `features.${featureFlag} disabled — skipping`;
+
+      const settingsPath = p(...settingsRelativePath);
+      if (!fs.existsSync(settingsPath)) return "settings file not found — skipping";
+      const settings = JSON.parse(fs.readFileSync(settingsPath, "utf8"));
+      const logoUrl = (settings.logoUrl ?? "").trim();
+      if (!logoUrl) return "no logo set — falls back to church name text";
+
+      if (/^https?:\/\//i.test(logoUrl)) {
+        if (/localhost|127\.0\.0\.1/i.test(logoUrl)) {
+          throw new Error(
+            `logoUrl points at localhost (${logoUrl}). Real emails won't be able to load this.`
+          );
+        }
+        return "absolute URL";
+      }
+
+      // Relative path — only OK if NEXT_PUBLIC_SITE_URL is set so we can rewrite it.
+      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "";
+      if (!siteUrl) {
+        throw new Error(
+          `logoUrl is a site-relative path (${logoUrl}) but NEXT_PUBLIC_SITE_URL is not set. Emails will render as broken images.`
+        );
+      }
+      if (/localhost|127\.0\.0\.1/i.test(siteUrl)) {
+        throw new Error(
+          `logoUrl will resolve to ${siteUrl.replace(/\/$/, "")}${logoUrl.startsWith("/") ? "" : "/"}${logoUrl}, which points at localhost. Real emails won't load it.`
+        );
+      }
+      return `relative path → resolves to ${siteUrl}`;
+    },
+    `Open ${settingsRelativePath.join("/")} and set logoUrl to a full URL starting with https://, OR leave it blank to fall back to your church name as text, OR set NEXT_PUBLIC_SITE_URL in your Vercel environment so the uploaded path can be rewritten at send time.`
+  );
+}
+
+checkEmailLogo(
+  "Digest email logo loads in inboxes",
+  ["content", "digest-settings.json"],
+  "digest"
+);
+
+checkEmailLogo(
+  "Devotional email logo loads in inboxes",
+  ["content", "devotional-email-settings.json"],
+  "devotionals"
+);
+
 // 12. Migration files present (only relevant when features.devotionals is true)
 check(
   "Database migration files (if devotionals enabled)",

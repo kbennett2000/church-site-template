@@ -39,7 +39,7 @@ export function UnsubscribeConfirmationEmail({
       <Body style={body}>
         <Container style={container}>
           {logoUrl ? (
-            <Img src={logoUrl} alt={churchName} style={logo} />
+            <Img src={logoUrl} alt={churchName} width="160" style={logo} />
           ) : (
             <Text style={{ ...churchNameText, color: brandColor }}>{churchName}</Text>
           )}
@@ -99,7 +99,10 @@ const container: React.CSSProperties = {
 
 const logo: React.CSSProperties = {
   maxWidth: "160px",
+  height: "auto",
   marginBottom: "24px",
+  border: 0,
+  display: "block",
 };
 
 const churchNameText: React.CSSProperties = {

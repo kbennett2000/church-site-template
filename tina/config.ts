@@ -1128,7 +1128,17 @@ export default defineConfig({
             label: "Logo (optional)",
             ui: {
               description:
-                "Church logo shown at the top of each email. Leave blank to display the sender name as text instead.",
+                "Church logo shown at the top of each devotional email. Recommended size ~200px wide, transparent PNG. After deploy, the uploaded path is prefixed with your live site URL automatically — but only if NEXT_PUBLIC_SITE_URL is set in your hosting environment. If you'd rather use a logo hosted elsewhere, paste a full URL starting with https://. Leave blank to display the sender name as text instead.",
+              validate: (value?: string) => {
+                if (!value) return undefined;
+                const v = String(value).trim();
+                // Absolute URLs are fine.
+                if (/^https?:\/\//i.test(v)) return undefined;
+                // Site-relative paths get rewritten at send time as long as
+                // NEXT_PUBLIC_SITE_URL is configured.
+                if (v.startsWith("/")) return undefined;
+                return "Logo must be either an uploaded file (starts with /) or a full URL (starts with https://).";
+              },
             },
           },
           {
@@ -1294,7 +1304,17 @@ export default defineConfig({
             type: "image",
             name: "logoUrl",
             label: "Logo (optional)",
-            ui: { description: "Church logo shown at the top of each digest email. Leave blank to display sender name as text." },
+            ui: {
+              description:
+                "Church logo shown at the top of each digest email. Recommended size ~200px wide, transparent PNG. Uploaded files are rewritten to your live site URL at send time (requires NEXT_PUBLIC_SITE_URL set in hosting). If you'd rather use a logo hosted elsewhere, paste a full URL starting with https://. Leave blank to display sender name as text.",
+              validate: (value?: string) => {
+                if (!value) return undefined;
+                const v = String(value).trim();
+                if (/^https?:\/\//i.test(v)) return undefined;
+                if (v.startsWith("/")) return undefined;
+                return "Logo must be either an uploaded file (starts with /) or a full URL (starts with https://).";
+              },
+            },
           },
           {
             type: "string",

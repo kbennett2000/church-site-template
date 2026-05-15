@@ -83,7 +83,8 @@ export function DigestEmail({ payload, subscriber }: DigestEmailProps) {
                 <Img
                   src={settings.logoUrl}
                   alt={settings.senderName || churchName}
-                  style={{ maxWidth: 140, marginBottom: 12 }}
+                  width="140"
+                  style={{ maxWidth: 140, height: "auto", marginBottom: 12, border: 0, display: "block", marginLeft: "auto", marginRight: "auto" }}
                 />
               ) : (
                 <Text style={headerChurchName}>{settings.senderName || churchName}</Text>

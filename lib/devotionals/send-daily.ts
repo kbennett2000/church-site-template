@@ -27,7 +27,7 @@ import {
 } from "@/lib/db/queries";
 import { getReadingPlan } from "@/content/devotionals";
 import { fetchScripture } from "@/lib/devotionals/scripture-api";
-import { getDevotionalEmailSettings } from "@/lib/devotionals/email-settings";
+import { getDevotionalEmailSettingsForSend } from "@/lib/devotionals/email-settings";
 import { SoapEmail } from "@/emails/devotional/SoapEmail";
 import { SimpleEmail } from "@/emails/devotional/SimpleEmail";
 import { LectioEmail } from "@/emails/devotional/LectioEmail";
@@ -148,7 +148,7 @@ export async function sendDailyDevotionals(
 
   const [subscribers, settings, resend] = await Promise.all([
     getActiveSubscribersWithPlans(),
-    Promise.resolve(getDevotionalEmailSettings()),
+    Promise.resolve(getDevotionalEmailSettingsForSend(baseUrl)),
     Promise.resolve(getResend()),
   ]);
 
@@ -292,7 +292,7 @@ export async function backfillDate(
 
   const [subscribers, settings, resend] = await Promise.all([
     getActiveSubscribersWithPlans(),
-    Promise.resolve(getDevotionalEmailSettings()),
+    Promise.resolve(getDevotionalEmailSettingsForSend(baseUrl)),
     Promise.resolve(getResend()),
   ]);
 

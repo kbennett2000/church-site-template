@@ -3,7 +3,7 @@ import { render } from "@react-email/render";
 import { db } from "@/lib/db";
 import { subscribers } from "@/lib/db/schema";
 import { findByUnsubscribeToken } from "@/lib/db/queries";
-import { getDevotionalEmailSettings } from "@/lib/devotionals/email-settings";
+import { getDevotionalEmailSettingsForSend } from "@/lib/devotionals/email-settings";
 import { UnsubscribeConfirmationEmail } from "@/lib/devotionals/emails/unsubscribe-confirmation-email";
 import { getResend } from "@/lib/resend";
 import { churchData } from "@/content/site";
@@ -34,7 +34,8 @@ export async function GET(req: NextRequest) {
 
   // Send confirmation email (best-effort — unsubscribe already completed above)
   try {
-    const settings = getDevotionalEmailSettings();
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? origin;
+    const settings = getDevotionalEmailSettingsForSend(baseUrl);
     const churchName = churchData?.name ?? settings.senderName;
     const resubscribeUrl = `${origin}/devotionals`;
 

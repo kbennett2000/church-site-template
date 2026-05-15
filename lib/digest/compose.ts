@@ -2,6 +2,7 @@ import { getActiveAnnouncements } from "@/content/announcements";
 import { getAllSermons } from "@/content/sermons";
 import { upcomingEventsAfter } from "@/lib/calendar-data";
 import { churchInfo } from "@/lib/church-info";
+import { resolveEmailImageUrl } from "@/lib/email/logo-url";
 import { getDigestSettings } from "./settings";
 import { findReadyNoteForWeek } from "./notes";
 import { addDays, digestWeekWindow } from "./week-helpers";
@@ -26,7 +27,13 @@ export interface ComposeArgs {
  * admin preview, the send job, and the archive page.
  */
 export function composeDigest({ now = new Date(), siteUrl, sinceDate }: ComposeArgs): DigestPayload {
-  const settings = getDigestSettings();
+  const rawSettings = getDigestSettings();
+  // Resolve relative logo paths (TinaCMS image uploads land under /images/uploads/)
+  // against the siteUrl. Email clients and srcDoc iframes can't resolve relative URLs.
+  const settings = {
+    ...rawSettings,
+    logoUrl: resolveEmailImageUrl(rawSettings.logoUrl, siteUrl),
+  };
   const { weekStart, weekEnd, today } = digestWeekWindow(settings.sendTimezone, now);
 
   // ---------- Announcements ----------

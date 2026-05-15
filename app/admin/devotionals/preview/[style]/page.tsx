@@ -4,7 +4,7 @@ import { render } from "@react-email/render";
 import { SoapEmail } from "@/emails/devotional/SoapEmail";
 import { SimpleEmail } from "@/emails/devotional/SimpleEmail";
 import { LectioEmail } from "@/emails/devotional/LectioEmail";
-import { getDevotionalEmailSettings } from "@/lib/devotionals/email-settings";
+import { getDevotionalEmailSettingsForSend } from "@/lib/devotionals/email-settings";
 import { forceLightModePreview } from "@/lib/admin/email-preview";
 import { churchData } from "@/content/site";
 import Link from "next/link";
@@ -50,10 +50,10 @@ export default async function PreviewPage({
   const { style } = await params;
   if (!STYLES.includes(style as Style)) notFound();
 
-  const settings = getDevotionalEmailSettings();
   const baseUrl =
     process.env.NEXT_PUBLIC_SITE_URL ??
     `https://${process.env.VERCEL_URL ?? "localhost:3000"}`;
+  const settings = getDevotionalEmailSettingsForSend(baseUrl);
   const churchName = churchData?.name ?? settings.senderName;
 
   const settingsWithUrl = {

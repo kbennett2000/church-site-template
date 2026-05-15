@@ -72,6 +72,25 @@ For longer pauses (weeks or months), ask your tech volunteer to turn off the `di
 
 ---
 
+## Logo and images
+
+The digest can show your church logo at the very top of the email. To set it:
+
+1. Go to **Digest Email Settings** → **Logo** in the CMS.
+2. Click **Upload** and pick your logo file from your computer. TinaCMS stores it in `/images/uploads/` and inserts the path for you.
+
+A few tips:
+
+- **Recommended size:** around **200px wide**. The email scales it down to ~140px, but a larger source file keeps things crisp on retina screens.
+- **Format:** a **transparent PNG** works best. SVG sometimes renders inconsistently in older email clients, so PNG is safer. JPG works but won't be transparent.
+- **What if you leave it blank?** No problem — the email falls back to showing your church name as text. Many small churches prefer this; the text uses the brand color you set, and it's one less thing to maintain.
+
+**Want to use a logo you host somewhere else?** Paste a full URL starting with `https://` (e.g. `https://yourchurch.org/logo.png` or a Cloudinary/Imgix URL) into the **Logo** field instead of uploading. Anything starting with just `/` is treated as an uploaded file and gets prefixed with your live site URL automatically when emails go out.
+
+**If your logo looks broken in the preview but you uploaded one:** that means your site URL isn't configured for the dev environment. Ask your tech volunteer to set `NEXT_PUBLIC_SITE_URL` in Vercel. (The check at `npm run doctor` will flag this for them.)
+
+---
+
 ## Changing the send day or time
 
 In the CMS → **Digest Email Settings**:

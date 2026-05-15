@@ -155,6 +155,23 @@ All plans share a single set of email settings, edited under **Devotional Email 
 
 **Per-style overrides:** The SOAP, Simple, and Lectio Divina override sections let you use different intro/outro text for different plan styles. If left empty, the shared intro/outro is used for all plans.
 
+### Logo and images
+
+The devotional email can show your church logo at the top. To set it:
+
+1. Go to **Devotional Email Settings** → **Logo** in the CMS.
+2. Click **Upload** and pick your logo file. TinaCMS stores it in `/images/uploads/` and inserts the path for you.
+
+A few tips:
+
+- **Recommended size:** around **200px wide**. The email scales it down to ~120px, but a larger source keeps it crisp on high-DPI screens.
+- **Format:** a **transparent PNG** works best. JPG works but won't be transparent. SVG can render inconsistently in older email clients.
+- **Leave it blank** and the email falls back to your church name in your brand color — that's a perfectly good look and one less file to manage.
+
+**Want to use a logo you host elsewhere?** Paste a full URL starting with `https://` (e.g. `https://yourchurch.org/logo.png`) into the **Logo** field instead of uploading. Anything starting with `/` is treated as a TinaCMS upload and gets prefixed with your live site URL automatically when emails go out.
+
+**Broken-image icon in the preview?** That usually means your site URL isn't configured for the dev environment. Ask your tech volunteer to set `NEXT_PUBLIC_SITE_URL` in Vercel. (`npm run doctor` will flag this.) Subscribers will see the same broken icon if the URL stays unset, so don't skip this before activating a plan.
+
 ---
 
 ## What subscribers will see

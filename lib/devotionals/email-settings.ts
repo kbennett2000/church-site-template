@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { resolveEmailImageUrl } from "@/lib/email/logo-url";
 
 interface SoapOverride {
   intro?: string;
@@ -29,5 +30,19 @@ export function getDevotionalEmailSettings(): DevotionalEmailSettings {
   return {
     ...raw,
     senderEmail: process.env.RESEND_FROM_EMAIL ?? raw.senderEmail,
+  };
+}
+
+/**
+ * Same as getDevotionalEmailSettings() but with logoUrl normalized to an
+ * absolute URL using `baseUrl`. Always use this when handing settings to an
+ * email template — relative paths render as broken images in both real
+ * inboxes and the admin srcDoc preview iframe.
+ */
+export function getDevotionalEmailSettingsForSend(baseUrl: string): DevotionalEmailSettings {
+  const settings = getDevotionalEmailSettings();
+  return {
+    ...settings,
+    logoUrl: resolveEmailImageUrl(settings.logoUrl, baseUrl),
   };
 }

@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 import { subscribers } from "@/lib/db/schema";
 import { findByEmail, upsertPlanSubscription } from "@/lib/db/queries";
 import { generateToken, verificationExpiresAt } from "@/lib/devotionals/tokens";
-import { getDevotionalEmailSettings } from "@/lib/devotionals/email-settings";
+import { getDevotionalEmailSettingsForSend } from "@/lib/devotionals/email-settings";
 import { VerificationEmail } from "@/lib/devotionals/emails/verification-email";
 import { getReadingPlan } from "@/content/devotionals";
 import { getResend } from "@/lib/resend";
@@ -44,7 +44,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Select at least one reading plan" }, { status: 400 });
   }
 
-  const settings = getDevotionalEmailSettings();
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? new URL(req.url).origin;
+  const settings = getDevotionalEmailSettingsForSend(baseUrl);
   const churchName = churchData?.name ?? settings.senderName;
 
   const verToken = generateToken();
@@ -88,7 +89,7 @@ export async function POST(req: NextRequest) {
         verToken,
         churchName,
         settings,
-        baseUrl: new URL(req.url).origin,
+        baseUrl,
       });
     } catch (err) {
       sendError = err;
@@ -130,7 +131,7 @@ export async function POST(req: NextRequest) {
         verToken,
         churchName,
         settings,
-        baseUrl: new URL(req.url).origin,
+        baseUrl,
       });
     } catch (err) {
       sendError = err;
@@ -165,7 +166,7 @@ async function sendVerificationEmail({
   planSlugs: string[];
   verToken: string;
   churchName: string;
-  settings: ReturnType<typeof getDevotionalEmailSettings>;
+  settings: ReturnType<typeof getDevotionalEmailSettingsForSend>;
   baseUrl: string;
 }): Promise<unknown> {
   const planTitles = planSlugs

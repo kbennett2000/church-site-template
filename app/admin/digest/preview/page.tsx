@@ -4,6 +4,7 @@ import { render } from "@react-email/render";
 import { composeDigest, describePayload } from "@/lib/digest/compose";
 import { fixturePayload } from "@/lib/digest/fixture";
 import { getDigestSettings } from "@/lib/digest/settings";
+import { resolveEmailImageUrl } from "@/lib/email/logo-url";
 import { DigestEmail } from "@/emails/digest/DigestEmail";
 import { findActiveSubscribersForDigest, getDigestSendLog } from "@/lib/db/queries";
 import { isEmptyPayload } from "@/lib/digest/types";
@@ -29,10 +30,17 @@ export default async function DigestPreviewPage({
   const { fixture } = await searchParams;
   const useFixture = fixture === "1";
 
-  const settings = getDigestSettings();
   const baseUrl =
     process.env.NEXT_PUBLIC_SITE_URL ??
     `https://${process.env.VERCEL_URL ?? "localhost:3000"}`;
+  // Mirror composeDigest()'s normalization so the fixture path renders logos
+  // the same way the live path does. (composeDigest already normalizes for
+  // livePayload; we just need to match for fixturePayload.)
+  const rawSettings = getDigestSettings();
+  const settings = {
+    ...rawSettings,
+    logoUrl: resolveEmailImageUrl(rawSettings.logoUrl, baseUrl),
+  };
 
   const livePayload = composeDigest({ siteUrl: baseUrl });
   const payload = useFixture ? fixturePayload(settings, baseUrl) : livePayload;

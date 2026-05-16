@@ -10,7 +10,7 @@ time: 20 minutes
 **What you'll accomplish:** Editors can sign in to the CMS with Google (or any email address) and publish changes directly. No GitHub account required.
 **You'll need first:**
 - Site deployed to Vercel. See [Deploy to Vercel](./06-deploy-to-vercel.md).
-- A TinaCloud account and project already created (done during deploy setup — see [Deploy to Vercel](./06-deploy-to-vercel.md) Step 6).
+- **TinaCloud setup complete.** Without it, there's no CMS for editors to access — they'll hit an error at `/admin/`. See [Set up TinaCloud](./06a-setup-tinacloud.md) if you haven't done this yet.
 - About 20 minutes.
 
 ---

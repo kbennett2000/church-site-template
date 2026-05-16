@@ -33,6 +33,7 @@ You're the one semi-technical person at the church. You handle initial setup and
 - [04a Customize with the setup script](for-tech-volunteers/04a-customize-with-setup-script.md) — what each prompt means
 - [05 Customize branding](for-tech-volunteers/05-customize-branding.md) — logo, photos, colors, fonts
 - [06 Deploy to Vercel](for-tech-volunteers/06-deploy-to-vercel.md) — every click, with screenshots
+- [06a Set up TinaCloud](for-tech-volunteers/06a-setup-tinacloud.md) — connect the CMS so `/admin/` works
 - [07 Connect your domain](for-tech-volunteers/07-connect-domain.md) — yourchurch.com
 - [08 Grant editor access](for-tech-volunteers/08-grant-editor-access.md) — invite the secretary
 - [09 Maintenance](for-tech-volunteers/09-maintenance.md) — monthly + quarterly tasks

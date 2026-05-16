@@ -186,8 +186,11 @@ The new URL is active immediately.
 
 ## What's next?
 
-- [Connect a custom domain](./07-connect-domain.md) — point `yourchurch.org` at Vercel.
-- [Grant editor access](./08-grant-editor-access.md) — invite the church secretary and set up CMS authentication.
+Your site is live, but `/admin/` won't work yet — the CMS isn't connected. The next step sets up TinaCloud so editors can update content in their browsers without involving you.
+
+- **[Set up TinaCloud](./06a-setup-tinacloud.md)** — required before editors can use `/admin/`.
+- [Connect a custom domain](./07-connect-domain.md) — point `yourchurch.org` at Vercel. You can do this before or after TinaCloud; the two are independent.
+- [Grant editor access](./08-grant-editor-access.md) — invite the church secretary and set up CMS authentication. Requires TinaCloud first.
 
 ---
 

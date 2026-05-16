@@ -63,6 +63,24 @@ These are the highest-stakes screenshots — a church secretary will follow this
 | `docs/screenshots/tech-volunteer/connect-domain-dns-instructions.png` | 07-connect-domain | The DNS records Vercel shows after you add a domain (A record / CNAME / nameserver options visible). |
 | `docs/screenshots/tech-volunteer/grant-editor-access-tinacloud.png` | 08-grant-editor-access | TinaCloud project's Users page with the "Invite User" button and email input visible. |
 
+### TinaCloud setup (`06a-setup-tinacloud.md`)
+
+These are the highest-priority captures in the tech-volunteer track right now — TinaCloud was the #1 quit point in the adoption audit, and the doc is currently text-only. Until these exist, the doc relies on prose descriptions of "look for a button labeled something like…" patterns.
+
+Capture against the live `app.tina.io` UI as of the capture date. TinaCloud's UI evolves; if labels in the screenshots no longer match what a visitor sees, recapture rather than rewriting the doc — the prose is intentionally tolerant of UI drift.
+
+| Path | Used in step | What to capture |
+| --- | --- | --- |
+| `docs/screenshots/tech-volunteer/tinacloud-signin.png` | 06a-setup-tinacloud, Step 1 | `app.tina.io` landing page with the "Sign in with GitHub" button visible. |
+| `docs/screenshots/tech-volunteer/tinacloud-dashboard-empty.png` | 06a-setup-tinacloud, Step 1 | First-load TinaCloud dashboard for a brand-new account — empty project list and the prominent "Create New Project" call-to-action. |
+| `docs/screenshots/tech-volunteer/tinacloud-new-project-form.png` | 06a-setup-tinacloud, Steps 2-4 | The new-project wizard mid-flow, with the GitHub-repo dropdown, the branch selector showing `main`, and the framework selector showing Next.js. |
+| `docs/screenshots/tech-volunteer/tinacloud-project-overview.png` | 06a-setup-tinacloud, Step 5 | A new project's Overview screen with the Client ID / Project ID prominently displayed — that field should be the focal point of the crop. |
+| `docs/screenshots/tech-volunteer/tinacloud-token-generate.png` | 06a-setup-tinacloud, Step 6 | The Tokens (or API Keys) page with the dialog/panel that appears after generating a read-only token — the token value should be visibly displayed (blur or use a test project for capture so the real value doesn't leak). The "shown only once" warning text should be included if TinaCloud shows it. |
+| `docs/screenshots/tech-volunteer/tinacloud-vercel-envvars.png` | 06a-setup-tinacloud, Steps 8-9 | Vercel's Settings → Environment Variables page after both `NEXT_PUBLIC_TINA_CLIENT_ID` and `TINA_TOKEN` have been added — both shown in the list with the Sensitive indicator visible. Mask the actual values. |
+| `docs/screenshots/tech-volunteer/tinacloud-vercel-redeploy.png` | 06a-setup-tinacloud, Step 10 | The Vercel Deployments tab with the three-dot menu open on the most recent deployment, and the Redeploy confirmation dialog with the "Use existing Build Cache" checkbox visible (unchecked). |
+| `docs/screenshots/tech-volunteer/tinacloud-admin-signin.png` | 06a-setup-tinacloud, Step 11 | The TinaCloud sign-in screen as seen at `your-site.vercel.app/admin/` — the branded "Sign in with GitHub" page that appears once the env vars are wired correctly. |
+| `docs/screenshots/tech-volunteer/tinacloud-admin-collections.png` | 06a-setup-tinacloud, Step 11 | The TinaCMS interface after a successful sign-in — left sidebar showing collections (Site Settings, Sermons, Staff, etc.), main panel showing whichever collection is open first. This overlaps with the existing `marketing/cms-dashboard.png` capture; one good shot covers both uses. |
+
 ## Developer track (`docs/for-developers/*`)
 
 No screenshots needed — these are reference docs with code excerpts rather than UI walkthroughs.

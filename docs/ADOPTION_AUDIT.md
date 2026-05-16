@@ -286,3 +286,54 @@ The following audit items were touched only enough to mention; the meaty work be
 ### Nothing turned out larger than expected
 
 All 13 items were genuinely independent and small. No scope-bleed into the deferred categories. Total edits across 14 files; pure markdown changes; no code touched.
+
+---
+
+## Session B completed — 2026-05-15
+
+Focused on the single highest-leverage missing doc identified in this audit.
+
+### Gap A1 — TinaCloud setup end-to-end doc ✅
+
+**New file:** [`docs/for-tech-volunteers/06a-setup-tinacloud.md`](docs/for-tech-volunteers/06a-setup-tinacloud.md)
+
+Filed at `06a-` to slot between Vercel deployment and the optional domain/editor-access steps, matching the actual dependency order (TinaCloud requires a live Vercel deploy; editor access requires TinaCloud). Mirrors the `04a-customize-with-setup-script.md` numbering convention.
+
+The doc walks a tech volunteer through 13 numbered steps, end-to-end:
+1. Create a TinaCloud account (sign in with GitHub).
+2. Start a new project.
+3. Select the church repository.
+4. Fill in the project details (branch / Next.js framework / root path).
+5. Find the Client ID.
+6. Generate a read-only token (with the "shown only once" warning surfaced prominently).
+7. Open Vercel.
+8. Add `NEXT_PUBLIC_TINA_CLIENT_ID`.
+9. Add `TINA_TOKEN`.
+10. Trigger a fresh redeploy (without build cache).
+11. Verify `/admin/` loads the CMS sign-in screen.
+12. Test a real edit end-to-end (tagline change, see it on the homepage).
+13. Revert the test edit.
+
+Each step describes what the reader should see so they can self-verify. Five troubleshooting scenarios at the end cover the most likely failure modes (error at `/admin/`, edits not propagating, repo-access errors, read-only CMS fields, expired tokens). The cost note explicitly addresses "is this really free?" so a tech volunteer can answer their pastor's question confidently.
+
+**Tone-matching notes:** Follows the existing tech-vol convention — frontmatter with type/audience/time, **Who/What/You'll need first** header block, numbered steps with action verbs in bold, callouts with `> **Tip:**` / `> ⚠️ **Critical:**` styling, Common-Mistakes-style troubleshooting at the end, "What's next?" and "Stuck?" footers. No screenshots referenced in the doc body (per session goal); placeholder catalog added to SCREENSHOTS_NEEDED.md instead.
+
+**TinaCloud UI tolerance:** Where the exact wording of TinaCloud's UI is unpredictable across product evolutions (the "Create New Project" button label, the exact name of the project-overview screen, whether tokens live under "Tokens" or "API Keys"), the doc describes *what to look for* ("look for a button labeled something like 'Create New Project' or 'New Project'") rather than asserting an exact phrase that may have shifted by the time someone reads it.
+
+### Supporting updates
+
+- **[`06-deploy-to-vercel.md`](docs/for-tech-volunteers/06-deploy-to-vercel.md)** — "What's next?" section rewritten: explains that `/admin/` won't work yet, makes TinaCloud setup the required next step (before the optional domain step), and links to 06a.
+- **[`08-grant-editor-access.md`](docs/for-tech-volunteers/08-grant-editor-access.md)** — Prerequisites section now correctly references 06a instead of falsely claiming TinaCloud setup happened during "Deploy Step 6." Closes the broken-prerequisite chain.
+- **[`docs/README.md`](docs/README.md)** — Tech-volunteer track now includes 06a in numbered sequence.
+- **[`SCREENSHOTS_NEEDED.md`](docs/SCREENSHOTS_NEEDED.md)** — New section with nine high-priority captures for the TinaCloud flow. Each entry names the step it supports so a future capture pass can match shots to the surrounding prose.
+
+### What this changes about the audit's verdict
+
+Item A1 was characterized as **"The single biggest accessibility win possible"** in this audit's honest assessment — the #1 quit point for tech volunteers and a prerequisite for the editor case (no `/admin/` without it) and the successor case (gap C1 builds on knowing TinaCloud is set up). With the doc shipped, the tech-volunteer adoption funnel now has a continuous path from "I clicked Use This Template" all the way to "my pastor's spouse is editing the homepage."
+
+That doesn't close the audit — A2 (case studies), A3/A4 (Codespaces and OAuth screenshots), A5 (time-estimate honesty, already done in Session A), and A6 (successor entry path) remain. But it does retire the largest single blocker.
+
+### Items intentionally deferred (still scope-guarded)
+
+- Screenshots for 06a are catalogued in SCREENSHOTS_NEEDED.md but not captured — a screenshot pass is a separate activity from doc-writing.
+- Successor runbook (C1), operational runbooks (B1/B2/B6), case studies (A2), and the day-of-week dropdown (B3) remain untouched. Each is independent and would benefit from its own focused session.

@@ -1,5 +1,7 @@
 # Project context for Claude
 
+> **If you're a human reading this for the first time:** this file is optimized for AI context, not human onboarding. You probably want [`docs/for-tech-volunteers/successor-runbook.md`](docs/for-tech-volunteers/successor-runbook.md) instead — it's the same project, walked through in human-friendly order with service inventory, access-handoff guidance, and a 60-minute orientation.
+>
 > **What this file is:** a self-contained handoff for resuming work on the Church Site Template in a new Claude session — on a new machine, in a new window, or after a long gap. Claude Code auto-loads `CLAUDE.md` from the repo root, so this file becomes context automatically. No need to paste it manually.
 >
 > **What this file is not:** a substitute for the docs in `/docs/`. Read those for architecture, content model, and adoption flow. This file captures the *conversation-level* context that wouldn't otherwise be in the repo.

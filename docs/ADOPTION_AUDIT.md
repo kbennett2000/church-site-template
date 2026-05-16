@@ -387,3 +387,82 @@ The remaining successor-track gap is C1 (the full successor runbook with service
 - **Screenshots for all three runbooks** are catalogued but not captured. A screenshot pass for these is high-value because of the stress-context; doing it well requires being able to deliberately break a staging environment.
 - **C1 (successor runbook)**, **A2 (case studies)**, **A3/A4 (Codespaces and Google Cloud screenshot passes)** remain.
 - **B3 (day-of-week dropdown for events)** is a UI change rather than a doc change — out of scope for this track.
+
+---
+
+## Session D completed — 2026-05-15
+
+The largest single missing doc — the successor runbook — has been written. This session also closed several related succession-track gaps that were waiting on it.
+
+### Gap C1 — Successor runbook ✅
+
+**New file:** [`docs/for-tech-volunteers/successor-runbook.md`](docs/for-tech-volunteers/successor-runbook.md)
+
+Ten-part document for the volunteer inheriting a running church website without context. Opens with explicit acknowledgment of the situation ("Maybe you volunteered, maybe you got drafted") to lower anxiety, then walks through the full inheritance arc:
+
+1. **You just inherited this** — framing, what to expect, a fresh notes doc.
+2. **Service inventory** — seven services (GitHub, Vercel, TinaCloud, registrar, Neon, Resend, Google Cloud) with what-each-does / what-breaks-if-lost / where-to-find for each, plus a "which apply to your church" decision table.
+3. **Getting access** — three scenarios (predecessor reachable / shared accounts / predecessor gone), with concrete next steps for each service in each scenario.
+4. **Your first 60 minutes** — guided 7-step tour (live site, `/admin/`, Vercel, GitHub, email pipeline, runbooks, maintenance) building the mental model.
+5. **Known gotchas** — 9 things the previous builder learned the hard way, each in one paragraph (stale JWT, Resend sandbox, db:push, env-var-doesn't-hot-reload, tag merges, TinaCloud 403, force=true, rate limiter, old logo URLs).
+6. **The "why" behind the choices** — pointer to decision-log.md with 4 key callouts.
+7. **Ongoing rhythm** — weekly/monthly/quarterly/annual cadence.
+8. **When you eventually pass this on** — handoff procedure for the *next* successor, with the principle "next successor should have a strictly better handoff experience than you did."
+9. **Worst case: rebuilding from scratch** — what's recoverable, what's lost, the rebuild path, honest warning about losing the subscriber list.
+10. **Still stuck?** — five fallback resources.
+
+Each major part ends with a checkpoint the reader can self-verify against.
+
+### Gap C2 — Credentials/accounts succession plan ✅
+
+Covered as Part 3 of the successor runbook. The "Scenario A / B / C" breakdown gives concrete next steps for the three real situations a successor finds themselves in. Tactical advice on password managers, sealed-envelope handoff packets, and "don't share passwords over text" closes the section.
+
+### Gap C3 — Consolidated gotchas page ✅
+
+Covered as Part 5 of the successor runbook. The nine gotchas previously scattered across `admin-access-followups.md`, `email-deliverability.md`, `database-migrations.md`, and various runbooks are now consolidated in one section with one-paragraph descriptions and links to the canonical home of each one.
+
+### Gap C4 — Decision-log cross-link from successor-track ✅
+
+Resolved in two ways:
+- The successor runbook (Part 6) names the decision log explicitly and tells the reader to spend 10 minutes there.
+- [`decision-log.md`](docs/for-developers/decision-log.md) now opens with a "Note for maintainers" callout reminding developers that the doc is referenced from the successor runbook and must be kept current. The expectation is now bidirectional: the runbook depends on the decision log, and the decision log knows it.
+
+Decision-log was also extended with four previously-missing ADRs needed by the successor runbook:
+- **ADR-011** — Resend for transactional email (vs SendGrid / AWS SES / Postmark / Mailgun).
+- **ADR-012** — Postgres for subscriber data (vs no-database / SQLite / MongoDB / managed lists).
+- **ADR-013** — Neon (via Vercel Postgres) for managed Postgres (vs Supabase / RDS / self-host).
+- **ADR-014** — Auth.js v5 for admin Google sign-in (vs Clerk / Auth0 / Lucia / roll-your-own).
+
+### Gap C6 — CLAUDE.md framed for human inheritor ✅
+
+[`CLAUDE.md`](CLAUDE.md) now opens with a "If you're a human reading this for the first time" callout pointing to the successor runbook as the human-friendly version. CLAUDE.md remains optimized for AI context but no longer leaves a human inheritor with no signal that a better doc exists for them.
+
+### Gap C7 — TinaCloud recovery scenario ✅
+
+Covered as part of Part 3, Scenario C of the successor runbook (account recovery flows for each service, including specific guidance for TinaCloud) and Part 9 (full rebuild path including "create a new TinaCloud project" as a documented option). The previous "no recovery path documented at all" state is closed.
+
+### Supporting updates
+
+- **[`docs/README.md`](docs/README.md)** — Added a new "For successors" track section at the top of the audience list. Operational runbooks section now also lists the successor runbook with a one-line hook.
+- **[`README.md`](README.md)** — "Pick your path" section reshaped from 3 columns to 4 columns. The fourth path is "I'm inheriting a site someone else built" → successor runbook. Acknowledges the persona explicitly in the main public README.
+- **[`docs/for-tech-volunteers/01-overview.md`](docs/for-tech-volunteers/01-overview.md)** — Top-of-doc callout redirecting inheritors to the successor runbook rather than this fresh-setup overview.
+- **[`SCREENSHOTS_NEEDED.md`](docs/SCREENSHOTS_NEEDED.md)** — Nine new captures catalogued for the successor runbook, with notes that several overlap with previously-catalogued runbook screenshots (one capture serves both contexts).
+
+### What this changes about the audit's verdict
+
+The "successor case is genuinely under-served" framing from the original audit's honest-assessment section is now closed. Combined with Sessions B (TinaCloud doc) and C (operational runbooks), a successor inheriting this site cold has:
+
+- A path-selector in the README that recognizes them.
+- A dedicated runbook for inheritance (this one).
+- Three incident runbooks for the most likely things they'd face in year one.
+- A decision log explaining why each architectural choice was made.
+- Updated CLAUDE.md signal that a better doc exists for human readers.
+
+The "Day-One survival rate ~6/10" verdict from the original audit's Successor persona section should now be substantially better — most of the failing scenarios (site down, emails stopped, secret exposed, TinaCloud account expired) have explicit recovery procedures, and the "no service inventory / no first-60-minutes orientation" gap that drove the rest of the score is closed.
+
+### Items intentionally deferred
+
+- **Screenshots** for the successor runbook are catalogued but not captured. Several overlap with previously-catalogued runbook and TinaCloud captures, so a single screenshot pass could close 20+ entries at once.
+- **A2 (case studies)** — Still only one placeholder. Independent of this work; awaits the inaugural church's permission for screenshots and quote.
+- **A3/A4 (Codespaces + Google OAuth screenshot passes)** — Still pending.
+- **B3 (day-of-week dropdown)** — UI change, not doc work.

@@ -101,6 +101,24 @@ These runbooks are intentionally text-only for v1 because they're read under str
 | `docs/screenshots/tech-volunteer/runbook-vercel-redeploy-dialog.png` | runbook-rotate-secret (all sections) | The Redeploy confirmation dialog with the "Use existing Build Cache" checkbox visible and unchecked — referenced from every rotation procedure. |
 | `docs/screenshots/tech-volunteer/runbook-dnschecker-resolved.png` | runbook-site-down, Check 3 | A dnschecker.org result page showing the user's domain resolving to a Vercel IP with green checkmarks across regions — the healthy state. |
 
+### Successor runbook (`successor-runbook.md`)
+
+The successor runbook is text-heavy by design (the reader is anxious; we want to lower anxiety with words before adding visual complexity). But there are specific points where a screenshot would lower friction sharply — primarily the "invite a collaborator" flow for each service, because the reader is going to do this once per service back-to-back and learning each UI from scratch is a heavy ask.
+
+Capture from a real church-instance project where possible, with sensitive emails masked. The "invite" screens look the same across all accounts so a single capture per service is reusable.
+
+| Path | Used in section | What to capture |
+| --- | --- | --- |
+| `docs/screenshots/tech-volunteer/successor-github-collaborators.png` | Part 3, Scenario A | GitHub repo Settings → Collaborators page with the "Add people" / "Invite a collaborator" button visible. |
+| `docs/screenshots/tech-volunteer/successor-vercel-members.png` | Part 3, Scenario A | Vercel project or account Members page with the invite-by-email form visible. |
+| `docs/screenshots/tech-volunteer/successor-tinacloud-users.png` | Part 3, Scenario A | TinaCloud project → Users page with the invite button visible. Overlaps with `tinacloud-` captures already catalogued; reuse if the framing works. |
+| `docs/screenshots/tech-volunteer/successor-resend-team.png` | Part 3, Scenario A | Resend Settings → Team page with the invite-member form visible. |
+| `docs/screenshots/tech-volunteer/successor-neon-sharing.png` | Part 3, Scenario A | Neon project Settings → Sharing/Members page with the invite form visible. |
+| `docs/screenshots/tech-volunteer/successor-gcp-iam.png` | Part 3, Scenario A | Google Cloud Console IAM page with the "Grant Access" panel open, showing the role-picker. |
+| `docs/screenshots/tech-volunteer/successor-vercel-env-vars-overview.png` | Part 4, Step 3 | Vercel Settings → Environment Variables landing page — the successor's first look at what variables the site uses. Heavily anonymized. Overlaps with `runbook-vercel-env-vars.png` already catalogued; one capture serves both. |
+| `docs/screenshots/tech-volunteer/successor-vercel-crons-overview.png` | Part 4, Step 5 | Vercel Settings → Cron Jobs (or Crons) showing the hourly devotional and digest crons listed with recent invocations. Overlaps with `runbook-vercel-crons-list.png`; one capture serves both. |
+| `docs/screenshots/tech-volunteer/successor-drizzle-studio-overview.png` | Part 4, Step 5 | Drizzle Studio with the `subscribers` table open at a high level — successor's first look at what's in the database. Overlaps with `runbook-drizzle-studio-subscribers.png`; one capture serves both. |
+
 ## Developer track (`docs/for-developers/*`)
 
 No screenshots needed — these are reference docs with code excerpts rather than UI walkthroughs.

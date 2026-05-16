@@ -6,9 +6,12 @@ time: 15 minutes
 
 # Decision log
 
-**Who this is for:** Developers wanting to understand why each piece of the stack was chosen, and what tradeoffs were considered.
+**Who this is for:** Developers wanting to understand why each piece of the stack was chosen, and what tradeoffs were considered. Also: successors inheriting a running site — the [successor runbook](../for-tech-volunteers/successor-runbook.md) refers them here for the "why" behind the current architecture.
+
 **What you'll accomplish:** Have enough context to challenge an existing decision (or accept it) without having to re-litigate the original discussion.
 **You'll need first:** Familiarity with the stack. See [architecture.md](./architecture.md).
+
+> **Note for maintainers:** keep this doc current. The successor runbook depends on it being accurate — when a future tech volunteer reads "the answer is in decision-log.md," they need to actually find the answer. If you add a new external service or change a load-bearing technology choice, add or amend an ADR here.
 
 Each entry below is an Architecture Decision Record (ADR) in lightweight form: context, decision, alternatives, consequences.
 
@@ -296,6 +299,107 @@ Use **GitHub's "template repository" feature** as the primary onboarding path. A
 - Con: No automatic "Sync fork" button. Churches that want template updates have to cherry-pick manually or use a tool like `git-template-sync`. Documented in [contributing.md](./contributing.md#keeping-a-church-instance-in-sync-with-the-template).
 - Con: The release/changelog discipline of the template now matters: church instances will check it periodically to decide what to pull in. Lazy changelogs hurt adopters.
 - Con: An adopting church can't easily contribute a fix back to the template — they have to fork the template separately. This is a deliberate friction: most church-instance changes are church-specific and shouldn't flow back. The fix workflow for genuinely-generic improvements is documented but slightly indirect.
+
+---
+
+## ADR-011: Resend for transactional email
+
+**Status:** Accepted
+
+**Context:**
+The site needs to send transactional emails — contact-form notifications, prayer-request forwards, devotional emails (one per subscriber per day), and weekly digests. Requirements: a generous free tier, a clean Node.js SDK, deliverability help (DKIM/SPF/DMARC guidance), and reasonable per-email pricing if a church outgrows the free tier.
+
+**Decision:**
+Use **Resend** as the email provider.
+
+**Alternatives considered:**
+- **SendGrid (Twilio)** — robust but the free tier is more restrictive (100/day for the first 30 days only), the dashboard is dated, and Twilio's pricing has crept up.
+- **AWS SES** — extremely cheap at scale, but requires AWS account setup, IAM configuration, and SES sandbox-to-production approval. Operational burden for a non-developer church is too high.
+- **Postmark** — excellent deliverability, very clean product, but free tier is only 100 emails total (not per month) — far too small for a church mailing list.
+- **Mailgun** — viable but the free tier has shrunk over time and the dashboard is unfriendly to non-engineers.
+
+**Consequences:**
+- Pro: 3000 emails/month free at the time of this decision — fine for a small church's devotional and digest combined.
+- Pro: First-party React-email rendering integration — email templates live as JSX in `emails/`.
+- Pro: Dashboard is the simplest of the alternatives; non-engineers can verify deliveries themselves.
+- Pro: Webhooks for bounce / complaint handling are clean to wire up.
+- Con: Resend is a younger company; pricing or limits could change. Mitigation: the email-send abstraction in `lib/resend.ts` is small enough to swap providers in a day.
+- Con: Sandbox mode (`onboarding@resend.dev`) only delivers to the verified account owner. Documented as a gotcha in the runbooks and in `email-deliverability.md` because it bites people who don't realize they're still in sandbox.
+
+---
+
+## ADR-012: Postgres for subscriber data (over no database, SQLite, MongoDB)
+
+**Status:** Accepted
+
+**Context:**
+The devotional and digest email features need durable, structured storage for: who is subscribed, what tags they have, what reading plans they're on, when they last received an email, and a send-log for idempotency. This data has to survive every site redeploy.
+
+**Decision:**
+Use a **Postgres database** for subscriber data.
+
+**Alternatives considered:**
+- **No database (store subscribers in a JSON file in the repo)** — would work for tiny lists but breaks at scale, can't handle concurrent writes from form submissions, leaks subscriber emails into git history publicly. Rejected.
+- **SQLite** — file-based, simple. Rejected because Vercel's serverless functions don't have persistent local filesystem — every cold start would start fresh.
+- **MongoDB / DynamoDB** — viable but the subscriber model is genuinely relational (subscribers ↔ plans ↔ send-log), and SQL is the right shape. The team will have an easier time querying Postgres than learning a document-DB query language.
+- **A managed third-party "subscriber list" service like Mailchimp or Buttondown** — would offload the database problem entirely. Rejected because (a) per-subscriber pricing adds up, (b) we lose control of the schema and can't add per-church custom fields, (c) we'd still need a database for the send-log / idempotency.
+
+**Consequences:**
+- Pro: Mature ecosystem; Drizzle ORM gives type-safe queries from TypeScript.
+- Pro: Migration tooling (`drizzle-kit migrate`) keeps schema changes reviewable in git.
+- Pro: Subscribers are portable — a CSV export works from day one.
+- Con: One more service to maintain. Mitigation: managed Postgres providers (Neon, Vercel Postgres) are very low operational burden.
+
+---
+
+## ADR-013: Neon (via Vercel Postgres) for managed Postgres
+
+**Status:** Accepted
+
+**Context:**
+ADR-012 chose Postgres. Now: where to host it.
+
+**Decision:**
+Use **Neon** as the Postgres provider — either directly, or via **Vercel Postgres** (which is Neon under the hood with Vercel-flavored UX).
+
+**Alternatives considered:**
+- **Supabase** — solid alternative; the free tier is comparable. Rejected because the project's `@vercel/postgres` integration assumes Vercel-flavored connection strings, which Vercel Postgres provides automatically. Switching providers means changing connection-string handling; the abstraction is small but not zero.
+- **AWS RDS** — mature but expensive, and requires AWS account familiarity. Operational burden too high for a non-developer church.
+- **Self-hosted Postgres on a VPS** — most control, highest operational burden. Rejected for the same reason as ADR-008 (Vercel hosting).
+- **PlanetScale** — was a serious contender at one point but PlanetScale uses MySQL, and dropped its free tier.
+
+**Consequences:**
+- Pro: Generous free tier — well within a small church's usage envelope.
+- Pro: Vercel-native integration: adding a Postgres database from the Vercel Storage tab automatically sets `POSTGRES_URL` as an env var.
+- Pro: Neon's branching model supports point-in-time recovery on the free tier — see [database-migrations.md](./database-migrations.md) for the recovery procedure.
+- Con: Neon's free tier auto-suspends inactive databases. First request after a quiet period takes a few seconds to wake up. Imperceptible in practice but worth knowing about.
+- Con: Tied to a specific provider; if Neon's terms change, churches would migrate. The `lib/db/index.ts` connection layer is small enough that swapping providers is feasible.
+
+---
+
+## ADR-014: Auth.js v5 (NextAuth) for admin Google sign-in
+
+**Status:** Accepted
+
+**Context:**
+The custom admin pages (`/admin/digest`, `/admin/devotionals`, and the `/api/admin/*` routes) need authentication. Two modes are supported: a single shared password (Basic Auth) and per-person Google sign-in. The shared-password path is trivial and needs no library. The per-person Google path needs an auth library.
+
+**Decision:**
+Use **Auth.js v5** (formerly NextAuth) with the Google OAuth provider. JWT session strategy (no database session table). Allowlist sourced from `content/admin-access.json` (CMS-editable) plus `ADMIN_ALLOWLIST` env var (bootstrap-only).
+
+**Alternatives considered:**
+- **Clerk** — beautiful product, but the free tier has per-user-month limits and the per-seat economics aren't great for a small church with a handful of admins.
+- **Auth0** — similar story to Clerk — designed for SaaS apps with paying users, overkill for a handful of church admins.
+- **Lucia Auth** — lower-level, requires more wiring. Doesn't pay off for a single Google provider; Auth.js handles the OAuth dance with much less code.
+- **Roll-your-own OAuth** — every detail (state, PKCE, callback handling) is a place to get security wrong. Rejected.
+- **Skip Google entirely; use Basic Auth only** — fine for very small churches with one or two admins. Documented as an option ([admin-access-basic-auth.md](../for-tech-volunteers/admin-access-basic-auth.md)) but doesn't survive a successor transition well — see Part 6 of the successor runbook.
+
+**Consequences:**
+- Pro: Auth.js v5 has clean Next.js App Router integration; the `middleware.ts` integration is small.
+- Pro: JWT strategy means no database query on every protected request — middleware runs in the Edge runtime.
+- Pro: Standard Google OAuth flow — admins use accounts they already have.
+- Con: JWT strategy has the "stale claim" gotcha: when an admin's allowlist status changes, their JWT keeps the old claim until expiry or sign-out. Documented as gotcha #1 in the successor runbook. Tracked as a follow-up in [admin-access-followups.md](./admin-access-followups.md).
+- Con: Adds the Google Cloud Console as another service in the inventory. Documented in the successor runbook.
 
 ---
 

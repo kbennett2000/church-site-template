@@ -67,7 +67,7 @@ After launch, the routine is about 10 minutes per month: a tech volunteer applie
 
 <table>
 <tr>
-<td width="33%" valign="top">
+<td width="25%" valign="top">
 
 ### 📝 I just want to edit content
 
@@ -76,7 +76,7 @@ For church staff who keep the site updated — sermons, events, staff bios, serv
 **[→ Editor guide](docs/for-editors/01-getting-started.md)**
 
 </td>
-<td width="33%" valign="top">
+<td width="25%" valign="top">
 
 ### 🛠️ I'm setting this up for my church
 
@@ -85,7 +85,16 @@ For the one semi-technical person at the church doing initial setup and deployme
 **[→ Setup guide (~90 min first time)](docs/for-tech-volunteers/01-overview.md)**
 
 </td>
-<td width="33%" valign="top">
+<td width="25%" valign="top">
+
+### 🤝 I'm inheriting a site someone else built
+
+For the volunteer taking over after the original setup person moved on. Service inventory, access handoff, first 60 minutes.
+
+**[→ Successor runbook](docs/for-tech-volunteers/successor-runbook.md)**
+
+</td>
+<td width="25%" valign="top">
 
 ### 💻 I'm a developer
 

@@ -6,6 +6,8 @@ time: 5 minutes
 
 # Overview: adopting the template for your church
 
+> **Inheriting an existing site instead of setting up a new one?** This doc is for fresh setup. If your church already has a running site and you're taking over from someone else, start with the [successor runbook](./successor-runbook.md) — it walks you through service inventory, access handoff, and your first 60 minutes on an inherited system.
+
 **Who this is for:** The semi-technical person at the church doing the initial template adoption and setup.
 **What you'll accomplish:** Understand the whole journey before you start clicking, so nothing surprises you.
 **You'll need first:** Nothing — this is a good starting point.

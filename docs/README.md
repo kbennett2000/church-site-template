@@ -22,9 +22,15 @@ You update content (sermons, staff bios, events) using the CMS in your browser. 
 - [Troubleshooting](for-editors/troubleshooting.md) — "I clicked publish but…"
 - [Editor glossary](for-editors/glossary.md) — plain-English terms
 
+## 🤝 For successors (inheriting a running site)
+
+You weren't the one who set this up, but you're the one maintaining it now. Start here.
+
+- [Successor runbook](for-tech-volunteers/successor-runbook.md) — service inventory, access handoff, first 60 minutes, ongoing rhythm
+
 ## 🛠️ For tech volunteers
 
-You're the one semi-technical person at the church. You handle initial setup and deployment, then hand off to editors.
+You're the one semi-technical person at the church. You handle initial setup and deployment, then hand off to editors. (If you're *inheriting* the site instead of setting it up, the **Successors** track above is what you want.)
 
 - [01 Overview](for-tech-volunteers/01-overview.md) — the 30-minute adoption journey, in plain English
 - [02 Prerequisites](for-tech-volunteers/02-prerequisites.md) — what to install (or skip with Codespaces)
@@ -42,8 +48,9 @@ You're the one semi-technical person at the church. You handle initial setup and
 
 ### Operational runbooks
 
-For when something has broken in production. Start with the symptom that matches.
+For when something has broken in production, or when you're inheriting the site cold. Start with the symptom that matches.
 
+- [Successor runbook](for-tech-volunteers/successor-runbook.md) — you didn't build this site; now what?
 - [Runbook — site is down](for-tech-volunteers/runbook-site-down.md) — blank page, 404, 500, domain not resolving
 - [Runbook — emails stopped sending](for-tech-volunteers/runbook-emails-stopped.md) — subscribers not receiving, Resend dashboard quiet
 - [Runbook — rotate a leaked secret](for-tech-volunteers/runbook-rotate-secret.md) — committed `.env.local`, leaked API key, departed volunteer

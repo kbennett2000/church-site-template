@@ -40,6 +40,14 @@ You're the one semi-technical person at the church. You handle initial setup and
 - [10 Customize deeper](for-tech-volunteers/10-customize-deeper.md) — add a ministry, add a page, rearrange nav
 - [Troubleshooting](for-tech-volunteers/troubleshooting.md) — when setup or deploy breaks
 
+### Operational runbooks
+
+For when something has broken in production. Start with the symptom that matches.
+
+- [Runbook — site is down](for-tech-volunteers/runbook-site-down.md) — blank page, 404, 500, domain not resolving
+- [Runbook — emails stopped sending](for-tech-volunteers/runbook-emails-stopped.md) — subscribers not receiving, Resend dashboard quiet
+- [Runbook — rotate a leaked secret](for-tech-volunteers/runbook-rotate-secret.md) — committed `.env.local`, leaked API key, departed volunteer
+
 ## 💻 For developers
 
 You're customizing the template, maintaining a church's adopted instance, or contributing back.

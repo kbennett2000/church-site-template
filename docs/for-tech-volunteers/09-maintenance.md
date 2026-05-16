@@ -13,6 +13,18 @@ time: 10 minutes (per month)
 
 ---
 
+## Common operational issues
+
+When something is broken in production, **go to the relevant runbook before reading the rest of this page** — these are decision-tree guides built for finding the problem fast under pressure:
+
+- **The site is down** (blank page, 404, 500, domain not resolving) → [runbook-site-down.md](./runbook-site-down.md).
+- **Emails stopped sending** (subscribers not receiving, Resend dashboard quiet) → [runbook-emails-stopped.md](./runbook-emails-stopped.md).
+- **A secret has been exposed** (committed `.env.local`, leaked API key, departed volunteer) → [runbook-rotate-secret.md](./runbook-rotate-secret.md).
+
+The rest of this page is for routine maintenance, not incident response.
+
+---
+
 ## Monthly tasks (10-15 minutes)
 
 ### 1. Check the GitHub repository for any open pull requests

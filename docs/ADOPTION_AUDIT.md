@@ -337,3 +337,53 @@ That doesn't close the audit — A2 (case studies), A3/A4 (Codespaces and OAuth 
 
 - Screenshots for 06a are catalogued in SCREENSHOTS_NEEDED.md but not captured — a screenshot pass is a separate activity from doc-writing.
 - Successor runbook (C1), operational runbooks (B1/B2/B6), case studies (A2), and the day-of-week dropdown (B3) remain untouched. Each is independent and would benefit from its own focused session.
+
+---
+
+## Session C completed — 2026-05-15
+
+Three operational runbooks shipped. The audit above remains the snapshot.
+
+### Gap B1 — "Site is down" runbook ✅
+
+**New file:** [`docs/for-tech-volunteers/runbook-site-down.md`](docs/for-tech-volunteers/runbook-site-down.md)
+
+Six-check decision tree (Vercel status → latest deploy → DNS → response status code → rendering → admin-only failure). Opens with "Before you panic" reality-check guidance (most reports are one user's cache problem) and surfaces the rollback procedure as the universal escape hatch *before* the diagnostic checks, so a reader in a real outage can restore service in 30 seconds without reading further. Tables map symptoms to causes; runtime-log filtering hints are concrete. Closes with a "capture these four artifacts before asking for help" checklist that maps directly to what someone diagnosing remotely would need.
+
+### Gap B2 — "Emails stopped sending" runbook ✅
+
+**New file:** [`docs/for-tech-volunteers/runbook-emails-stopped.md`](docs/for-tech-volunteers/runbook-emails-stopped.md)
+
+Seven-check decision tree (per-subscriber record → cron firing → `CRON_SECRET` → Resend health → `RESEND_API_KEY` → `RESEND_FROM_EMAIL` domain → database connectivity). Surfaces the Resend sandbox-mode trap (`onboarding@resend.dev` only delivers to the account owner) as a "known gotcha" callout near the top, *before* the diagnostic checks — that single fact resolves a large share of real complaints. Database-row checks describe specific columns to inspect (`status`, `tags`, `last_sent_date`) so the reader doesn't have to interpret schema. Cross-links to `runbook-rotate-secret.md` where appropriate.
+
+### Gap B6 — "Rotate a leaked secret" runbook ✅
+
+**New file:** [`docs/for-tech-volunteers/runbook-rotate-secret.md`](docs/for-tech-volunteers/runbook-rotate-secret.md)
+
+The most structurally rigorous of the three. Opens with the universal rule (generate → set → redeploy → verify → revoke, in that order — never revoke before verifying) so the reader doesn't take the site down trying to fix a leak. Per-secret procedures for `RESEND_API_KEY`, `ADMIN_PASSWORD`, `NEXTAUTH_SECRET` (with explicit "this signs everyone out" warning), `CRON_SECRET`, `TINA_TOKEN`, `GOOGLE_CLIENT_SECRET`, and `DATABASE_URL`. Each follows the same 5-step shape so the pattern is memorizable. Closes with "after every rotation" guidance (audit logs, close the leak source, update records) and a cascading-rotations table for high-impact leaks.
+
+### Tone calibration across all three
+
+- Imperative voice throughout ("Check X" / "Open Y" / "Click Z" — not "you may want to check").
+- No abstract architecture sections — every paragraph either describes a symptom, an action, or a verification step.
+- Pass/fail criteria embedded in every check so the reader knows when to stop reading and act.
+- Tables for symptom-to-cause mappings rather than prose, because tables are scannable under stress.
+- Each runbook ends with the same "Still stuck? Here's what to capture" pattern so the support-channel handoff is consistent.
+
+### Supporting updates
+
+- **[`docs/README.md`](docs/README.md)** — New "Operational runbooks" subsection in the tech-volunteer track, between routine maintenance docs and troubleshooting. Three runbooks listed with one-line symptom hooks.
+- **[`docs/for-tech-volunteers/09-maintenance.md`](docs/for-tech-volunteers/09-maintenance.md)** — New "Common operational issues" section near the top of the doc, redirecting readers to the relevant runbook *before* the maintenance procedures. Routine maintenance and incident response are now visibly separate.
+- **[`docs/SCREENSHOTS_NEEDED.md`](docs/SCREENSHOTS_NEEDED.md)** — 13 new captures catalogued under "Operational runbooks." Notes that runbook screenshots are *higher* impact than typical because reading-tolerance under stress is lower; some captures (failed deploys, runtime errors) require deliberately breaking staging to capture.
+
+### What this changes about the audit's verdict
+
+Items B1, B2, and B6 collectively addressed the largest single piece of the **"successor genuinely under-served"** verdict — the lack of operational runbooks for predictable failure modes was called out as part of the original audit's "honest assessment" section. The successor experience is now meaningfully better: dropped into the project cold, a successor has decision-tree guides for the three most likely incidents they'd face in their first year (outage, email pipeline failure, secret exposure).
+
+The remaining successor-track gap is C1 (the full successor runbook with service inventory, accounts-handoff plan, and "first 60 minutes" orientation). Operational runbooks were the prerequisite — now C1 can be written knowing what to link to.
+
+### Items intentionally deferred
+
+- **Screenshots for all three runbooks** are catalogued but not captured. A screenshot pass for these is high-value because of the stress-context; doing it well requires being able to deliberately break a staging environment.
+- **C1 (successor runbook)**, **A2 (case studies)**, **A3/A4 (Codespaces and Google Cloud screenshot passes)** remain.
+- **B3 (day-of-week dropdown for events)** is a UI change rather than a doc change — out of scope for this track.

@@ -81,6 +81,26 @@ Capture against the live `app.tina.io` UI as of the capture date. TinaCloud's UI
 | `docs/screenshots/tech-volunteer/tinacloud-admin-signin.png` | 06a-setup-tinacloud, Step 11 | The TinaCloud sign-in screen as seen at `your-site.vercel.app/admin/` — the branded "Sign in with GitHub" page that appears once the env vars are wired correctly. |
 | `docs/screenshots/tech-volunteer/tinacloud-admin-collections.png` | 06a-setup-tinacloud, Step 11 | The TinaCMS interface after a successful sign-in — left sidebar showing collections (Site Settings, Sermons, Staff, etc.), main panel showing whichever collection is open first. This overlaps with the existing `marketing/cms-dashboard.png` capture; one good shot covers both uses. |
 
+### Operational runbooks (`runbook-*.md`)
+
+These runbooks are intentionally text-only for v1 because they're read under stress, when reading-tolerance is lowest. Good screenshots here are *high* impact — a glance at "this is what a failed deploy looks like" anchors the entire decision tree. Capture only when the matching UI is in the right state (you may need to deliberately break a staging deploy to capture a failure state).
+
+| Path | Used in | What to capture |
+| --- | --- | --- |
+| `docs/screenshots/tech-volunteer/runbook-vercel-deployments-ready.png` | runbook-site-down, Check 2 | Vercel Deployments list with the most recent deployment showing **Ready** (green checkmark) — the healthy state to compare against. |
+| `docs/screenshots/tech-volunteer/runbook-vercel-deployments-failed.png` | runbook-site-down, Check 2 | Vercel Deployments list with a recent deployment showing **Error**/**Failed** (red) — the symptom state. |
+| `docs/screenshots/tech-volunteer/runbook-vercel-promote-menu.png` | runbook-site-down, "Fastest fix is rollback" | The **⋯** menu open on a Ready deployment in the Deployments list, showing the **Promote to Production** option highlighted. This is the most-referenced screenshot across all three runbooks. |
+| `docs/screenshots/tech-volunteer/runbook-vercel-build-logs.png` | runbook-site-down, Check 2 | A failed-deploy detail view with the build log scrolled to show a typical "last error" — a Module not found or env-var error works well as an exemplar. |
+| `docs/screenshots/tech-volunteer/runbook-vercel-runtime-logs.png` | runbook-site-down, Check 4 + runbook-emails-stopped, Check 2 | The **Runtime Logs** tab on a deployment, with filters visible (so the reader knows where to filter by route path). |
+| `docs/screenshots/tech-volunteer/runbook-browser-devtools-network.png` | runbook-site-down, Check 4 | Browser DevTools Network tab with the first request highlighted and its status code visible. Either a 200 or 500 is fine; the goal is showing the reader where to look. |
+| `docs/screenshots/tech-volunteer/runbook-vercel-crons-list.png` | runbook-emails-stopped, Check 2 | Vercel project Settings → Cron Jobs (or Crons) page showing both `/api/cron/devotionals` and `/api/cron/digest` with their hourly schedule and last-invocation timestamps. |
+| `docs/screenshots/tech-volunteer/runbook-resend-logs.png` | runbook-emails-stopped, Check 4 | Resend dashboard Logs view filtered to the last 24 hours, showing a mix of `delivered`, `bounced`, and (ideally) a `failed` with the error reason visible. |
+| `docs/screenshots/tech-volunteer/runbook-resend-api-keys.png` | runbook-emails-stopped, Check 5 + runbook-rotate-secret (RESEND_API_KEY) | Resend API Keys page with at least one key listed, the **Create API Key** button visible, and the per-key **⋯** menu hint (rotation pattern). |
+| `docs/screenshots/tech-volunteer/runbook-drizzle-studio-subscribers.png` | runbook-emails-stopped, Check 1 | Drizzle Studio with the `subscribers` table open, showing the columns (id, email, status, tags, etc.) so the reader knows what to look at. Use seed data with redacted emails. |
+| `docs/screenshots/tech-volunteer/runbook-vercel-env-vars.png` | runbook-rotate-secret (multiple sections) + runbook-emails-stopped, Check 3 | Vercel Settings → Environment Variables page with several vars listed (`RESEND_API_KEY`, `DATABASE_URL`, `CRON_SECRET`, etc.) and the Edit menu visible on one of them. Mask actual values. |
+| `docs/screenshots/tech-volunteer/runbook-vercel-redeploy-dialog.png` | runbook-rotate-secret (all sections) | The Redeploy confirmation dialog with the "Use existing Build Cache" checkbox visible and unchecked — referenced from every rotation procedure. |
+| `docs/screenshots/tech-volunteer/runbook-dnschecker-resolved.png` | runbook-site-down, Check 3 | A dnschecker.org result page showing the user's domain resolving to a Vercel IP with green checkmarks across regions — the healthy state. |
+
 ## Developer track (`docs/for-developers/*`)
 
 No screenshots needed — these are reference docs with code excerpts rather than UI walkthroughs.

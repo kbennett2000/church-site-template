@@ -52,11 +52,19 @@ This is the headline visitors see on the sermon card and on the "latest sermon" 
 
 For guest speakers, use whatever name they'd want printed.
 
-### 6. Fill in Series
+### 6. Fill in Series (optional)
 
-**Type** the sermon series name. For example: `Walking Through Ruth`.
+**Type** the sermon series name if this sermon is part of one. For example: `Walking Through Ruth` or `2026: The Year of Hope`.
 
-If this sermon isn't part of a series, **type** `Standalone Messages` (or leave the default, which is already set to that).
+**If this sermon isn't part of a series, leave the field blank.** The sermon still appears in the sermon archive at `/watch` exactly like any other sermon — nothing is hidden for lacking a series. The only difference is it won't be grouped on the Browse by Series page.
+
+**How series grouping works:** filling in a series name puts every sermon with that same name onto a "Browse by Series" page at `/watch/series`. Visitors can click a series to see all its sermons in order. The page only appears when at least one sermon has a series name; churches that don't use series simply won't see the link.
+
+**Consistency matters when you do use it:**
+- ✅ **Small casing or whitespace differences are forgiven.** `Easter 2026`, `easter 2026`, and ` Easter 2026 ` all group together. The display name uses the most-recent sermon's casing, so cleaning up casing later improves what visitors see.
+- ❌ **Different words or punctuation make separate groups.** `Walking Through Ruth` and `Walking in Ruth` are two different series. So are `Hope!` and `Hope?` (different punctuation = different series).
+
+If you don't know whether a sermon is part of a series, leave it blank — you (or another editor) can always fill it in later.
 
 ### 7. Fill in Scripture Reference
 
@@ -165,7 +173,8 @@ A small caveat, in case it ever surprises you: this is a *per-browser* preferenc
 
 - **The embedded video doesn't show up after publishing.** You pasted the whole URL instead of just the 11-character ID. Edit the sermon, fix the **YouTube Video ID** field, and publish the fix.
 - **The date is wrong on the published page.** You typed the date instead of using the date picker. Edit and re-pick the date using the calendar.
-- **The sermon doesn't appear under the right series.** Series names are case- and spelling-sensitive. `Walking Through Ruth` and `walking through ruth` are treated as different series. Be consistent.
+- **The sermon doesn't appear under the right series.** Series names group together when they match after ignoring casing and extra spaces — so `Easter 2026` and `easter 2026` are the same series. But different words or punctuation create separate groups: `Walking Through Ruth` and `Walking in Ruth` are two different series, and so are `Hope!` and `Hope?`. If sermons are landing in unexpected groups, edit the older sermons to match the spelling and punctuation of the newest one.
+- **A sermon I left blank doesn't show on the Browse by Series page.** That's expected — sermons without a series aren't grouped anywhere. They still appear normally in the main sermon archive at `/watch`.
 - **The sermon doesn't appear after saving.** The site takes 2-3 minutes to rebuild. If it still isn't showing after 5 minutes, try a hard refresh (Ctrl+Shift+R / Cmd+Shift+R).
 
 ## What's next?

@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getAllSermons, getSermon } from "@/content/sermons";
+import { seriesSlug } from "@/content/sermons-series";
 
 type Params = { id: string };
 
@@ -58,6 +59,7 @@ export default async function SermonPage({
 
   const hasAudio = sermon.audioUrl && sermon.audioUrl !== "#";
   const notesHtml = sermon.notes ? await marked.parse(sermon.notes) : "";
+  const seriesHref = sermon.series ? `/watch/series/${seriesSlug(sermon.series)}` : "";
 
   return (
     <>
@@ -71,9 +73,14 @@ export default async function SermonPage({
         </Link>
 
         <div className="mt-7 max-w-3xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">
-            {sermon.series}
-          </p>
+          {sermon.series && seriesHref ? (
+            <Link
+              href={seriesHref}
+              className="text-xs font-semibold uppercase tracking-[0.18em] text-accent hover:underline"
+            >
+              {sermon.series}
+            </Link>
+          ) : null}
           <h1 className="mt-3 font-serif text-3xl leading-tight md:text-4xl lg:text-5xl">
             {sermon.title}
           </h1>

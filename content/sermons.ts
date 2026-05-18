@@ -32,7 +32,7 @@ function loadAll(): Sermon[] {
       return {
         id: file.replace(/\.md$/, ""),
         title: String(data.title ?? ""),
-        series: String(data.series ?? "Standalone Messages"),
+        series: String(data.series ?? "").trim(),
         speaker: String(data.speaker ?? ""),
         date: isoDate(data.date),
         scripture: String(data.scripture ?? ""),

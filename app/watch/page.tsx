@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getAllSermons, getLatestSermon } from "@/content/sermons";
+import { getAllSeries } from "@/content/sermons-series";
 import { churchInfo } from "@/lib/church-info";
 import { WatchArchive } from "@/components/sections/watch-archive";
 
@@ -32,6 +33,7 @@ export default function WatchPage() {
   const allSermons = getAllSermons();
   const latestSermon = getLatestSermon();
   const archiveSermons = allSermons.slice(1);
+  const hasSeries = getAllSeries().length > 0;
 
   return (
     <>
@@ -89,9 +91,11 @@ export default function WatchPage() {
                   <Play className="h-8 w-8 translate-x-0.5 fill-current md:h-10 md:w-10" />
                 </span>
               </div>
-              <span className="absolute left-5 top-5 inline-flex items-center rounded-full bg-background/90 px-3 py-1 text-xs font-medium text-foreground backdrop-blur">
-                {latestSermon.series}
-              </span>
+              {latestSermon.series ? (
+                <span className="absolute left-5 top-5 inline-flex items-center rounded-full bg-background/90 px-3 py-1 text-xs font-medium text-foreground backdrop-blur">
+                  {latestSermon.series}
+                </span>
+              ) : null}
             </Link>
 
             <div className="flex flex-col justify-between gap-6 p-8 lg:col-span-2 lg:p-10">
@@ -142,9 +146,19 @@ export default function WatchPage() {
                 Browse the back catalog.
               </h2>
             </div>
-            <p className="max-w-md text-sm text-muted-foreground">
-              Filter by series, speaker, or book of the Bible.
-            </p>
+            <div className="flex flex-col gap-2 md:items-end">
+              <p className="max-w-md text-sm text-muted-foreground">
+                Filter by series, speaker, or book of the Bible.
+              </p>
+              {hasSeries ? (
+                <Link
+                  href="/watch/series"
+                  className="text-sm font-medium text-foreground/80 hover:text-accent"
+                >
+                  Browse by series →
+                </Link>
+              ) : null}
+            </div>
           </div>
 
           <div className="mt-10">

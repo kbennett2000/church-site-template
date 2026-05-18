@@ -20,7 +20,7 @@ function unique<T>(values: T[]): T[] {
 
 export function WatchArchive({ sermons }: { sermons: Sermon[] }) {
   const seriesOptions = useMemo(
-    () => unique(sermons.map((s) => s.series)).sort(),
+    () => unique(sermons.map((s) => s.series).filter((v) => v && v.trim())).sort(),
     [sermons]
   );
   const speakerOptions = useMemo(
@@ -137,9 +137,11 @@ export function WatchArchive({ sermons }: { sermons: Sermon[] }) {
                     <Play className="h-5 w-5 translate-x-0.5 fill-current" />
                   </span>
                 </div>
-                <span className="absolute left-3 top-3 inline-flex items-center rounded-full bg-background/90 px-2.5 py-1 text-[11px] font-medium text-foreground backdrop-blur">
-                  {s.series}
-                </span>
+                {s.series ? (
+                  <span className="absolute left-3 top-3 inline-flex items-center rounded-full bg-background/90 px-2.5 py-1 text-[11px] font-medium text-foreground backdrop-blur">
+                    {s.series}
+                  </span>
+                ) : null}
               </Link>
 
               <div className="flex flex-1 flex-col p-5">

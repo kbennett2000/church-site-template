@@ -40,6 +40,25 @@ This is by design. The tech volunteer set up the system — they don't need to b
 
 > **Tip:** If your change is to something sensitive (like the service time), double-check your work before saving. Changes go live quickly and automatically.
 
+## What you'll see right after clicking Save
+
+A brief confirmation appears near the **Save** button — it's small and disappears after a moment. After saving, **the screen stays on the same form you were editing**. That's expected and correct: TinaCMS doesn't bounce you back to a list view or "done" screen. Nothing is wrong; your change has already been sent.
+
+When you're ready to edit something else, **use the menu on the left** to move to another section. Avoid the browser's **back** button while in the editor — it doesn't always land somewhere useful, and the left-side menu is the reliable way to move around.
+
+## Removing one entry from a list
+
+Some screens hold a list of entries — for example, **Site Settings → Services** has one entry per service time, and a ministry's **Meeting Times** holds one entry per meeting. Each entry in those lists shows a descriptive label (for example, `Sunday • 10:00 AM • Sunday Worship` rather than a generic `Services Item`) so you can tell them apart without opening them.
+
+To remove a single entry:
+
+1. **Read the label first** to confirm you're about to remove the right one. This is the main safety check — the labels exist specifically so you can recognize an entry before deleting it.
+2. **Click** the entry to expand it.
+3. **Click** the small remove/delete control on that entry (usually a trash icon or "Remove" button at the corner of the expanded item).
+4. **Click** **Save** at the top of the form.
+
+If the label doesn't match what you intended to remove, pause and double-check before deleting.
+
 ## How long does it take?
 
 | Step | Typical time |

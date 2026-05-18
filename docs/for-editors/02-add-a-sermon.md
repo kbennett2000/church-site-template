@@ -20,7 +20,7 @@ time: 10 minutes
 
 **Click** **Sermons** in the left sidebar.
 
-You should now see a list of all past sermons, newest first.
+You should now see a list of all past sermons. By default the list is sorted alphabetically by title — if you'd rather see the newest sermon at the top (most people do), see [Seeing your newest sermons first](#seeing-your-newest-sermons-first) below. You only need to set that once per browser.
 
 ![Sermons collection list](/docs/screenshots/editor/add-a-sermon-list.png)
 
@@ -146,6 +146,20 @@ You should now see a confirmation that the change was saved. TinaCMS commits (sa
 Wait about 2-3 minutes, then open the public site. The sermon will appear on the watch page and update the "latest sermon" section on the homepage.
 
 > **Tip:** If it doesn't appear after 3 minutes, try a hard refresh (Ctrl+Shift+R on Windows, Cmd+Shift+R on Mac) in case your browser is showing a cached version.
+
+## Seeing your newest sermons first
+
+When you open **Sermons**, the list is sorted alphabetically by title — so `A New Hope` shows up before `Walking in Faith, Part 6`, even if the new-hope sermon was preached two years ago. For weekly upkeep, you'll almost always want the newest sermon at the top instead.
+
+To switch the list to newest-first:
+
+1. **Click** **Sermons** in the left sidebar to open the list.
+2. **Look** for the sort control at the top of the list (it lets you pick which field to sort by).
+3. **Choose** the **Date** field, and set the order to **descending** (newest at the top).
+
+That's it. **Your browser remembers this choice**, so you only need to set it once on each computer or browser you use. The next time you open Sermons, it'll already be sorted newest-first.
+
+A small caveat, in case it ever surprises you: this is a *per-browser* preference, not a setting that lives on the site. If you sign in on a different computer, switch to a different browser (Chrome at home, Edge at the office), or open the editor in a private/incognito window, the list will start back at alphabetical-by-title until you set the sort there too. Setting it again takes about five seconds.
 
 ## Common Mistakes
 

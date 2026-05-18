@@ -62,6 +62,13 @@ var config_default = defineConfig({
                 name: "services",
                 label: "Services",
                 list: true,
+                ui: {
+                  itemProps: (item) => {
+                    const parts = [item?.day, item?.time, item?.name].map((p) => typeof p === "string" ? p.trim() : "").filter((p) => p.length > 0);
+                    return { label: parts.length > 0 ? parts.join(" \u2022 ") : "New service" };
+                  },
+                  description: "Each entry is one service time shown on the site. Use the label to identify which is which before editing or deleting."
+                },
                 fields: [
                   { type: "string", name: "name", label: "Service Name" },
                   {
@@ -181,7 +188,14 @@ var config_default = defineConfig({
             name: "items",
             label: "Nav Items",
             list: true,
-            ui: { itemProps: (item) => ({ label: item?.label ?? "Item" }) },
+            ui: {
+              itemProps: (item) => {
+                const label = typeof item?.label === "string" ? item.label.trim() : "";
+                const href = typeof item?.href === "string" ? item.href.trim() : "";
+                return { label: label || href || "New nav item" };
+              },
+              description: "The top-level links shown in the site header. Drag to reorder. The label here is what visitors see; expand an item to edit its URL or add a dropdown."
+            },
             fields: [
               { type: "string", name: "label", label: "Label" },
               { type: "string", name: "href", label: "URL" },
@@ -190,7 +204,13 @@ var config_default = defineConfig({
                 name: "children",
                 label: "Dropdown Items",
                 list: true,
-                ui: { itemProps: (item) => ({ label: item?.label ?? "Item" }) },
+                ui: {
+                  itemProps: (item) => {
+                    const label = typeof item?.label === "string" ? item.label.trim() : "";
+                    const href = typeof item?.href === "string" ? item.href.trim() : "";
+                    return { label: label || href || "New dropdown item" };
+                  }
+                },
                 fields: [
                   { type: "string", name: "label", label: "Label" },
                   { type: "string", name: "href", label: "URL" }
@@ -241,7 +261,19 @@ var config_default = defineConfig({
             name: "beliefs",
             label: "Doctrinal Statements",
             list: true,
-            ui: { itemProps: (item) => ({ label: item?.title ?? "Belief" }) },
+            ui: {
+              itemProps: (item) => {
+                const title = typeof item?.title === "string" ? item.title.trim() : "";
+                if (title) return { label: title };
+                const statement = typeof item?.statement === "string" ? item.statement.trim() : "";
+                if (statement) {
+                  const preview = statement.length > 60 ? `${statement.slice(0, 60)}\u2026` : statement;
+                  return { label: preview };
+                }
+                return { label: "New belief" };
+              },
+              description: "Each entry is one doctrinal statement shown on the /beliefs page. The title becomes the heading; the statement is the paragraph below it."
+            },
             fields: [
               { type: "string", name: "title", label: "Title" },
               { type: "string", name: "statement", label: "Statement", ui: { component: "textarea" } }
@@ -268,7 +300,15 @@ var config_default = defineConfig({
             name: "events",
             label: "Events",
             list: true,
-            ui: { itemProps: (item) => ({ label: item?.title ?? "Event" }) },
+            ui: {
+              itemProps: (item) => {
+                const title = typeof item?.title === "string" ? item.title.trim() : "";
+                const time = typeof item?.time === "string" ? item.time.trim() : "";
+                if (title && time) return { label: `${title} \u2014 ${time}` };
+                return { label: title || time || "New event" };
+              },
+              description: "Each entry is one recurring event shown on the calendar. The title and time make up the label here so you can find an event without opening it."
+            },
             fields: [
               { type: "string", name: "id", label: "ID (no spaces, e.g. wednesday-bible-study)" },
               { type: "string", name: "title", label: "Title" },
@@ -376,7 +416,13 @@ var config_default = defineConfig({
             name: "meetings",
             label: "Meeting Times",
             list: true,
-            ui: { itemProps: (item) => ({ label: `${item?.day ?? ""} ${item?.time ?? ""}`.trim() || "Meeting" }) },
+            ui: {
+              itemProps: (item) => {
+                const parts = [item?.day, item?.time, item?.location].map((p) => typeof p === "string" ? p.trim() : "").filter((p) => p.length > 0);
+                return { label: parts.length > 0 ? parts.join(" \u2022 ") : "New meeting time" };
+              },
+              description: "When and where this ministry meets. Add one entry per meeting time so each shows up separately on the ministry page."
+            },
             fields: [
               { type: "string", name: "day", label: "Day" },
               { type: "string", name: "time", label: "Time" },
@@ -789,10 +835,11 @@ var config_default = defineConfig({
             label: "Giving FAQ",
             list: true,
             ui: {
-              itemProps: (item) => ({
-                label: item?.question ?? "Question"
-              }),
-              description: "Questions shown in the accordion at the bottom of the /give page. Add, remove, or reorder as needed."
+              itemProps: (item) => {
+                const question = typeof item?.question === "string" ? item.question.trim() : "";
+                return { label: question || "New question" };
+              },
+              description: "Questions shown in the accordion at the bottom of the /give page. Add, remove, or reorder as needed. Read the question label before deleting to confirm you're removing the right one."
             },
             fields: [
               {
@@ -940,10 +987,18 @@ var config_default = defineConfig({
             label: "Daily Readings",
             list: true,
             ui: {
-              itemProps: (item) => ({
-                label: item?.date ? `${item.date}: ${item?.scriptureReference ?? "(no reference)"}` : item?.scriptureReference ?? "Entry"
-              }),
-              description: "One entry per day. Dates within this plan must be unique and fall between the start and end dates above. The system fetches verse text automatically \u2014 store only the reference, not the verses themselves."
+              itemProps: (item) => {
+                const rawDate = item?.date;
+                let date = "";
+                if (typeof rawDate === "string" && rawDate.length > 0) {
+                  const parsed = new Date(rawDate);
+                  date = Number.isNaN(parsed.getTime()) ? rawDate : parsed.toISOString().slice(0, 10);
+                }
+                const ref = typeof item?.scriptureReference === "string" ? item.scriptureReference.trim() : "";
+                if (date && ref) return { label: `${date} \u2014 ${ref}` };
+                return { label: date || ref || "New reading" };
+              },
+              description: "One entry per day. Dates within this plan must be unique and fall between the start and end dates above. The system fetches verse text automatically \u2014 store only the reference, not the verses themselves. Each entry's label shows its date and scripture so you can identify it without opening it."
             },
             fields: [
               {
@@ -1286,8 +1341,11 @@ var config_default = defineConfig({
             label: "Admins",
             list: true,
             ui: {
-              itemProps: (item) => ({ label: item?.email ?? "Admin" }),
-              description: "Each entry is one Google account that can sign in. The email must match exactly what Google has on file for that account \u2014 it's the same address you'd see in their Gmail or Google Workspace."
+              itemProps: (item) => {
+                const email = typeof item?.email === "string" ? item.email.trim() : "";
+                return { label: email || "New admin" };
+              },
+              description: "Each entry is one Google account that can sign in. The email must match exactly what Google has on file for that account \u2014 it's the same address you'd see in their Gmail or Google Workspace. Confirm the email in the label before removing an admin."
             },
             fields: [
               {

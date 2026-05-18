@@ -57,7 +57,9 @@ You should now see the CMS dashboard.
 
 ### 4. Look around the dashboard
 
-The dashboard shows a list of sections on the left. Each section is a content type:
+The dashboard shows a list of sections on the left. **The menu on the left is the easiest way to move between sections** — click any section name to jump to it. Stay in this menu for navigation rather than your browser's back button; the back button doesn't always land you somewhere useful inside the editor.
+
+Each section is a content type:
 
 | Section | What's in it |
 | --- | --- |
@@ -82,9 +84,34 @@ The dashboard shows a list of sections on the left. Each section is a content ty
 
 **Click** the blue **Save** button.
 
+A brief confirmation appears near the **Save** button to let you know the change was sent. The form stays open on the screen you were just editing — that's expected and means everything worked. You don't need to click anything else or navigate away to "finish" the save. When you're ready to edit something else, use the menu on the left.
+
 Wait about 2 minutes, then **open** your church's public website and check the announcements page. You should see your change.
 
 > **Tip:** If the change doesn't appear after 2 minutes, try a hard refresh in your browser (Ctrl+Shift+R on Windows, Cmd+Shift+R on Mac). The site rebuilds automatically after every save.
+
+### 6. Moving around between sections
+
+Use the **menu on the left** any time you want to switch sections — for example, from Announcements to Sermons. Click the section name and you're there.
+
+**Tip:** Avoid your browser's **back** button while you're inside the editor. It doesn't always land you on the screen you expect (sometimes it logs you out, sometimes it drops you on a blank dashboard). The left-side menu is the reliable way to move around.
+
+### 7. Re-sorting a list (your browser remembers)
+
+Several collection screens — Sermons especially — open with the list sorted alphabetically. You can change the sort (for example, sort Sermons by **Date** descending so the newest one is on top) using the sort control at the top of the list, and **your browser remembers your choice** for next time. You only need to set it once on each computer or browser you use. See [Seeing your newest sermons first](./02-add-a-sermon.md#seeing-your-newest-sermons-first) for a worked example.
+
+### 8. Removing one item from a list
+
+Some screens — like **Site Settings → Services** or a ministry's **Meeting Times** — have a list of entries. Each entry in the list now has a descriptive label (for example, `Sunday • 10:00 AM • Sunday Worship` instead of a generic `Services Item`) so you can tell them apart at a glance.
+
+To remove one entry:
+
+1. **Read the label** to confirm you're about to remove the right one.
+2. **Click** the entry to expand it.
+3. **Click** the small remove/delete control on that entry (usually a trash icon or "Remove" button at the corner of the expanded item).
+4. **Click** **Save** at the top.
+
+The descriptive labels are the safety net here — if the label doesn't match what you intended to remove, stop and double-check before deleting.
 
 ---
 

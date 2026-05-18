@@ -8,7 +8,6 @@ book: "James"
 youtubeId: ""
 thumbnail: "/images/placeholders/hero.svg"
 audioUrl: "#"
-notesUrl: "#"
 ---
 
 The relationship between believing and doing — why genuine faith always works itself out in love. [Replace with your sermon description. TODO: add YouTube video ID and audio URL.]

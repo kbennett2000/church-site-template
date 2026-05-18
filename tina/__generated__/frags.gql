@@ -164,7 +164,7 @@ fragment SermonsParts on Sermons {
   youtubeId
   thumbnail
   audioUrl
-  notesUrl
+  notes
   body
 }
 

@@ -13,5 +13,5 @@ export type Sermon = {
   youtubeId: string;
   thumbnail: string;
   audioUrl: string;
-  notesUrl: string;
+  notes: string;
 };

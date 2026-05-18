@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Play, Headphones, FileText, X, BookMarked } from "lucide-react";
+import { Play, Headphones, X, BookMarked } from "lucide-react";
 import type { Sermon } from "@/lib/sermons";
 
 function formatShortDate(iso: string) {
@@ -167,12 +167,6 @@ export function WatchArchive({ sermons }: { sermons: Sermon[] }) {
                 <div className="mt-5 flex flex-wrap gap-2 border-t border-border pt-4">
                   <CardAction href={`/watch/${s.id}`} icon={Play} label="Watch" primary />
                   <CardAction href={s.audioUrl} icon={Headphones} label="Listen" />
-                  <CardAction
-                    href={s.notesUrl}
-                    icon={FileText}
-                    label="Notes"
-                    download
-                  />
                 </div>
               </div>
             </li>
@@ -230,13 +224,11 @@ function CardAction({
   icon: Icon,
   label,
   primary,
-  download,
 }: {
   href: string;
   icon: React.ComponentType<{ className?: string }>;
   label: string;
   primary?: boolean;
-  download?: boolean;
 }) {
   const baseClass =
     "inline-flex flex-1 min-w-0 items-center justify-center gap-1.5 rounded-md px-3 py-2 text-xs font-medium transition";
@@ -245,11 +237,7 @@ function CardAction({
     : `${baseClass} border border-border text-foreground/80 hover:bg-muted hover:text-foreground`;
 
   return (
-    <Link
-      href={href}
-      className={className}
-      {...(download ? { download: "" } : {})}
-    >
+    <Link href={href} className={className}>
       <Icon className="h-3.5 w-3.5" />
       {label}
     </Link>

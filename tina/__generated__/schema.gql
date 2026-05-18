@@ -641,7 +641,7 @@ type Sermons implements Node & Document {
   youtubeId: String
   thumbnail: String
   audioUrl: String
-  notesUrl: String
+  notes: JSON
   body: JSON
   id: ID!
   _sys: SystemInfo!
@@ -666,7 +666,7 @@ input SermonsFilter {
   youtubeId: StringFilter
   thumbnail: ImageFilter
   audioUrl: StringFilter
-  notesUrl: StringFilter
+  notes: RichTextFilter
   body: RichTextFilter
 }
 
@@ -1449,7 +1449,7 @@ input SermonsMutation {
   youtubeId: String
   thumbnail: String
   audioUrl: String
-  notesUrl: String
+  notes: JSON
   body: JSON
 }
 

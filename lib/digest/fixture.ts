@@ -83,7 +83,7 @@ export function fixturePayload(settings: DigestSettings, siteUrl = "https://exam
         youtubeId: "dQw4w9WgXcQ",
         thumbnail: "/images/placeholders/hero.svg",
         audioUrl: "#",
-        notesUrl: "#",
+        notes: "",
       },
     ],
   };

@@ -8,7 +8,6 @@ book: "James"
 youtubeId: ""
 thumbnail: "/images/placeholders/hero.svg"
 audioUrl: "#"
-notesUrl: "#"
 ---
 
 How God uses trials to grow our faith. [Replace with your sermon description. TODO: add YouTube video ID and audio URL.]

@@ -464,7 +464,15 @@ export default defineConfig({
           { type: "string", name: "youtubeId", label: "YouTube Video ID", ui: { description: "The ID after ?v= in a YouTube URL. Leave blank until the recording is uploaded." } },
           { type: "image", name: "thumbnail", label: "Thumbnail Image" },
           { type: "string", name: "audioUrl", label: "Audio URL (MP3 link, or #)" },
-          { type: "string", name: "notesUrl", label: "Notes URL (PDF link, or #)" },
+          {
+            type: "rich-text",
+            name: "notes",
+            label: "Sermon Notes / Outline",
+            ui: {
+              description:
+                "Type or paste the pastor's notes here. They'll display directly on the sermon page — no external link, no download. Pasting from Google Docs or Word usually works; review heavy formatting after pasting. Leave blank if there are no notes.",
+            },
+          },
           { type: "rich-text", name: "body", label: "Description", isBody: true },
         ],
       },

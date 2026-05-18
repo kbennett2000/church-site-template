@@ -8,7 +8,6 @@ book: "Genesis"
 youtubeId: ""
 thumbnail: "/images/placeholders/hero.svg"
 audioUrl: "#"
-notesUrl: "#"
 ---
 
 A meditation on Hagar's encounter with the God who sees the unseen. [Replace with your sermon description. TODO: add YouTube video ID and audio URL.]

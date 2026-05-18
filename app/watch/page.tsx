@@ -4,7 +4,6 @@ import Link from "next/link";
 import {
   Play,
   Headphones,
-  FileText,
   Youtube,
   Rss,
   ArrowRight,
@@ -45,7 +44,7 @@ export default function WatchPage() {
             Every Sunday, the Bible — taught and held close.
           </h1>
           <p className="mt-5 max-w-2xl text-lg text-muted-foreground">
-            Catch the latest message, browse the archive, or download sermon notes to chew on through the week.
+            Catch the latest message, browse the archive, or read the pastor&apos;s sermon notes to chew on through the week.
           </p>
         </div>
       </section>
@@ -123,12 +122,6 @@ export default function WatchPage() {
                   <a href={latestSermon.audioUrl}>
                     <Headphones className="h-4 w-4" />
                     Listen
-                  </a>
-                </Button>
-                <Button asChild variant="outline">
-                  <a href={latestSermon.notesUrl} download>
-                    <FileText className="h-4 w-4" />
-                    Notes
                   </a>
                 </Button>
               </div>

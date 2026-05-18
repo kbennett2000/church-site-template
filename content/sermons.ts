@@ -41,7 +41,7 @@ function loadAll(): Sermon[] {
         youtubeId: String(data.youtubeId ?? ""),
         thumbnail: String(data.thumbnail ?? "") || DEFAULT_THUMBNAIL,
         audioUrl: String(data.audioUrl ?? "") || "#",
-        notesUrl: String(data.notesUrl ?? "") || "#",
+        notes: typeof data.notes === "string" ? data.notes.trim() : "",
       };
     })
     .sort((a, b) => (a.date < b.date ? 1 : -1));

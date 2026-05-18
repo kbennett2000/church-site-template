@@ -8,7 +8,6 @@ book: "Psalms"
 youtubeId: ""
 thumbnail: "/images/placeholders/hero.svg"
 audioUrl: "#"
-notesUrl: "#"
 ---
 
 A teaching on Psalm 23 from a man who's spent forty years watching sheep.

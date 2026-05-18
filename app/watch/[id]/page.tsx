@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import { marked } from "marked";
 import {
   ArrowLeft,
   ArrowRight,
   Headphones,
-  FileText,
   BookOpen,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -57,7 +57,7 @@ export default async function SermonPage({
   const older = idx >= 0 && idx < all.length - 1 ? all[idx + 1] : undefined;
 
   const hasAudio = sermon.audioUrl && sermon.audioUrl !== "#";
-  const hasNotes = sermon.notesUrl && sermon.notesUrl !== "#";
+  const notesHtml = sermon.notes ? await marked.parse(sermon.notes) : "";
 
   return (
     <>
@@ -122,24 +122,29 @@ export default async function SermonPage({
           </div>
         ) : null}
 
-        {(hasAudio || hasNotes) ? (
+        {hasAudio ? (
           <div className="mt-8 flex flex-wrap gap-3">
-            {hasAudio ? (
-              <Button asChild variant="outline">
-                <a href={sermon.audioUrl}>
-                  <Headphones className="h-4 w-4" />
-                  Listen (audio)
-                </a>
-              </Button>
-            ) : null}
-            {hasNotes ? (
-              <Button asChild variant="outline">
-                <a href={sermon.notesUrl} download>
-                  <FileText className="h-4 w-4" />
-                  Download notes
-                </a>
-              </Button>
-            ) : null}
+            <Button asChild variant="outline">
+              <a href={sermon.audioUrl}>
+                <Headphones className="h-4 w-4" />
+                Listen (audio)
+              </a>
+            </Button>
+          </div>
+        ) : null}
+
+        {notesHtml ? (
+          <div className="mt-12 max-w-3xl border-t border-border pt-10">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">
+              Sermon notes
+            </p>
+            <h2 className="mt-3 font-serif text-2xl leading-tight md:text-3xl">
+              Outline &amp; notes
+            </h2>
+            <div
+              className="prose prose-stone mt-6 max-w-none"
+              dangerouslySetInnerHTML={{ __html: notesHtml }}
+            />
           </div>
         ) : null}
       </section>

@@ -8,7 +8,6 @@ book: "Luke"
 youtubeId: ""
 thumbnail: "/images/placeholders/hero.svg"
 audioUrl: "#"
-notesUrl: "#"
 ---
 
 What the parable of the prodigal son tells us about the father — and about the kind of God who runs to meet us.

@@ -43,12 +43,21 @@ scripture: "Ruth 2:1-23"
 book: "Ruth"
 youtubeId: "dQw4w9WgXcQ"
 audioUrl: "#"
-notesUrl: "#"
 thumbnail: "/images/uploads/sermon-ruth-2.jpg"
+notes: |
+  ## Outline
+
+  - Setting: harvest season in Bethlehem
+  - Boaz as a foreshadow of the redeemer
+  - One quiet act, one decisive turn
+
+  Discussion questions are at the welcome desk.
 ---
 
 Boaz steps onto the page as a picture of faithful, quiet kindness.
 ```
+
+The `notes` frontmatter field is a TinaCMS rich-text field stored as a YAML multi-line markdown string. It is **not** `isBody: true` (the description body is). The loader reads it as a plain string via `gray-matter` and the sermon detail page (`app/watch/[id]/page.tsx`) parses it with `marked.parse()` and renders inside `prose prose-stone`, matching the convention used for `story.md` and custom pages. Omit the key entirely if there are no notes for a sermon — the page conditionally hides the section.
 
 **TypeScript type** — `lib/sermons.ts` (type only):
 
@@ -63,7 +72,7 @@ export type Sermon = {
   book: string;
   youtubeId: string;
   audioUrl: string;
-  notesUrl: string;
+  notes: string;         // markdown rich-text from the `notes` frontmatter field
   thumbnail: string;
   description: string;   // the markdown body after frontmatter
 };

@@ -8,7 +8,6 @@ book: "Matthew"
 youtubeId: ""
 thumbnail: "/images/placeholders/hero.svg"
 audioUrl: "#"
-notesUrl: "#"
 ---
 
 What Jesus means when he says his yoke is easy and his burden is light — especially during a busy planting season.

@@ -8,7 +8,6 @@ book: "Mark"
 youtubeId: ""
 thumbnail: "/images/placeholders/hero.svg"
 audioUrl: "#"
-notesUrl: "#"
 ---
 
 What to do with the doubts that don't go away. [Replace with your sermon description. TODO: add YouTube video ID and audio URL.]

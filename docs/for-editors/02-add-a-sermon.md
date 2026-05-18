@@ -12,7 +12,7 @@ time: 10 minutes
 - Logged in to the editor at `/admin/`. See [Getting started](./01-getting-started.md).
 - The sermon's YouTube link (if you've uploaded the video).
 - The sermon's title, speaker name, date, and Scripture reference.
-- (Optional) The MP3 audio file URL, sermon notes PDF, and a thumbnail image.
+- (Optional) The MP3 audio file URL, the pastor's sermon notes or outline (to type or paste in), and a thumbnail image.
 
 ## Steps
 
@@ -102,21 +102,22 @@ If you have a direct link to an MP3 of the sermon, **paste** it into **Audio Fil
 
 If you don't, **leave** the default `#` in the field. The audio player will be hidden on the sermon page until a real URL is added.
 
-### 11. Upload Sermon Notes PDF (optional)
+### 11. Fill in Sermon Notes / Outline (optional)
 
-If the pastor wrote sermon notes as a PDF:
+If the pastor has notes or an outline for the sermon, you can put them directly on the sermon page — no separate PDF, no external link.
 
-**Click** the **Choose an image** button next to **Sermon Notes (PDF)**. (Don't worry that it says "image" — the CMS reuses the same picker for files.)
+**Find** the **Sermon Notes / Outline** field. It's a rich-text editor — like a small word processor with buttons for headings, bold, italics, and bulleted/numbered lists.
 
-**Click** **Upload** at the top of the picker window.
+You have two ways to fill it in:
 
-**Select** the PDF from your computer.
+- **Type the notes in directly**, using the toolbar buttons to format headings, bold key points, or build a list.
+- **Paste from Google Docs or Word.** Copy the notes from the original document, then paste into the field. Most basic formatting — headings, bold, italics, lists — carries over correctly.
 
-**Click** **Choose Selected** at the bottom right.
+> **Tip:** Heavy formatting (tables, footnotes, custom fonts, colored text, embedded images) may not transfer cleanly. After you paste, scroll through the field and check that headings still look like headings, lists still look like lists, and nothing looks broken. If anything is off, retype that part by hand.
 
-You should now see the filename next to the field.
+If there are no notes for this sermon, **leave** the field blank. The sermon page will simply omit the notes section — no empty heading shown.
 
-If there are no notes, leave the field as-is.
+> **Where this appears:** Notes show up inline on the individual sermon page (below the video and description), inside a "Sermon notes" section. They are not downloadable — visitors read them right on the site.
 
 ### 12. Upload a Thumbnail Image (optional)
 

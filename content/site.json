@@ -27,13 +27,6 @@
         "time": "5:00 pm",
         "note": "second service on sunday",
         "primary": false
-      },
-      {
-        "name": "Wednesday Night Jesus-Fest!",
-        "day": "Wednesday",
-        "time": "2:00 AM",
-        "note": "Come hang out with Jesus in the middle of the night.",
-        "primary": false
       }
     ],
     "social": {

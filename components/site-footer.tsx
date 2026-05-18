@@ -1,8 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Facebook, Youtube, MapPin, Phone, Mail } from "lucide-react";
+import { MapPin, Phone, Mail } from "lucide-react";
 import { churchInfo } from "@/lib/church-info";
 import { GiveButton } from "@/components/GiveButton";
+import { SocialLinks } from "@/components/social-links";
 
 const secondaryLinks = [
   { label: "About Us", href: "/about" },
@@ -56,26 +57,7 @@ export function SiteFooter() {
           <div className="mt-5">
             <GiveButton variant="secondary" />
           </div>
-          <div className="mt-4 flex gap-2">
-            <a
-              href={churchInfo.social.facebook}
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Facebook"
-              className="grid h-10 w-10 place-items-center rounded-full border border-border text-foreground/70 transition hover:bg-card hover:text-foreground"
-            >
-              <Facebook className="h-4 w-4" />
-            </a>
-            <a
-              href={churchInfo.social.youtube}
-              target="_blank"
-              rel="noreferrer"
-              aria-label="YouTube"
-              className="grid h-10 w-10 place-items-center rounded-full border border-border text-foreground/70 transition hover:bg-card hover:text-foreground"
-            >
-              <Youtube className="h-4 w-4" />
-            </a>
-          </div>
+          <SocialLinks links={churchInfo.social} className="mt-4" />
         </div>
 
         <div>

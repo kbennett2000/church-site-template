@@ -1,5 +1,8 @@
 import { churchData, features } from "@/content/site";
 import navData from "@/content/navigation.json";
+import { normalizeSocial, type SocialLink } from "@/lib/social";
+
+export type { SocialLink };
 
 // Church identity data lives in /content/site.json (editable via TinaCMS).
 // This file adds derived fields (full address, mapsUrl, tel/mailto hrefs,
@@ -50,7 +53,9 @@ export const churchInfo = {
   services,
   primaryService,
   officeHours: churchData.officeHours,
-  social: churchData.social,
+  // Normalized to the list shape. Blank URLs and empty/legacy values are
+  // dropped here so renderers never see them. See lib/social.ts.
+  social: normalizeSocial((churchData as { social?: unknown }).social),
 } as const;
 
 export type NavItem = {

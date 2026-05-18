@@ -97,22 +97,35 @@ export const siteContent = {
 //                 metadata description, and the footer when only one time can
 //                 be shown.
 //
-//   church.social.facebook → Full Facebook page URL, or empty string.
-//     Empty string = social icon link still renders but goes nowhere. The
-//     site doesn't currently hide the icon when empty — replace with your
-//     real URL or remove the icon from /components/site-footer.tsx.
-//     Add your link here: https://facebook.com/your-page
+//   church.social → Array of social-media profiles. Each entry:
+//     { platform, url, label? }
+//       platform → one of "facebook", "youtube", "instagram", "twitter",
+//                  "linkedin", "twitch", "podcast", or "other". The first
+//                  seven map to a recognizable brand icon. "other" is the
+//                  escape hatch for platforms without a curated icon
+//                  (TikTok, Spotify, Bluesky, your Substack, etc.) — it
+//                  renders a generic globe icon and uses the `label`
+//                  field for the accessible name.
+//       url → full URL (https://… is added automatically if you omit it).
+//             Entries with a blank URL are HIDDEN on the site — they never
+//             render as broken or dead links. This is the no-broken-link
+//             guarantee.
+//       label → optional. Required when platform is "other"; ignored for
+//               the curated platforms (their display label is fixed).
+//     Multiple entries of the same platform are allowed (e.g. a church
+//     with separate Facebook pages for the main service and a youth
+//     ministry) — both will render, in list order.
+//     Used by the social icon row in the footer (every entry that has a
+//     URL renders) and by the /watch page's "Subscribe on YouTube" card
+//     (renders only if a YouTube entry with a URL exists).
+//     If the list is empty, the social row hides entirely — no empty
+//     container, no stray spacing.
 //
-//   church.social.youtube → Full YouTube channel URL, or empty string.
-//     Used by the /watch page's "Subscribe" card and the social icon row in
-//     the footer. Same caveat as Facebook above — empty string still renders
-//     the icon.
-//     Add your link here: https://youtube.com/@your-channel
-//
-// To add a new social platform (Instagram, TikTok, etc.), add it to
-// church.social in site.json, list it in the CMS config under
-// /public/admin/config.yml's "social" object, and render it in
-// /components/site-footer.tsx alongside Facebook and YouTube.
+// To add a new platform to the curated list (with a real brand icon),
+// extend SOCIAL_PLATFORM_LABELS + SOCIAL_PLATFORM_ICONS in /lib/social.ts
+// AND the options array in tina/config.ts under the "social" field.
+// Until then, an unsupported platform should be added by editors via
+// "Other / Website" with a label — it works without a code change.
 export const churchData = data.church;
 
 // `features` controls optional site sections. Defaults to all-off so

@@ -105,9 +105,73 @@ export default defineConfig({
                 type: "object",
                 name: "social",
                 label: "Social Media",
+                list: true,
+                ui: {
+                  itemProps: (item) => {
+                    // Keep these labels in sync with SOCIAL_PLATFORM_LABELS in lib/social.ts.
+                    const PLATFORM_LABELS: Record<string, string> = {
+                      facebook: "Facebook",
+                      youtube: "YouTube",
+                      instagram: "Instagram",
+                      twitter: "Twitter / X",
+                      linkedin: "LinkedIn",
+                      twitch: "Twitch",
+                      podcast: "Podcast",
+                      other: "Other",
+                    };
+                    const platformKey =
+                      typeof item?.platform === "string" ? item.platform : "";
+                    const customLabel =
+                      typeof item?.label === "string" ? item.label.trim() : "";
+                    const platform =
+                      platformKey === "other"
+                        ? customLabel || "Other"
+                        : PLATFORM_LABELS[platformKey] || "Social link";
+                    const url =
+                      typeof item?.url === "string" ? item.url.trim() : "";
+                    return {
+                      label: url
+                        ? `${platform} — ${url}`
+                        : `${platform} (no URL — hidden)`,
+                    };
+                  },
+                  description:
+                    'One row per social profile. Rows with a blank URL are hidden on the site — never broken. Multiple entries of the same platform are allowed (e.g. main page + youth-ministry page). Pick "Other / Website" for platforms not in the list (TikTok, Spotify, Bluesky, your Substack, etc.) and give it a label.',
+                },
                 fields: [
-                  { type: "string", name: "facebook", label: "Facebook URL" },
-                  { type: "string", name: "youtube", label: "YouTube URL" },
+                  {
+                    type: "string",
+                    name: "platform",
+                    label: "Platform",
+                    options: [
+                      { value: "facebook", label: "Facebook" },
+                      { value: "youtube", label: "YouTube" },
+                      { value: "instagram", label: "Instagram" },
+                      { value: "twitter", label: "Twitter / X" },
+                      { value: "linkedin", label: "LinkedIn" },
+                      { value: "twitch", label: "Twitch" },
+                      { value: "podcast", label: "Podcast (RSS or platform)" },
+                      { value: "other", label: "Other / Website" },
+                    ],
+                  },
+                  {
+                    type: "string",
+                    name: "url",
+                    label: "URL",
+                    ui: {
+                      description:
+                        "Full URL including https://. If you paste without https:// the site will add it for you.",
+                    },
+                  },
+                  {
+                    type: "string",
+                    name: "label",
+                    label: "Custom label",
+                    ui: {
+                      description:
+                        'Required when Platform is "Other / Website" — used as the icon\'s tooltip and accessible label. Ignored for the named platforms.',
+                    },
+                  },
                 ],
               },
             ],

@@ -160,8 +160,9 @@ type SiteChurchServices {
 }
 
 type SiteChurchSocial {
-  facebook: String
-  youtube: String
+  platform: String
+  url: String
+  label: String
 }
 
 type SiteChurch {
@@ -174,7 +175,7 @@ type SiteChurch {
   officeHours: String
   address: SiteChurchAddress
   services: [SiteChurchServices]
-  social: SiteChurchSocial
+  social: [SiteChurchSocial]
 }
 
 type SiteHomeHero {
@@ -248,8 +249,9 @@ input SiteChurchServicesFilter {
 }
 
 input SiteChurchSocialFilter {
-  facebook: StringFilter
-  youtube: StringFilter
+  platform: StringFilter
+  url: StringFilter
+  label: StringFilter
 }
 
 input SiteChurchFilter {
@@ -1292,8 +1294,9 @@ input SiteChurchServicesMutation {
 }
 
 input SiteChurchSocialMutation {
-  facebook: String
-  youtube: String
+  platform: String
+  url: String
+  label: String
 }
 
 input SiteChurchMutation {
@@ -1306,7 +1309,7 @@ input SiteChurchMutation {
   officeHours: String
   address: SiteChurchAddressMutation
   services: [SiteChurchServicesMutation]
-  social: SiteChurchSocialMutation
+  social: [SiteChurchSocialMutation]
 }
 
 input SiteHomeHeroMutation {

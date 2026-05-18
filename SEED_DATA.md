@@ -26,8 +26,9 @@ These ripple through the entire site. Get them right before customizing anything
 | Office hours | Site Settings → Office Hours | `content/site.json` `church.officeHours` | `Mon–Thu, 9:00 AM – 4:00 PM` |
 | Logo | Site Settings → Logo | `content/site.json` `church.logo` | `/images/placeholders/logo.svg` |
 | Service time(s) | Site Settings → Services | `content/site.json` `church.services` | `Sundays at 10:00 AM` |
-| Facebook URL | Site Settings → Social → Facebook | `content/site.json` `church.social.facebook` | `""` (empty — add your real URL) |
-| YouTube URL | Site Settings → Social → YouTube | `content/site.json` `church.social.youtube` | `""` (empty — add your real URL) |
+| Social media profiles | Site Settings → Social Media | `content/site.json` `church.social` | `[]` (empty — add one row per profile in the CMS) |
+
+> **About social media:** `church.social` is a list. Add one entry per profile (Facebook, YouTube, Instagram, Twitter/X, LinkedIn, Twitch, or a Podcast feed) with its full URL. For platforms not in the curated list (TikTok, Spotify, Bluesky, your Substack), pick **Other / Website** and give it a label — it renders with a generic globe icon and the label you set. Entries with a blank URL are hidden — the social row never shows a broken or dead link. Multiple entries of the same platform are allowed.
 
 > **Heads-up — placeholders are universal.** The phone `(555) 123-4567` and email `hello@example.church` are reserved/non-routable. Replace them before you ship: real visitors will see them and try to use them.
 

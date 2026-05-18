@@ -3,10 +3,9 @@
     "shortName": "PCC",
     "logo": "",
     "name": "Prairie Community Church",
-    "social": {
-      "facebook": "",
-      "youtube": ""
-    },
+    "social": [
+      { "platform": "facebook", "url": "https://www.facebook.com/prairie-community-example" }
+    ],
     "phone": "(555) 123-4567",
     "tagline": "A small church for a small town. You belong here.",
     "officeHours": "By appointment — call or email",

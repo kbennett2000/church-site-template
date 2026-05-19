@@ -1,5 +1,23 @@
 // tina/config.ts
 import { defineConfig } from "tinacms";
+var calendarDateParse = (value) => {
+  if (value == null || value === "") return void 0;
+  if (typeof value === "string") return value.slice(0, 10);
+  const m = value;
+  if (typeof m.utc === "function") return m.utc().format("YYYY-MM-DD");
+  if (typeof m.format === "function") return m.format("YYYY-MM-DD");
+  if (value instanceof Date) {
+    const y = value.getUTCFullYear();
+    const mo = String(value.getUTCMonth() + 1).padStart(2, "0");
+    const d = String(value.getUTCDate()).padStart(2, "0");
+    return `${y}-${mo}-${d}`;
+  }
+  return void 0;
+};
+var calendarDateFormat = (value) => {
+  if (typeof value !== "string" || value.length === 0) return void 0;
+  return value.slice(0, 10);
+};
 var config_default = defineConfig({
   // TinaCloud credentials — set in Vercel environment variables.
   // Get these from https://app.tina.io after creating a project.
@@ -523,7 +541,7 @@ var config_default = defineConfig({
           { type: "string", name: "title", label: "Title", isTitle: true, required: true },
           { type: "string", name: "series", label: "Series" },
           { type: "string", name: "speaker", label: "Speaker" },
-          { type: "datetime", name: "date", label: "Date", ui: { dateFormat: "YYYY-MM-DD" } },
+          { type: "datetime", name: "date", label: "Date", ui: { dateFormat: "YYYY-MM-DD", parse: calendarDateParse, format: calendarDateFormat } },
           { type: "string", name: "scripture", label: "Scripture Reference (e.g. John 3:16)" },
           { type: "string", name: "book", label: "Bible Book (e.g. John)" },
           { type: "string", name: "youtubeId", label: "YouTube Video ID", ui: { description: "The ID after ?v= in a YouTube URL. Leave blank until the recording is uploaded." } },
@@ -559,8 +577,8 @@ var config_default = defineConfig({
         },
         fields: [
           { type: "string", name: "title", label: "Title", isTitle: true, required: true },
-          { type: "datetime", name: "date", label: "Post Date", ui: { dateFormat: "YYYY-MM-DD" } },
-          { type: "datetime", name: "expires", label: "Expiration Date (optional)", ui: { dateFormat: "YYYY-MM-DD" } },
+          { type: "datetime", name: "date", label: "Post Date", ui: { dateFormat: "YYYY-MM-DD", parse: calendarDateParse, format: calendarDateFormat } },
+          { type: "datetime", name: "expires", label: "Expiration Date (optional)", ui: { dateFormat: "YYYY-MM-DD", parse: calendarDateParse, format: calendarDateFormat } },
           { type: "boolean", name: "pinned", label: "Pin to top?" },
           { type: "string", name: "link", label: "Link URL (optional)" },
           { type: "string", name: "linkLabel", label: "Link Button Label (e.g. Learn more)" },
@@ -930,7 +948,7 @@ var config_default = defineConfig({
         },
         fields: [
           { type: "string", name: "initials", label: "Initials (shown on prayer wall, e.g. J. D.)" },
-          { type: "datetime", name: "date", label: "Date Received", ui: { dateFormat: "YYYY-MM-DD" } },
+          { type: "datetime", name: "date", label: "Date Received", ui: { dateFormat: "YYYY-MM-DD", parse: calendarDateParse, format: calendarDateFormat } },
           { type: "rich-text", name: "body", label: "Prayer Request", isBody: true }
         ]
       },
@@ -1013,6 +1031,8 @@ var config_default = defineConfig({
             label: "Start Date",
             ui: {
               dateFormat: "YYYY-MM-DD",
+              parse: calendarDateParse,
+              format: calendarDateFormat,
               description: "The date of the first entry. Used to display the plan's duration and progress bar."
             }
           },
@@ -1022,6 +1042,8 @@ var config_default = defineConfig({
             label: "End Date",
             ui: {
               dateFormat: "YYYY-MM-DD",
+              parse: calendarDateParse,
+              format: calendarDateFormat,
               description: "The date of the last entry. Must be on or after the start date."
             }
           },
@@ -1059,6 +1081,8 @@ var config_default = defineConfig({
                 label: "Date",
                 ui: {
                   dateFormat: "YYYY-MM-DD",
+                  parse: calendarDateParse,
+                  format: calendarDateFormat,
                   description: "The date this entry is sent and displayed. Must be unique within this plan."
                 }
               },
@@ -1427,6 +1451,8 @@ var config_default = defineConfig({
                 label: "Added On",
                 ui: {
                   dateFormat: "YYYY-MM-DD",
+                  parse: calendarDateParse,
+                  format: calendarDateFormat,
                   description: "When this person was given access. For audit purposes only."
                 }
               },
@@ -1468,6 +1494,8 @@ var config_default = defineConfig({
             required: true,
             ui: {
               dateFormat: "YYYY-MM-DD",
+              parse: calendarDateParse,
+              format: calendarDateFormat,
               description: "The Monday of the week this note belongs to. Use YYYY-MM-DD format."
             }
           },

@@ -12,6 +12,76 @@ import { defineConfig } from "tinacms";
 // Field types: string | datetime | image | boolean | number | rich-text | object
 // Use `isBody: true` on a rich-text field to map it to the markdown body.
 
+// ─────────────────────────────────────────────────────────────────────────
+// Calendar-date helper for `type: "datetime"` fields shown as date-only.
+// ─────────────────────────────────────────────────────────────────────────
+//
+// WHY THIS EXISTS — DO NOT "SIMPLIFY" AWAY:
+//
+// Tina's bundled DateFieldPlugin (the picker rendered for `type: "datetime"`
+// when `ui.dateFormat: "YYYY-MM-DD"` is set) hands `ui.parse` a moment-like
+// value, and Tina's default serializer routes through `.toISOString()`. That
+// path interprets the editor's pick in the *local* timezone and converts it
+// to UTC, so a chosen calendar day can drift forward or backward depending
+// on the editor's offset. Symptom: "pick May 19, save, reopen → May 18 or
+// May 20". For a date-only field this is always wrong — there is no time-
+// of-day to preserve, only a calendar day. (See investigation §5.)
+//
+// Fix: override `ui.parse` to read the calendar date in UTC mode and store
+// it as a plain `YYYY-MM-DD` string; override `ui.format` to slice the
+// stored value WITHOUT going through `new Date(...)` (which would re-zone
+// it on the way back to the picker). Both functions tolerate the legacy
+// `YYYY-MM-DDT00:00:00.000Z` shape in already-saved files: slicing the
+// first ten characters yields the correct calendar day regardless, so
+// opening and re-saving an old file does NOT double-shift.
+//
+// This is the documented `ui.parse` / `ui.format` override surface — no
+// plugin monkey-patching, no schema type change. Apply to every datetime
+// field displayed as date-only.
+//
+// TS NOTE: Tina's `DateTimeField` is a union of three `FieldGeneric` cases
+// (List = undefined | true | false), and the `ui.parse` / `ui.format`
+// slot ends up structurally requiring a function that satisfies all three
+// simultaneously — `(string) => string` and `(string[]) => string[]` at
+// once, which is unsatisfiable. The helpers below are runtime-correct;
+// the `as never` casts at their call sites (or here, at the definitions)
+// are the established escape hatch for this Tina typings limitation.
+const calendarDateParseImpl = (value: unknown): string | undefined => {
+  if (value == null || value === "") return undefined;
+  // String passthrough: covers both new `2026-05-19` shape and legacy
+  // `2026-05-19T00:00:00.000Z` shape. Both slice to the same calendar day.
+  if (typeof value === "string") return value.slice(0, 10);
+  // Moment-like object — what Tina's bundled date picker emits. Prefer the
+  // `.utc()` form so we read the YMD parts the editor actually picked,
+  // never their local-to-UTC conversion.
+  const m = value as {
+    utc?: () => { format: (fmt: string) => string };
+    format?: (fmt: string) => string;
+  };
+  if (typeof m.utc === "function") return m.utc().format("YYYY-MM-DD");
+  if (typeof m.format === "function") return m.format("YYYY-MM-DD");
+  // Native Date fallback — use UTC accessors so a Date constructed from a
+  // local-time pick does not get re-zoned a second time.
+  if (value instanceof Date) {
+    const y = value.getUTCFullYear();
+    const mo = String(value.getUTCMonth() + 1).padStart(2, "0");
+    const d = String(value.getUTCDate()).padStart(2, "0");
+    return `${y}-${mo}-${d}`;
+  }
+  return undefined;
+};
+
+const calendarDateFormatImpl = (value: unknown): string | undefined => {
+  if (typeof value !== "string" || value.length === 0) return undefined;
+  // Direct slice — NEVER `new Date(value)` here, that would re-zone.
+  return value.slice(0, 10);
+};
+
+// Cast surface: see TS NOTE above. Runtime is `calendarDate*Impl`; the
+// `as never` is purely to satisfy Tina's over-narrow union slot.
+const calendarDateParse = calendarDateParseImpl as never;
+const calendarDateFormat = calendarDateFormatImpl as never;
+
 export default defineConfig({
   // TinaCloud credentials — set in Vercel environment variables.
   // Get these from https://app.tina.io after creating a project.
@@ -577,7 +647,7 @@ export default defineConfig({
           { type: "string", name: "title", label: "Title", isTitle: true, required: true },
           { type: "string", name: "series", label: "Series" },
           { type: "string", name: "speaker", label: "Speaker" },
-          { type: "datetime", name: "date", label: "Date", ui: { dateFormat: "YYYY-MM-DD" } },
+          { type: "datetime", name: "date", label: "Date", ui: { dateFormat: "YYYY-MM-DD", parse: calendarDateParse, format: calendarDateFormat } },
           { type: "string", name: "scripture", label: "Scripture Reference (e.g. John 3:16)" },
           { type: "string", name: "book", label: "Bible Book (e.g. John)" },
           { type: "string", name: "youtubeId", label: "YouTube Video ID", ui: { description: "The ID after ?v= in a YouTube URL. Leave blank until the recording is uploaded." } },
@@ -615,8 +685,8 @@ export default defineConfig({
         },
         fields: [
           { type: "string", name: "title", label: "Title", isTitle: true, required: true },
-          { type: "datetime", name: "date", label: "Post Date", ui: { dateFormat: "YYYY-MM-DD" } },
-          { type: "datetime", name: "expires", label: "Expiration Date (optional)", ui: { dateFormat: "YYYY-MM-DD" } },
+          { type: "datetime", name: "date", label: "Post Date", ui: { dateFormat: "YYYY-MM-DD", parse: calendarDateParse, format: calendarDateFormat } },
+          { type: "datetime", name: "expires", label: "Expiration Date (optional)", ui: { dateFormat: "YYYY-MM-DD", parse: calendarDateParse, format: calendarDateFormat } },
           { type: "boolean", name: "pinned", label: "Pin to top?" },
           { type: "string", name: "link", label: "Link URL (optional)" },
           { type: "string", name: "linkLabel", label: "Link Button Label (e.g. Learn more)" },
@@ -1021,7 +1091,7 @@ export default defineConfig({
         },
         fields: [
           { type: "string", name: "initials", label: "Initials (shown on prayer wall, e.g. J. D.)" },
-          { type: "datetime", name: "date", label: "Date Received", ui: { dateFormat: "YYYY-MM-DD" } },
+          { type: "datetime", name: "date", label: "Date Received", ui: { dateFormat: "YYYY-MM-DD", parse: calendarDateParse, format: calendarDateFormat } },
           { type: "rich-text", name: "body", label: "Prayer Request", isBody: true },
         ],
       },
@@ -1112,6 +1182,8 @@ export default defineConfig({
             label: "Start Date",
             ui: {
               dateFormat: "YYYY-MM-DD",
+              parse: calendarDateParse,
+              format: calendarDateFormat,
               description: "The date of the first entry. Used to display the plan's duration and progress bar.",
             },
           },
@@ -1121,6 +1193,8 @@ export default defineConfig({
             label: "End Date",
             ui: {
               dateFormat: "YYYY-MM-DD",
+              parse: calendarDateParse,
+              format: calendarDateFormat,
               description: "The date of the last entry. Must be on or after the start date.",
             },
           },
@@ -1160,6 +1234,8 @@ export default defineConfig({
                 label: "Date",
                 ui: {
                   dateFormat: "YYYY-MM-DD",
+                  parse: calendarDateParse,
+                  format: calendarDateFormat,
                   description: "The date this entry is sent and displayed. Must be unique within this plan.",
                 },
               },
@@ -1554,6 +1630,8 @@ export default defineConfig({
                 label: "Added On",
                 ui: {
                   dateFormat: "YYYY-MM-DD",
+                  parse: calendarDateParse,
+                  format: calendarDateFormat,
                   description: "When this person was given access. For audit purposes only.",
                 },
               },
@@ -1599,6 +1677,8 @@ export default defineConfig({
             required: true,
             ui: {
               dateFormat: "YYYY-MM-DD",
+              parse: calendarDateParse,
+              format: calendarDateFormat,
               description: "The Monday of the week this note belongs to. Use YYYY-MM-DD format.",
             },
           },

@@ -7,6 +7,8 @@
 > **What this file is not:** a substitute for the docs in `/docs/`. Read those for architecture, content model, and adoption flow. This file captures the *conversation-level* context that wouldn't otherwise be in the repo.
 
 ---
+On ANY schema change: tina-lock.json must be regenerated AND committed AND pushed to GitHub BEFORE the TinaCloud reindex. TinaCloud indexes the lock from GitHub; a regenerated-but-uncommitted lock causes a persistent local-vs-remote schema mismatch that NO reindex fixes. Always git status immediately after the Tina regen step and confirm tina-lock.json is staged in the commit, not stranded in the working tree.
+---
 
 ## Project at a glance
 

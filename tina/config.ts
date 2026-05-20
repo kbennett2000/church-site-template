@@ -82,6 +82,268 @@ const calendarDateFormatImpl = (value: unknown): string | undefined => {
 const calendarDateParse = calendarDateParseImpl as never;
 const calendarDateFormat = calendarDateFormatImpl as never;
 
+// ─────────────────────────────────────────────────────────────────────────
+// Sermons: Bible-book dropdown + scripture-reference autoformat
+// ─────────────────────────────────────────────────────────────────────────
+//
+// The sermons collection has two Bible-related fields — `book` and
+// `scripture`. Both used to be free text. Free text means editors typed
+// "Jn. 3:16" one week and "John 3:16" the next, which broke the
+// archive's by-book filter (an exact-string match) the moment the same
+// book got two different spellings. The two helpers below close that gap:
+//
+//   1. BOOKS_OF_THE_BIBLE — a closed list of the 66 books in CANONICAL
+//      biblical order (Genesis first, Revelation last), wired into the
+//      `book` field's `options:`. Editors pick from a dropdown; the field
+//      can never disagree with itself. The first option in the dropdown
+//      is { value: "", label: "— None —" } — empty string matches the
+//      existing data convention (most sermons that don't have a passage
+//      already stored book as ""), and the label makes it visually
+//      obvious in the dropdown that "no Bible passage" is the choice.
+//
+//      Order is canonical, NOT alphabetical, because that's how editors
+//      think when they're tagging a sermon. They scan "Genesis, Exodus,
+//      Leviticus..." down to the gospels and beyond. Sorting
+//      alphabetically would put Acts at the top and Zephaniah at the
+//      bottom — wrong for the muscle memory of anyone who knows the
+//      Bible.
+//
+//   2. normalizeScriptureReference — a `ui.parse` autoformat for the
+//      `scripture` field. Canonicalizes common abbreviations on save
+//      ("Jn. 3:16" → "John 3:16"). See its own comment block for the
+//      contract.
+//
+// Both are pure functions, defined once here so a future addition of
+// another scripture-tagged collection (Bible studies? reading plans
+// already has scriptureReference, which could adopt this) can reuse
+// them without duplication.
+
+// The 66 books of the Protestant canon, in canonical biblical order.
+// Frozen so a downstream mutation can't silently reorder the dropdown.
+// Used as the `options:` source for the sermons `book` field — wrap each
+// entry as { value: b, label: b } and prepend the "— None —" sentinel.
+const BOOKS_OF_THE_BIBLE = Object.freeze([
+  // Old Testament
+  "Genesis", "Exodus", "Leviticus", "Numbers", "Deuteronomy",
+  "Joshua", "Judges", "Ruth",
+  "1 Samuel", "2 Samuel", "1 Kings", "2 Kings",
+  "1 Chronicles", "2 Chronicles",
+  "Ezra", "Nehemiah", "Esther",
+  "Job", "Psalms", "Proverbs", "Ecclesiastes", "Song of Solomon",
+  "Isaiah", "Jeremiah", "Lamentations", "Ezekiel", "Daniel",
+  "Hosea", "Joel", "Amos", "Obadiah", "Jonah", "Micah",
+  "Nahum", "Habakkuk", "Zephaniah", "Haggai", "Zechariah", "Malachi",
+  // New Testament
+  "Matthew", "Mark", "Luke", "John", "Acts",
+  "Romans", "1 Corinthians", "2 Corinthians", "Galatians", "Ephesians",
+  "Philippians", "Colossians",
+  "1 Thessalonians", "2 Thessalonians",
+  "1 Timothy", "2 Timothy", "Titus", "Philemon",
+  "Hebrews", "James",
+  "1 Peter", "2 Peter",
+  "1 John", "2 John", "3 John",
+  "Jude", "Revelation",
+] as const);
+
+// Lookup map for normalizeScriptureReference. Keys are normalized:
+// lowercase, no internal whitespace, no periods. So "1 Cor", "1Cor",
+// "1cor.", and "1 cor" all reduce to the same key ("1cor") and hit the
+// same canonical name. Values are the canonical book names (matching
+// BOOKS_OF_THE_BIBLE exactly — what we want the dropdown filter to find).
+//
+// Coverage goal: the canonical name itself (so "John 3:16" stays
+// "John 3:16"), plus the abbreviations editors commonly type — both
+// with- and without-period forms (handled by the strip-period
+// normalization), plus variant spellings (Psalm/Psalms, Song of
+// Songs/Song of Solomon). Single-letter overlaps with English words
+// (Am, Is, Ho, Na...) are kept because they're standard biblical
+// abbreviations; a user typing "Am 5" really does mean Amos.
+//
+// Conflicts deliberately avoided:
+//   - "hb"  → Hebrews only (NOT also Habakkuk; standard for Hab is "hab")
+//   - "jud" intentionally omitted — ambiguous between Judges and Jude;
+//     "judg"/"jdg" go to Judges, "jude" alone goes to Jude.
+const ABBREVIATION_TO_CANONICAL: Readonly<Record<string, string>> = Object.freeze({
+  // Genesis
+  gen: "Genesis", ge: "Genesis", gn: "Genesis", genesis: "Genesis",
+  // Exodus
+  ex: "Exodus", exo: "Exodus", exod: "Exodus", exodus: "Exodus",
+  // Leviticus
+  lev: "Leviticus", lv: "Leviticus", leviticus: "Leviticus",
+  // Numbers
+  num: "Numbers", nu: "Numbers", nm: "Numbers", numbers: "Numbers",
+  // Deuteronomy
+  deut: "Deuteronomy", dt: "Deuteronomy", deuteronomy: "Deuteronomy",
+  // Joshua
+  josh: "Joshua", jos: "Joshua", jsh: "Joshua", joshua: "Joshua",
+  // Judges
+  judg: "Judges", jdg: "Judges", jg: "Judges", judges: "Judges",
+  // Ruth
+  ru: "Ruth", rth: "Ruth", ruth: "Ruth",
+  // 1/2 Samuel
+  "1sam": "1 Samuel", "1sa": "1 Samuel", "1sm": "1 Samuel", "1samuel": "1 Samuel",
+  "2sam": "2 Samuel", "2sa": "2 Samuel", "2sm": "2 Samuel", "2samuel": "2 Samuel",
+  // 1/2 Kings
+  "1kgs": "1 Kings", "1ki": "1 Kings", "1k": "1 Kings", "1kings": "1 Kings",
+  "2kgs": "2 Kings", "2ki": "2 Kings", "2k": "2 Kings", "2kings": "2 Kings",
+  // 1/2 Chronicles
+  "1chr": "1 Chronicles", "1ch": "1 Chronicles", "1chron": "1 Chronicles", "1chronicles": "1 Chronicles",
+  "2chr": "2 Chronicles", "2ch": "2 Chronicles", "2chron": "2 Chronicles", "2chronicles": "2 Chronicles",
+  // Ezra / Nehemiah / Esther
+  ezr: "Ezra", ezra: "Ezra",
+  neh: "Nehemiah", ne: "Nehemiah", nehemiah: "Nehemiah",
+  est: "Esther", es: "Esther", esth: "Esther", esther: "Esther",
+  // Job / Psalms / Proverbs / Ecclesiastes / Song
+  jb: "Job", job: "Job",
+  ps: "Psalms", psa: "Psalms", psm: "Psalms", pss: "Psalms", psalm: "Psalms", psalms: "Psalms",
+  prov: "Proverbs", pr: "Proverbs", prv: "Proverbs", proverbs: "Proverbs",
+  eccl: "Ecclesiastes", ec: "Ecclesiastes", eccle: "Ecclesiastes", qoh: "Ecclesiastes", ecclesiastes: "Ecclesiastes",
+  song: "Song of Solomon", sos: "Song of Solomon", sng: "Song of Solomon",
+  songofsongs: "Song of Solomon", songofsolomon: "Song of Solomon", canticles: "Song of Solomon",
+  // Major Prophets
+  isa: "Isaiah", is: "Isaiah", isaiah: "Isaiah",
+  jer: "Jeremiah", je: "Jeremiah", jr: "Jeremiah", jeremiah: "Jeremiah",
+  lam: "Lamentations", la: "Lamentations", lamentations: "Lamentations",
+  ezek: "Ezekiel", eze: "Ezekiel", ezk: "Ezekiel", ezekiel: "Ezekiel",
+  dan: "Daniel", da: "Daniel", dn: "Daniel", daniel: "Daniel",
+  // Minor Prophets
+  hos: "Hosea", ho: "Hosea", hosea: "Hosea",
+  joel: "Joel", jl: "Joel", jol: "Joel",
+  am: "Amos", amo: "Amos", amos: "Amos",
+  ob: "Obadiah", obad: "Obadiah", obadiah: "Obadiah",
+  jon: "Jonah", jnh: "Jonah", jonah: "Jonah",
+  mic: "Micah", mi: "Micah", mc: "Micah", micah: "Micah",
+  nah: "Nahum", na: "Nahum", nahum: "Nahum",
+  hab: "Habakkuk", habakkuk: "Habakkuk",
+  zeph: "Zephaniah", zep: "Zephaniah", zp: "Zephaniah", zephaniah: "Zephaniah",
+  hag: "Haggai", hg: "Haggai", haggai: "Haggai",
+  zech: "Zechariah", zec: "Zechariah", zc: "Zechariah", zechariah: "Zechariah",
+  mal: "Malachi", ml: "Malachi", malachi: "Malachi",
+  // Gospels
+  mt: "Matthew", matt: "Matthew", mat: "Matthew", matthew: "Matthew",
+  mk: "Mark", mr: "Mark", mrk: "Mark", mark: "Mark",
+  lk: "Luke", lu: "Luke", luk: "Luke", luke: "Luke",
+  jn: "John", jhn: "John", john: "John",
+  // Acts / Romans
+  ac: "Acts", act: "Acts", acts: "Acts",
+  rom: "Romans", ro: "Romans", rm: "Romans", romans: "Romans",
+  // Pauline letters
+  "1cor": "1 Corinthians", "1co": "1 Corinthians", "1corinthians": "1 Corinthians",
+  "2cor": "2 Corinthians", "2co": "2 Corinthians", "2corinthians": "2 Corinthians",
+  gal: "Galatians", ga: "Galatians", galatians: "Galatians",
+  eph: "Ephesians", ephesians: "Ephesians",
+  phil: "Philippians", php: "Philippians", philippians: "Philippians",
+  col: "Colossians", colossians: "Colossians",
+  "1thess": "1 Thessalonians", "1thes": "1 Thessalonians", "1th": "1 Thessalonians", "1thessalonians": "1 Thessalonians",
+  "2thess": "2 Thessalonians", "2thes": "2 Thessalonians", "2th": "2 Thessalonians", "2thessalonians": "2 Thessalonians",
+  "1tim": "1 Timothy", "1ti": "1 Timothy", "1timothy": "1 Timothy",
+  "2tim": "2 Timothy", "2ti": "2 Timothy", "2timothy": "2 Timothy",
+  tit: "Titus", ti: "Titus", titus: "Titus",
+  phlm: "Philemon", phm: "Philemon", philem: "Philemon", philemon: "Philemon",
+  // General epistles
+  heb: "Hebrews", hb: "Hebrews", hebrews: "Hebrews",
+  jas: "James", jms: "James", james: "James",
+  "1pet": "1 Peter", "1pt": "1 Peter", "1pe": "1 Peter", "1peter": "1 Peter",
+  "2pet": "2 Peter", "2pt": "2 Peter", "2pe": "2 Peter", "2peter": "2 Peter",
+  "1jn": "1 John", "1jhn": "1 John", "1jo": "1 John", "1john": "1 John",
+  "2jn": "2 John", "2jhn": "2 John", "2jo": "2 John", "2john": "2 John",
+  "3jn": "3 John", "3jhn": "3 John", "3jo": "3 John", "3john": "3 John",
+  jude: "Jude",
+  // Revelation
+  rev: "Revelation", re: "Revelation", revelation: "Revelation",
+});
+
+// Normalize a scripture reference's leading book token to canonical form.
+//
+// WHY THIS EXISTS — DO NOT "SIMPLIFY" INTO A VALIDATOR:
+//
+// This is a UX nicety, NOT validation. The goal is to reduce inconsistent
+// data ("Jn. 3:16" vs "John 3:16" for the same passage) without rejecting
+// what an editor types. If an editor enters "Doug 8:14" the function
+// recognizes nothing in the leading token, does nothing, and the value
+// saves as-is. That's intentional — the sibling `book` field is a closed
+// dropdown that enforces a known list; this field is the human-readable
+// reference and editors should be free to write things like "1 Cor 13"
+// (autoformatted to "1 Corinthians 13") OR a freeform reference the
+// autoformat doesn't recognize, with no save-time error either way.
+//
+// If a future change wants strict validation (reject unknown books,
+// cross-check `book` against the leading token in `scripture`), that's a
+// separate decision and a separate field-level `validate:` — do not bolt
+// it onto this `ui.parse`. The "help, not enforce" posture is what allows
+// editors to tag non-scripture sermons too: `book` = "" + scripture = "An
+// Open Letter" is a legitimate combination that should never throw.
+//
+// TRAILING-WHITESPACE PRESERVATION (the on-keystroke bug fix):
+//
+// Tina runs `ui.parse` on every keystroke. An earlier version of this
+// function called `.trim()` on input and reassembled the remainder from
+// a regex capture group — which meant typing "John " (John + space) was
+// parsed as "John" with no remainder, so the trailing space vanished
+// from the editor's view. From the editor's perspective the cursor was
+// stuck: press space, see nothing happen, press space again, still
+// nothing. The fix: strip ONLY leading whitespace, and reconstruct the
+// remainder by positional slice from the (left-trimmed) input rather
+// than from a capture group. That way whatever the editor typed after
+// the book name — chapter, verse, partial mid-type, or just a space —
+// shows up byte-for-byte in the output.
+//
+// Contract:
+//   • Leading whitespace is stripped. Trailing whitespace is PRESERVED
+//     verbatim (so on-keystroke parsing doesn't eat spaces).
+//   • An all-whitespace input collapses to empty (no fabrication, and
+//     the leading-trim already removed everything).
+//   • The leading "book" token is parsed greedily: optional 1/2/3
+//     prefix (with or without internal whitespace — covers "1Cor",
+//     "1 Cor", "1cor"), then letters/periods/internal-whitespace,
+//     ending on a letter or period. Multi-word names work ("Song of
+//     Songs", "Song of Solomon"). The chapter/verse portion is NOT
+//     part of the regex — it falls into the positional slice below.
+//   • Lookup key for ABBREVIATION_TO_CANONICAL is the leading token
+//     lowercased with periods stripped and ALL whitespace removed — so
+//     "1 Cor", "1Cor", "1cor.", "1 cor." all become "1cor".
+//   • If the lookup hits, canonical book name replaces the leading
+//     token; everything after that token is taken as a positional
+//     slice of the left-trimmed input and appended unchanged.
+//   • If the lookup misses, the left-trimmed input is returned
+//     unchanged. No partial canonicalization, no "did you mean".
+//
+// This pairs with the `book` field's empty-string + "— None —" pattern:
+// when book is "None" (empty), this function still runs against scripture
+// the same way. The two fields are intentionally independent — see the
+// block comment above BOOKS_OF_THE_BIBLE.
+function normalizeScriptureReference(value: string): string {
+  // Strip leading whitespace only — trailing whitespace must survive.
+  const leftTrimmed = value.replace(/^\s+/, "");
+  if (leftTrimmed === "") return "";
+
+  // Match ONLY the leading book token. No chapter/verse remainder
+  // capture — that's pulled by positional slice below.
+  const match = leftTrimmed.match(/^([123]\s*)?([A-Za-z][A-Za-z.\s]*[A-Za-z.]|[A-Za-z])/);
+  if (!match) return leftTrimmed;
+
+  const [matched, leadingDigit, bookPart] = match;
+  const key = `${leadingDigit ?? ""}${bookPart}`
+    .toLowerCase()
+    .replace(/\./g, "")
+    .replace(/\s+/g, "");
+
+  const canonical = ABBREVIATION_TO_CANONICAL[key];
+  if (!canonical) return leftTrimmed;
+
+  // Positional slice — preserves whatever the editor typed (trailing
+  // whitespace, partial chapter mid-type, full reference, etc.) without
+  // round-tripping through a regex group that might normalize it.
+  const remainder = leftTrimmed.substring(matched.length);
+  return `${canonical}${remainder}`;
+}
+
+// Cast for Tina's `ui.parse` slot — same typings limitation as the
+// calendarDate helpers above (the slot is a union that ends up requiring
+// `(string) => string` and `(string[]) => string[]` simultaneously).
+const scriptureReferenceParse = ((value?: string) =>
+  normalizeScriptureReference(value ?? "")) as never;
+
 export default defineConfig({
   // TinaCloud credentials — set in Vercel environment variables.
   // Get these from https://app.tina.io after creating a project.
@@ -648,8 +910,29 @@ export default defineConfig({
           { type: "string", name: "series", label: "Series" },
           { type: "string", name: "speaker", label: "Speaker" },
           { type: "datetime", name: "date", label: "Date", ui: { dateFormat: "YYYY-MM-DD", parse: calendarDateParse, format: calendarDateFormat } },
-          { type: "string", name: "scripture", label: "Scripture Reference (e.g. John 3:16)" },
-          { type: "string", name: "book", label: "Bible Book (e.g. John)" },
+          {
+            type: "string",
+            name: "scripture",
+            label: "Scripture Reference",
+            ui: {
+              parse: scriptureReferenceParse,
+              description:
+                "Standard reference — book, chapter, optional verse range (e.g. 'John 3:16', 'Hebrews 11:1-6', 'Genesis 16'). Common abbreviations are expanded on save: 'Jn. 3:16' → 'John 3:16', '1 Cor 13' → '1 Corinthians 13'. Unrecognized input is saved as-is — no rejection.",
+            },
+          },
+          {
+            type: "string",
+            name: "book",
+            label: "Bible Book",
+            options: [
+              { value: "", label: "— None —" },
+              ...BOOKS_OF_THE_BIBLE.map((b) => ({ value: b, label: b })),
+            ],
+            ui: {
+              description:
+                "Pick the Bible book this sermon's passage is from, or '— None —' if the sermon isn't on a specific passage. Used by the archive's Bible-book filter.",
+            },
+          },
           { type: "string", name: "youtubeId", label: "YouTube Video ID", ui: { description: "The ID after ?v= in a YouTube URL. Leave blank until the recording is uploaded." } },
           { type: "image", name: "thumbnail", label: "Thumbnail Image" },
           { type: "string", name: "audioUrl", label: "Audio URL (MP3 link, or #)" },

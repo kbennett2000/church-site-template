@@ -129,25 +129,17 @@ For developers customizing the template, contributing back, or maintaining a chu
 
 ## What it looks like
 
-**[🌐 Explore the live demo →](https://church-site-template-psi.vercel.app)** — a fully populated example church. (Your copy starts with generic placeholder content you swap for your own.)
+A polished, mobile-first site your staff edit in the browser. **[🌐 Explore the live demo →](https://church-site-template-psi.vercel.app)**
+
+**The site** — a warm homepage that leads with your service times and a clear invitation to visit:
 
 ![The homepage — hero, service times, and a "Plan Your Visit" call to action](docs/screenshots/marketing/homepage.png)
 
-<table>
-  <tr>
-    <td width="33%" valign="top"><img src="docs/screenshots/app/ministries.png" alt="Ministries index" /><br /><sub><b>Ministries</b> — a page per ministry</sub></td>
-    <td width="33%" valign="top"><img src="docs/screenshots/app/watch.png" alt="Sermon archive" /><br /><sub><b>Watch</b> — searchable sermon archive</sub></td>
-    <td width="33%" valign="top"><img src="docs/screenshots/app/calendar.png" alt="Events calendar" /><br /><sub><b>Calendar</b> — recurring &amp; one-off events</sub></td>
-  </tr>
-</table>
-
-**Edit everything in the browser — no code.** Staff sign in to TinaCMS and update sermons, events, staff bios, and service times; the site rebuilds and goes live on its own.
+**The editor (TinaCMS)** — staff update sermons, events, and service times with no code; changes go live on their own in ~2 minutes:
 
 ![The TinaCMS editor — collections sidebar and the sermon list](docs/screenshots/marketing/cms-dashboard.png)
 
-<sub>📱 <b>Mobile-first</b>, too — where most visitors will see it:</sub>
-
-<img src="docs/screenshots/app/homepage-mobile.png" width="300" alt="The homepage on a phone" />
+**[📸 See the full gallery →](docs/screenshots/README.md)** — every page, the mobile layout, and the CMS, each with a short note.
 
 ---
 

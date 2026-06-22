@@ -97,6 +97,7 @@ Alternate `/content/` configurations showing what real adopters look like.
 - [Glossary](../GLOSSARY.md) — every technical term, defined plainly
 - [Seed data checklist](../SEED_DATA.md) — placeholder data that needs replacing before launch
 - [Changelog](../CHANGELOG.md) — what's changed in each template release
+- [Screenshot gallery](screenshots/README.md) — a visual tour of every page and the browser-based editor
 - [Screenshots needed](SCREENSHOTS_NEEDED.md) — every screenshot referenced in docs, ready for a single capture pass
 
 ## How docs are structured

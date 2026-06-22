@@ -6,48 +6,49 @@ adheres loosely to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
-### Added
-- Extensible social-media field: `content/site.json` `church.social` is now a
-  list of `{ platform, url, label? }` entries instead of a fixed
-  `{ facebook, youtube }` object. The CMS exposes a curated select of
-  platforms with real lucide brand icons (Facebook, YouTube, Instagram,
-  Twitter/X, LinkedIn, Twitch, Podcast) plus an "Other / Website" escape
-  hatch with a generic globe icon and a free-text label — so editors can add
-  TikTok, Spotify, Bluesky, a Substack, or any other profile without a code
-  change. Entries with a blank URL are filtered out at load time and never
-  reach a renderer; an empty list hides the social row entirely (no empty
-  container, no stray spacing). Duplicate platforms are allowed and both
-  render in list order (the `/watch` page's "Subscribe on YouTube" card uses
-  the first match). See [lib/social.ts](lib/social.ts).
-
-### Changed
-- The `/watch` page's "Subscribe on YouTube" card now renders only when a
-  YouTube entry with a URL exists in `church.social`. The "Sermon Podcast"
-  card is unchanged and always renders.
-
-### Breaking change for instances on `< this release`
-- **`content/site.json` `church.social` shape changed** from a fixed object
-  to a list. The runtime loader in [lib/social.ts](lib/social.ts) accepts
-  *both* shapes during a transition window so an un-migrated `site.json`
-  keeps rendering correctly on the deployed site. However, **TinaCMS will
-  not be able to edit `site.json` until the file is converted to the list
-  shape**, because the schema now defines `social` as a list.
-- **Manual migration for cherry-pick adopters:** when cherry-picking this
-  change into a church-instance repo, hand-edit `content/site.json` to
-  convert any non-empty social values:
-  ```jsonc
-  // before
-  "social": { "facebook": "https://…", "youtube": "https://…" }
-  // after
-  "social": [
-    { "platform": "facebook", "url": "https://…" },
-    { "platform": "youtube",  "url": "https://…" }
-  ]
-  ```
-  Then redeploy so TinaCloud picks up the new schema and re-indexes.
-
-### TODO (next release)
 - Remove the legacy-object branch in `normalizeSocial()` in
-  [lib/social.ts](lib/social.ts) once all known instances have migrated
-  their `content/site.json` to the list shape. The legacy branch is marked
-  with a `TODO(next-release)` comment.
+  [lib/social.ts](lib/social.ts) once all known instances have migrated their
+  `content/site.json` `church.social` to the list shape (marked with a
+  `TODO(next-release)` comment).
+
+## [0.1.0] - 2026-06-22
+
+The first public release — a complete, production-ready church website that a
+non-technical volunteer can deploy for free and a staff member can keep updated
+from their browser. 🌐 [Live demo](https://church-site-template-psi.vercel.app)
+
+### Added
+
+- **Mobile-first website** on Next.js 16 (App Router, React 19), Tailwind CSS,
+  and TypeScript strict mode — with a semantic-token theme system, four ready
+  color palettes, and Inter + Fraunces typography.
+- **Browser-based editing** via TinaCMS + TinaCloud — staff sign in with Google
+  and edit content; changes commit to `main` and the site rebuilds in ~2 min.
+- **Homepage** — hero, "this week" events, latest sermon, ministries grid,
+  announcements, a beliefs teaser, and a newsletter signup.
+- **Sermon archive** filterable by series, speaker, scripture, and book of the
+  Bible, with YouTube embeds, derived series pages, and inline sermon notes.
+- **Events calendar** — recurring and one-off events with `.ics` export.
+- **Ministries** (a page per ministry), **staff & elders**, **beliefs**,
+  **about/story**, and CMS-managed **custom pages** at `/pages/[slug]`.
+- **Connect** — small-groups finder, prayer-request form, volunteer/serve
+  roles, and a contact form; plus **plan-a-visit** and **giving** pages.
+- **Email** — five Resend-wired forms (visit, prayer, contact, newsletter,
+  serve), plus daily-devotional and weekly-digest pipelines backed by a
+  double-opt-in subscriber database.
+- **Extensible social links** — `content/site.json` `church.social` is a list
+  of `{ platform, url, label? }` entries with curated brand icons and an
+  "Other / Website" option; blank entries are hidden. See
+  [lib/social.ts](lib/social.ts).
+- **Tooling & docs** — `setup`, `doctor`, and `deploy` CLI scripts; a
+  three-track documentation set (editors, tech volunteers, developers); two
+  example church configurations; and a case-study template.
+
+### Known limitations
+
+- `/connect` groups/serve/prayer data and the about-page prose are still partly
+  inline; migrating them to `/content/` collections is on the v0.2 roadmap.
+- No automated test suite yet (Vitest + Playwright planned for v0.2).
+
+[Unreleased]: https://github.com/kbennett2000/church-site-template/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/kbennett2000/church-site-template/releases/tag/v0.1.0

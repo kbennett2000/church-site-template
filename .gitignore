@@ -18,3 +18,9 @@ dist
 # Not committed; regenerated automatically at build/dev time.
 .tina/__generated__/
 public/admin/
+
+# Local Claude Code settings — per-machine, not committed.
+.claude/
+
+# Vercel CLI link directory.
+.vercel/

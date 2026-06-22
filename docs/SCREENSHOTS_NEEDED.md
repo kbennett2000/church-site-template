@@ -18,6 +18,25 @@ Every documentation page that references a screenshot links to a file under `doc
 
 ---
 
+## ✅ Capture status (updated 2026-06-22)
+
+A first capture pass is **done**, using a fictional example church ("Cedar Ridge Church"). All app/site screenshots and the most-referenced TinaCMS editor screens are now in the repo and rendering in the README and editor guides.
+
+**Captured:**
+- ✅ Both **marketing** shots (`homepage.png`, `cms-dashboard.png`).
+- ✅ A wide set of **app pages** under `docs/screenshots/app/` (homepage desktop + mobile, about, beliefs, calendar, watch, sermon detail, visit, ministries, a ministry, all four `connect/*` pages, give, and a custom page).
+- ✅ 8 **editor** screens: getting-started dashboard, add-a-sermon list + form, add-a-staff-member list, add-an-event list, edit-a-page list, update-service-times list + section (plus bonus ministries-list and staff-form).
+
+**Still to capture** (these need the *hosted* TinaCloud sign-in, an open rich-text editor, or human annotation — easiest to grab on the live site):
+- `editor/getting-started-login.png` — the TinaCloud "Continue with Google" screen (local mode shows no Google login).
+- `editor/edit-a-page-toolbar.png` — the rich-text toolbar, with the formatting buttons labeled.
+- `editor/add-a-sermon-saved.png` — a sermon form right after saving (success state).
+- `editor/add-a-sermon-youtube-id.png` — a browser address bar with the YouTube ID highlighted (annotated).
+- `editor/upload-photos-picker.png` — the TinaCMS media picker / upload dialog.
+- All **tech-volunteer** dashboard shots below (Vercel, TinaCloud, Resend, Neon, Google Cloud) — these live in third-party accounts and must be captured by the operator.
+
+---
+
 ## Marketing (used in README)
 
 | Path | What to capture |

@@ -1,9 +1,28 @@
-# Church Site Template
+<p align="center">
+  <img src="docs/marketing/banner.png" alt="Church Site Template — a free, modern website for small churches, editable in the browser" width="100%" />
+</p>
 
-> A free, modern, mobile-first website template for small churches. Editors update content in their browser — no developer needed long-term. Deploy free on Vercel — about 30 minutes of hands-on time, plan for ~90 minutes the first time end-to-end if you're also installing Node.js, signing up for Vercel and TinaCloud, and waiting on DNS.
+<h1 align="center">Church Site Template</h1>
 
-[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Made with Next.js](https://img.shields.io/badge/built%20with-Next.js-black)](https://nextjs.org/)
+<p align="center">
+  A free, modern, mobile-first website template for small churches.<br />
+  Editors update content in their browser — no developer needed long-term.
+</p>
+
+<p align="center">
+  <a href="https://church-site-template-psi.vercel.app"><strong>🌐 Live demo</strong></a>
+  &nbsp;·&nbsp;
+  <a href="docs/for-tech-volunteers/01-overview.md"><strong>📖 Setup guide</strong></a>
+  &nbsp;·&nbsp;
+  <a href="FAQ.md"><strong>❓ FAQ</strong></a>
+</p>
+
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green.svg" alt="License: MIT" /></a>
+  <a href="https://nextjs.org/"><img src="https://img.shields.io/badge/built%20with-Next.js%2016-black" alt="Built with Next.js 16" /></a>
+  <a href="https://tina.io/"><img src="https://img.shields.io/badge/edited%20with-TinaCMS-0084ff" alt="Edited with TinaCMS" /></a>
+  <a href="docs/for-developers/contributing.md"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs welcome" /></a>
+</p>
 
 ---
 
@@ -110,13 +129,25 @@ For developers customizing the template, contributing back, or maintaining a chu
 
 ## What it looks like
 
-**The site itself:**
+**[🌐 Explore the live demo →](https://church-site-template-psi.vercel.app)** — a fully populated example church. (Your copy starts with generic placeholder content you swap for your own.)
 
-![Homepage screenshot — hero, service time, "Plan Your Visit" CTA](docs/screenshots/marketing/homepage.png)
+![The homepage — hero, service times, and a "Plan Your Visit" call to action](docs/screenshots/marketing/homepage.png)
 
-**The editor (TinaCMS):**
+<table>
+  <tr>
+    <td width="33%" valign="top"><img src="docs/screenshots/app/ministries.png" alt="Ministries index" /><br /><sub><b>Ministries</b> — a page per ministry</sub></td>
+    <td width="33%" valign="top"><img src="docs/screenshots/app/watch.png" alt="Sermon archive" /><br /><sub><b>Watch</b> — searchable sermon archive</sub></td>
+    <td width="33%" valign="top"><img src="docs/screenshots/app/calendar.png" alt="Events calendar" /><br /><sub><b>Calendar</b> — recurring &amp; one-off events</sub></td>
+  </tr>
+</table>
 
-![CMS dashboard with collections in left sidebar](docs/screenshots/marketing/cms-dashboard.png)
+**Edit everything in the browser — no code.** Staff sign in to TinaCMS and update sermons, events, staff bios, and service times; the site rebuilds and goes live on its own.
+
+![The TinaCMS editor — collections sidebar and the sermon list](docs/screenshots/marketing/cms-dashboard.png)
+
+<sub>📱 <b>Mobile-first</b>, too — where most visitors will see it:</sub>
+
+<img src="docs/screenshots/app/homepage-mobile.png" width="300" alt="The homepage on a phone" />
 
 ---
 

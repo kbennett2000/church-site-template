@@ -1,0 +1,117 @@
+<!doctype html>
+<!--
+  Source for the README banner + GitHub social-preview image.
+  Rendered to PNG via Chrome (see the render in docs/marketing/ history).
+  On-brand: "Sandstone & Sage" palette, Fraunces (serif) + Inter (sans).
+  Centered single-column so it frames well at both 1280x400 (banner)
+  and 1280x640 (social card).
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --cream: #F8F4EC;
+    --cream-2: #F2ECDF;
+    --sage: #475C49;
+    --sage-deep: #3a4b3c;
+    --terra: #BB5A37;
+    --ink: #2A2520;
+    --muted: #6B635A;
+    --border: #DDD3C1;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; }
+  body {
+    font-family: "Inter", system-ui, sans-serif;
+    background:
+      radial-gradient(120% 140% at 88% 18%, #FBF8F1 0%, var(--cream) 42%, var(--cream-2) 100%);
+    color: var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden; position: relative;
+    -webkit-font-smoothing: antialiased;
+  }
+  /* faint oversized cross watermark, bottom-right */
+  .watermark {
+    position: absolute; right: -70px; bottom: -120px;
+    width: 460px; height: 460px; opacity: 0.05;
+    transform: rotate(-12deg);
+  }
+  .watermark .bar { fill: var(--sage); }
+  /* thin top + bottom rules in brand colors */
+  .edge { position: absolute; left: 0; right: 0; height: 6px; }
+  .edge.top { top: 0; background: linear-gradient(90deg, var(--sage), #5c724f 55%, var(--terra)); }
+
+  .wrap { position: relative; z-index: 2; text-align: center; padding: 0 64px; max-width: 1000px; }
+
+  .emblem {
+    width: 70px; height: 70px; border-radius: 999px;
+    background: linear-gradient(160deg, var(--sage), var(--sage-deep));
+    display: inline-flex; align-items: center; justify-content: center;
+    box-shadow: 0 10px 28px rgba(58,75,60,0.26);
+    margin-bottom: 16px;
+  }
+  .emblem svg { width: 34px; height: 34px; }
+
+  h1 {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 600; font-optical-sizing: auto;
+    font-size: 58px; line-height: 1.02; letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  h1 .accent { color: var(--sage); }
+
+  .divider { width: 56px; height: 4px; border-radius: 99px; background: var(--terra); margin: 16px auto 0; }
+
+  .sub {
+    margin: 16px auto 0; max-width: 700px;
+    font-size: 20px; line-height: 1.5; color: var(--muted); font-weight: 400;
+  }
+  .sub strong { color: var(--ink); font-weight: 600; }
+
+  .pills { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 11px; justify-content: center; }
+  .pill {
+    font-size: 14px; font-weight: 600; color: var(--sage-deep);
+    background: rgba(71,92,73,0.09);
+    border: 1px solid rgba(71,92,73,0.18);
+    padding: 8px 16px; border-radius: 999px;
+  }
+  .pill.terra { color: #8f4327; background: rgba(187,90,55,0.10); border-color: rgba(187,90,55,0.22); }
+
+  .tech { margin-top: 20px; font-size: 14px; letter-spacing: 0.02em; color: var(--muted); }
+  .tech b { color: var(--ink); font-weight: 600; }
+</style>
+</head>
+<body>
+  <div class="edge top"></div>
+  <svg class="watermark" viewBox="0 0 100 100" aria-hidden="true">
+    <rect class="bar" x="42" y="6" width="16" height="88" rx="3" />
+    <rect class="bar" x="20" y="30" width="60" height="16" rx="3" />
+  </svg>
+
+  <div class="wrap">
+    <span class="emblem" aria-hidden="true">
+      <svg viewBox="0 0 100 100">
+        <rect x="42" y="8" width="16" height="84" rx="3" fill="#F8F4EC" />
+        <rect x="18" y="32" width="64" height="16" rx="3" fill="#F8F4EC" />
+      </svg>
+    </span>
+    <h1>Church&nbsp;Site&nbsp;<span class="accent">Template</span></h1>
+    <div class="divider"></div>
+    <p class="sub">
+      A free, modern website for small churches — <strong>update it in your browser</strong>,
+      no developer required.
+    </p>
+    <div class="pills">
+      <span class="pill">Free &amp; open source</span>
+      <span class="pill">Mobile-first</span>
+      <span class="pill terra">Edit in your browser</span>
+      <span class="pill">No vendor lock-in</span>
+    </div>
+    <p class="tech">Built with <b>Next.js</b> · <b>TinaCMS</b> · <b>Tailwind&nbsp;CSS</b> · deploy free on <b>Vercel</b></p>
+  </div>
+</body>
+</html>
